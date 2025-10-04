@@ -1,12 +1,14 @@
 import { Button } from "@/components/ui/button";
-import { ArrowLeft } from "lucide-react";
+import { ArrowLeft, Settings, History } from "lucide-react";
 
 interface QuizSelectionProps {
-  onSelectQuiz: (type: 'suku_kata' | 'awal_kata' | 'akhir_kata' | 'tengah_kata' | 'lengkapi_suku_kata') => void;
+  onSelectQuiz: (type: 'suku_kata' | 'awal_kata' | 'akhir_kata' | 'tengah_kata' | 'lengkapi_suku_kata' | 'lengkapi_suku_kata_belakang') => void;
   onBack: () => void;
+  onOpenSettings?: () => void;
+  onOpenHistory?: () => void;
 }
 
-const QuizSelection = ({ onSelectQuiz, onBack }: QuizSelectionProps) => {
+const QuizSelection = ({ onSelectQuiz, onBack, onOpenSettings, onOpenHistory }: QuizSelectionProps) => {
   const quizTypes = [
     {
       id: 'suku_kata' as const,
@@ -46,12 +48,21 @@ const QuizSelection = ({ onSelectQuiz, onBack }: QuizSelectionProps) => {
     },
     {
       id: 'lengkapi_suku_kata' as const,
-      emoji: '✏️',
-      title: 'Lengkapi Suku Kata',
-      description: 'Lengkapi kata dengan suku kata yang tepat',
+      emoji: '🔄',
+      title: 'Lengkapi Suku Kata Belakang',
+      description: 'Lengkapi bagian depan kata dengan suku kata yang tepat',
       count: '80 Soal',
       badge: 'Kata Sehari-hari',
       gradient: 'from-warning to-secondary'
+    },
+    {
+      id: 'lengkapi_suku_kata_belakang' as const,
+      emoji: '✏️',
+      title: 'Lengkapi Suku Kata Depan',
+      description: 'Lengkapi kata dengan suku kata yang tepat',
+      count: '80 Soal',
+      badge: 'Kata Sehari-hari',
+      gradient: 'from-info to-primary'
     }
   ];
 
@@ -78,6 +89,35 @@ const QuizSelection = ({ onSelectQuiz, onBack }: QuizSelectionProps) => {
             Pilih jenis kuis yang ingin dimainkan!
           </p>
         </div>
+
+        {/* Settings and History buttons */}
+        {(onOpenSettings || onOpenHistory) && (
+          <div className="grid grid-cols-2 gap-4 mb-8">
+            {onOpenSettings && (
+              <Button
+                variant="outline"
+                size="lg"
+                className="h-20 text-base bg-card hover:bg-muted border-2 shadow-button btn-bounce"
+                onClick={onOpenSettings}
+              >
+                <Settings className="w-5 h-5 mr-2" />
+                Pengaturan
+              </Button>
+            )}
+
+            {onOpenHistory && (
+              <Button
+                variant="outline"
+                size="lg"
+                className="h-20 text-base bg-card hover:bg-muted border-2 shadow-button btn-bounce"
+                onClick={onOpenHistory}
+              >
+                <History className="w-5 h-5 mr-2" />
+                Riwayat
+              </Button>
+            )}
+          </div>
+        )}
         
         <div className="grid md:grid-cols-2 gap-6">
           {quizTypes.map((quiz) => (

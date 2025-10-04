@@ -42,17 +42,14 @@ const Quiz = ({ quizType, settings, appState, setAppState, onComplete, onBack }:
     
     setCurrentQuestion(questions[0]);
     
-    // Speak the question
-    if (questions[0]) {
-      setTimeout(() => speak(questions[0].ttsText), 500);
-    }
+    // Note: TTS only triggered manually via button click
   }, []);
 
   // Timer effect
   useEffect(() => {
-    if (settings.timerSeconds > 0 && !hasAnswered) {
+    if (settings.timerSeconds > 0 && !hasAnswered && currentQuestion) {
       setTimeRemaining(settings.timerSeconds);
-      
+
       const interval = setInterval(() => {
         setTimeRemaining(prev => {
           if (prev <= 1) {
@@ -63,10 +60,10 @@ const Quiz = ({ quizType, settings, appState, setAppState, onComplete, onBack }:
           return prev - 1;
         });
       }, 1000);
-      
+
       return () => clearInterval(interval);
     }
-  }, [appState.currentQuestionIndex, hasAnswered]);
+  }, [appState.currentQuestionIndex, hasAnswered, settings.timerSeconds, currentQuestion]);
 
   const handleTimeout = () => {
     if (!hasAnswered && currentQuestion) {
@@ -103,9 +100,9 @@ const Quiz = ({ quizType, settings, appState, setAppState, onComplete, onBack }:
         ...prev,
         score: prev.score + 1
       }));
-      speak('Benar!');
+      // Note: TTS feedback disabled
     } else {
-      speak('Salah. Jawaban yang benar adalah ' + currentQuestion?.answer);
+      // Note: TTS feedback disabled
       
       if (currentQuestion) {
         const wrongAnswer: WrongAnswer = {
@@ -142,7 +139,6 @@ const Quiz = ({ quizType, settings, appState, setAppState, onComplete, onBack }:
       setShowFeedback(false);
       setIsCorrect(false);
       setHasAnswered(false);
-      setTimeRemaining(settings.timerSeconds);
       
       // Save seen IDs
       if (settings.rememberAcrossSessions && currentQuestion) {
@@ -150,7 +146,7 @@ const Quiz = ({ quizType, settings, appState, setAppState, onComplete, onBack }:
         localStorage.setItem('seenIds', JSON.stringify(seenArray));
       }
       
-      setTimeout(() => speak(nextQuestion.ttsText), 300);
+      // Note: TTS only triggered manually via button click
     } else {
       // Quiz complete
       if (settings.rememberAcrossSessions && currentQuestion) {
@@ -237,7 +233,7 @@ const Quiz = ({ quizType, settings, appState, setAppState, onComplete, onBack }:
               className="shadow-button btn-bounce"
             >
               <Volume2 className="w-5 h-5 mr-2" />
-              Dengarkan Lagi
+              Dengarkan
             </Button>
           </div>
           

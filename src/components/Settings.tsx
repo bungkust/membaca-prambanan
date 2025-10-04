@@ -49,8 +49,8 @@ const Settings = ({ settings, onUpdateSettings, onResetProgress, onBack }: Setti
             {/* Questions per session */}
             <div>
               <label className="text-lg font-bold mb-3 block">Jumlah soal per sesi:</label>
-              <div className="grid grid-cols-2 gap-4">
-                {[5, 10].map(num => (
+              <div className="grid grid-cols-4 gap-4">
+                {[10, 20, 30, 50].map(num => (
                   <Button
                     key={num}
                     size="lg"
@@ -69,7 +69,7 @@ const Settings = ({ settings, onUpdateSettings, onResetProgress, onBack }: Setti
             {/* Timer */}
             <div>
               <label className="text-lg font-bold mb-3 block">Waktu per soal:</label>
-              <div className="grid grid-cols-3 gap-4">
+              <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
                 {[0, 20, 15, 10, 5].map(seconds => (
                   <Button
                     key={seconds}

@@ -1,6 +1,6 @@
 export interface Question {
   id: string;
-  type: 'read_syllable' | 'awal_kata' | 'akhir_kata' | 'tengah_kata' | 'lengkapi_suku_kata';
+  type: 'read_syllable' | 'awal_kata' | 'akhir_kata' | 'tengah_kata' | 'lengkapi_suku_kata' | 'lengkapi_suku_kata_belakang';
   prompt?: string;
   display: string;
   ttsText: string;

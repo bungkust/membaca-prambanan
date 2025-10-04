@@ -164,8 +164,6 @@ const Index = () => {
       {screen === 'HOME' && (
         <Home 
           onStartQuiz={handleNavigateQuizSelection}
-          onOpenSettings={handleNavigateSettings}
-          onOpenHistory={handleNavigateHistory}
         />
       )}
       
@@ -173,6 +171,8 @@ const Index = () => {
         <QuizSelection 
           onSelectQuiz={handleQuizTypeSelect}
           onBack={handleNavigateHome}
+          onOpenSettings={handleNavigateSettings}
+          onOpenHistory={handleNavigateHistory}
         />
       )}
       

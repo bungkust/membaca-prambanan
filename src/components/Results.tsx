@@ -39,7 +39,7 @@ const Results = ({ appState, onRetry, onHome }: ResultsProps) => {
           </span>
         </div>
         
-        <div className="grid grid-cols-2 gap-6 mb-8">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-8">
           <div className="bg-gradient-to-br from-success/10 to-accent/10 rounded-2xl p-6">
             <div className="text-6xl mb-2">{score}</div>
             <div className="text-xl font-bold text-foreground">✅ Benar</div>

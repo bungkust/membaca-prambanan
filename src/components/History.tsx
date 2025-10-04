@@ -84,7 +84,7 @@ const History = ({ sessionHistory, onBack, onClearHistory }: HistoryProps) => {
           </h1>
           
           {/* Statistics */}
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-8">
             <div className="bg-gradient-to-br from-primary/10 to-accent/10 rounded-2xl p-4 text-center">
               <div className="text-4xl font-bold">{totalSessions}</div>
               <div className="text-sm text-muted-foreground mt-1">Total Sesi</div>
@@ -110,7 +110,7 @@ const History = ({ sessionHistory, onBack, onClearHistory }: HistoryProps) => {
           <div className="space-y-4 mb-6">
             <div>
               <label className="text-sm font-bold mb-2 block">Filter berdasarkan:</label>
-              <div className="grid grid-cols-4 gap-2">
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
                 {[
                   { value: 'all', label: 'Semua Sesi' },
                   { value: 'today', label: 'Hari Ini' },
@@ -132,7 +132,7 @@ const History = ({ sessionHistory, onBack, onClearHistory }: HistoryProps) => {
             
             <div>
               <label className="text-sm font-bold mb-2 block">Urutkan berdasarkan:</label>
-              <div className="grid grid-cols-4 gap-2">
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
                 {[
                   { value: 'newest', label: 'Terbaru' },
                   { value: 'oldest', label: 'Terlama' },

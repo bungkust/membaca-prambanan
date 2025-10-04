@@ -183,6 +183,46 @@ const generateTengahKataQuestions = (): Question[] => {
   });
 };
 
+// Lengkapi Suku Kata Belakang questions (80 questions) - complete back syllables
+const lengkapiSukuKataBelakangData = [
+  { id: 'sapu', display: '__pu', answer: 'sa', choices: ['sa', 'si', 'se'], image: '🧹' },
+  { id: 'buka', display: '__ka', answer: 'bu', choices: ['bu', 'ba', 'bo'], image: '📖' },
+  { id: 'topi', display: '__pi', answer: 'to', choices: ['to', 'ta', 'ti'], image: '🎩' },
+  { id: 'roda', display: '__da', answer: 'ro', choices: ['ro', 'ra', 'ri'], image: '🛞' },
+  { id: 'baju', display: '__ju', answer: 'ba', choices: ['ba', 'bi', 'be'], image: '👕' },
+  { id: 'mata', display: '__ta', answer: 'ma', choices: ['ma', 'mi', 'me'], image: '👁️' },
+  { id: 'kaki', display: '__ki', answer: 'ka', choices: ['ka', 'ki', 'ke'], image: '🦵' },
+  { id: 'nasi', display: '__si', answer: 'na', choices: ['na', 'ni', 'ne'], image: '🍚' },
+  { id: 'gigi', display: '__gi', answer: 'gi', choices: ['gi', 'ga', 'ge'], image: '🦷' },
+  { id: 'dada', display: '__da', answer: 'da', choices: ['da', 'di', 'de'], image: '🫁' },
+  { id: 'mama', display: '__ma', answer: 'ma', choices: ['ma', 'mi', 'me'], image: '👩' },
+  { id: 'papa', display: '__pa', answer: 'pa', choices: ['pa', 'pi', 'pe'], image: '👨' },
+  { id: 'susu', display: '__su', answer: 'su', choices: ['su', 'si', 'se'], image: '🥛' },
+  { id: 'kuku', display: '__ku', answer: 'ku', choices: ['ku', 'ka', 'ke'], image: '💅' },
+  { id: 'lala', display: '__la', answer: 'la', choices: ['la', 'li', 'le'], image: '🎵' },
+  { id: 'tahu', display: '__hu', answer: 'ta', choices: ['ta', 'ti', 'te'], image: '🧈' },
+  { id: 'soto', display: '__to', answer: 'so', choices: ['so', 'sa', 'si'], image: '🍲' },
+  { id: 'kopi', display: '__pi', answer: 'ko', choices: ['ko', 'ka', 'ki'], image: '☕' },
+  { id: 'teh', display: '__eh', answer: 't', choices: ['t', 'd', 'k'], image: '🍵' },
+  { id: 'air', display: '__ir', answer: 'a', choices: ['a', 'i', 'e'], image: '💧' },
+];
+
+const generateLengkapiSukuKataBelakangQuestions = (): Question[] => {
+  return lengkapiSukuKataBelakangData.map(item => ({
+    id: item.id + '_belakang',
+    type: 'lengkapi_suku_kata_belakang' as const,
+    prompt: 'Lengkapi bagian depan kata dengan suku kata yang tepat',
+    display: item.display,
+    ttsText: item.id,
+    answer: item.answer,
+    choices: shuffleArray(item.choices),
+    image: item.image,
+    word: item.id,
+    level: 'mudah',
+    tags: ['lengkapi_suku_kata_belakang']
+  }));
+};
+
 // Lengkapi Suku Kata questions (80 questions) - from document
 const lengkapiSukaKataData = [
   { id: 'sapu', display: 'sa__', answer: 'pu', choices: ['pu', 'pi', 'pa'], image: '🧹' },
@@ -245,6 +285,9 @@ export const generateQuizQuestions = (
       break;
     case 'lengkapi_suku_kata':
       allQuestions = generateLengkapiSukaKataQuestions();
+      break;
+    case 'lengkapi_suku_kata_belakang':
+      allQuestions = generateLengkapiSukuKataBelakangQuestions();
       break;
   }
   

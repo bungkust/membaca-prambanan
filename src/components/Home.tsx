@@ -1,13 +1,11 @@
 import { Button } from "@/components/ui/button";
-import { Target, Settings, History } from "lucide-react";
+import { Target } from "lucide-react";
 
 interface HomeProps {
   onStartQuiz: () => void;
-  onOpenSettings: () => void;
-  onOpenHistory: () => void;
 }
 
-const Home = ({ onStartQuiz, onOpenSettings, onOpenHistory }: HomeProps) => {
+const Home = ({ onStartQuiz }: HomeProps) => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-primary/10 via-accent/10 to-secondary/10 flex items-center justify-center p-4">
       <div className="max-w-2xl w-full">
@@ -32,28 +30,6 @@ const Home = ({ onStartQuiz, onOpenSettings, onOpenHistory }: HomeProps) => {
             onClick={onStartQuiz}
           >
             🚀 Mulai Kuis
-          </Button>
-        </div>
-        
-        <div className="grid grid-cols-2 gap-4">
-          <Button
-            variant="outline"
-            size="lg"
-            className="h-24 text-lg bg-card hover:bg-muted border-2 shadow-button btn-bounce"
-            onClick={onOpenSettings}
-          >
-            <Settings className="w-6 h-6 mr-2" />
-            Pengaturan
-          </Button>
-          
-          <Button
-            variant="outline"
-            size="lg"
-            className="h-24 text-lg bg-card hover:bg-muted border-2 shadow-button btn-bounce"
-            onClick={onOpenHistory}
-          >
-            <History className="w-6 h-6 mr-2" />
-            Riwayat
           </Button>
         </div>
       </div>

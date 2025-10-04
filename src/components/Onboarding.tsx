@@ -21,7 +21,7 @@ const Onboarding = ({ onComplete }: OnboardingProps) => {
           Selamat datang! Aplikasi pembelajaran interaktif dengan berbagai jenis kuis yang menyenangkan untuk anak-anak.
         </p>
         
-        <div className="grid md:grid-cols-2 gap-6 mb-12">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-12">
           <div className="bg-gradient-to-br from-primary/10 to-accent/10 rounded-2xl p-6">
             <div className="w-16 h-16 bg-gradient-to-br from-primary to-accent rounded-full flex items-center justify-center mx-auto mb-4">
               <Target className="w-8 h-8 text-white" />
