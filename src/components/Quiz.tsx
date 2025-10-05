@@ -96,10 +96,18 @@ const Quiz = ({ quizType, settings, appState, setAppState, onComplete, onBack }:
     setShowFeedback(true);
     
     if (correct) {
-      setAppState(prev => ({
-        ...prev,
-        score: prev.score + 1
-      }));
+      setAppState(prev => {
+        const newState = {
+          ...prev,
+          score: prev.score + 1
+        };
+        console.log('✅ Score updated:', {
+          oldScore: prev.score,
+          newScore: newState.score,
+          currentSessionLength: prev.currentSession.length
+        });
+        return newState;
+      });
       // Note: TTS feedback disabled
     } else {
       // Note: TTS feedback disabled
@@ -193,9 +201,17 @@ const Quiz = ({ quizType, settings, appState, setAppState, onComplete, onBack }:
               <span className="text-2xl">⭐</span>
               <span className="text-xl font-bold">
                 {(() => {
-                  const currentAccuracy = appState.currentSession.length > 0
-                    ? appState.score / appState.currentSession.length
-                    : 0;
+                  const currentScore = appState.score;
+                  const totalQuestions = appState.currentSession.length;
+                  const currentAccuracy = totalQuestions > 0 ? currentScore / totalQuestions : 0;
+
+                  console.log('🔍 Star Debug:', {
+                    currentScore,
+                    totalQuestions,
+                    currentAccuracy,
+                    calculatedStars: currentAccuracy >= 0.9 ? 3 : currentAccuracy >= 0.7 ? 2 : currentAccuracy >= 0.5 ? 1 : 0
+                  });
+
                   if (currentAccuracy >= 0.9) return 3;
                   if (currentAccuracy >= 0.7) return 2;
                   if (currentAccuracy >= 0.5) return 1;

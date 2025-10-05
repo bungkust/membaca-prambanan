@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
-import { ArrowLeft, Settings, History, Star } from "lucide-react";
+import { ArrowLeft, Settings, History, Star, Trophy, Zap } from "lucide-react";
 
 interface QuizSelectionProps {
   onSelectQuiz: (type: 'suku_kata' | 'awal_kata' | 'akhir_kata' | 'tengah_kata' | 'lengkapi_suku_kata' | 'lengkapi_suku_kata_belakang') => void;
@@ -82,23 +82,6 @@ const QuizSelection = ({ onSelectQuiz, onBack, onOpenSettings, onOpenHistory, se
     return Math.min(totalStars, 3); // Cap at 3 stars max per quiz type
   };
 
-  const renderStars = (starCount: number) => {
-    return (
-      <div className="flex gap-1">
-        {[1, 2, 3].map((star) => (
-          <Star
-            key={star}
-            className={`w-4 h-4 ${
-              star <= starCount
-                ? 'text-yellow-400 fill-yellow-400'
-                : 'text-gray-300'
-            }`}
-          />
-        ))}
-      </div>
-    );
-  };
-
   return (
     <div className="min-h-screen bg-gradient-to-br from-primary/10 via-accent/10 to-secondary/10 p-4 py-8">
       <div className="max-w-4xl mx-auto">
@@ -118,31 +101,51 @@ const QuizSelection = ({ onSelectQuiz, onBack, onOpenSettings, onOpenHistory, se
               Pilih Jenis Kuis
             </span>
           </h1>
-          <p className="text-lg text-muted-foreground mb-6">
+          <p className="text-lg text-muted-foreground">
             Pilih jenis kuis yang ingin dimainkan!
           </p>
+        </div>
 
-          {/* Star Summary */}
-          <div className="bg-gradient-to-r from-yellow-50 to-orange-50 rounded-2xl p-6 border-2 border-yellow-200">
-            <div className="flex items-center justify-center gap-3 mb-2">
-              <div className="flex gap-1">
-                {[1, 2, 3, 4, 5].map((star) => (
-                  <Star
-                    key={star}
-                    className={`w-6 h-6 ${
-                      star <= getTotalStars()
-                        ? 'text-yellow-400 fill-yellow-400'
-                        : 'text-gray-300'
-                    }`}
-                  />
-                ))}
+        {/* Star Summary Section */}
+        <div className="relative bg-gradient-to-br from-yellow-50 via-orange-50 to-amber-50 rounded-3xl p-8 mb-8 border-3 border-yellow-200 shadow-2xl overflow-hidden">
+          {/* Background decorative elements */}
+          <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-yellow-200/30 to-orange-200/30 rounded-full -translate-y-16 translate-x-16"></div>
+          <div className="absolute bottom-0 left-0 w-24 h-24 bg-gradient-to-tr from-amber-200/30 to-yellow-200/30 rounded-full translate-y-12 -translate-x-12"></div>
+
+          {/* Sparkle effects */}
+          <div className="absolute top-4 right-8 text-yellow-300/60 animate-pulse">
+            <Zap className="w-6 h-6" />
+          </div>
+          <div className="absolute bottom-6 left-6 text-orange-300/60 animate-pulse delay-1000">
+            <Star className="w-4 h-4" />
+          </div>
+
+          <div className="relative z-10 text-center">
+            {/* Trophy icon */}
+            <div className="flex justify-center mb-4">
+              <div className="bg-gradient-to-br from-yellow-400 to-orange-500 p-4 rounded-2xl shadow-lg">
+                <Trophy className="w-8 h-8 text-white" />
               </div>
-              <span className="text-2xl font-bold text-yellow-700">
-                {getTotalStars()}/15 Bintang
+            </div>
+
+            {/* Main star count */}
+            <div className="mb-3">
+              <span className="text-4xl font-bold bg-gradient-to-r from-yellow-600 to-orange-600 bg-clip-text text-transparent">
+                {getTotalStars()}
+              </span>
+              <span className="text-2xl font-semibold text-yellow-700 ml-2">
+                Bintang
               </span>
             </div>
-            <p className="text-sm text-yellow-600">
-              Total bintang yang telah kamu kumpulkan dari semua kuis!
+
+            {/* Subtitle */}
+            <p className="text-yellow-600 font-medium mb-3">
+              ✨ Pencapaian Belajar Kamu ✨
+            </p>
+
+            {/* Encouraging message */}
+            <p className="text-sm text-yellow-600/80 bg-white/50 rounded-full px-4 py-2 inline-block">
+              🚀 Lanjutkan petualangan belajarmu!
             </p>
           </div>
         </div>
@@ -192,7 +195,6 @@ const QuizSelection = ({ onSelectQuiz, onBack, onOpenSettings, onOpenHistory, se
                   <h2 className="text-2xl font-bold text-foreground">
                     {quiz.title}
                   </h2>
-                  {renderStars(stars)}
                 </div>
 
                 <p className="text-muted-foreground mb-4">
