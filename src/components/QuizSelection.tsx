@@ -67,8 +67,8 @@ const QuizSelection = ({ onSelectQuiz, onBack, onOpenSettings, onOpenHistory }: 
   ];
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-primary/10 via-accent/10 to-secondary/10 p-4 py-8">
-      <div className="max-w-4xl mx-auto">
+    <div className="min-h-screen bg-gradient-to-br from-primary/10 via-accent/10 to-secondary/10 flex flex-col p-4 py-8">
+      <div className="max-w-4xl mx-auto flex-1">
         <Button
           variant="ghost"
           size="lg"
@@ -78,7 +78,7 @@ const QuizSelection = ({ onSelectQuiz, onBack, onOpenSettings, onOpenHistory }: 
           <ArrowLeft className="w-5 h-5 mr-2" />
           Kembali
         </Button>
-        
+
         <div className="bg-card rounded-3xl shadow-playful p-8 mb-8 text-center">
           <h1 className="text-4xl font-bold mb-4">
             <span className="bg-gradient-to-r from-primary via-accent to-secondary bg-clip-text text-transparent">
@@ -90,35 +90,6 @@ const QuizSelection = ({ onSelectQuiz, onBack, onOpenSettings, onOpenHistory }: 
           </p>
         </div>
 
-        {/* Settings and History buttons */}
-        {(onOpenSettings || onOpenHistory) && (
-          <div className="grid grid-cols-2 gap-4 mb-8">
-            {onOpenSettings && (
-              <Button
-                variant="outline"
-                size="lg"
-                className="h-20 text-base bg-card hover:bg-muted border-2 shadow-button btn-bounce"
-                onClick={onOpenSettings}
-              >
-                <Settings className="w-5 h-5 mr-2" />
-                Pengaturan
-              </Button>
-            )}
-
-            {onOpenHistory && (
-              <Button
-                variant="outline"
-                size="lg"
-                className="h-20 text-base bg-card hover:bg-muted border-2 shadow-button btn-bounce"
-                onClick={onOpenHistory}
-              >
-                <History className="w-5 h-5 mr-2" />
-                Riwayat
-              </Button>
-            )}
-          </div>
-        )}
-        
         <div className="grid md:grid-cols-2 gap-6">
           {quizTypes.map((quiz) => (
             <div
@@ -128,15 +99,15 @@ const QuizSelection = ({ onSelectQuiz, onBack, onOpenSettings, onOpenHistory }: 
               <div className={`w-20 h-20 bg-gradient-to-br ${quiz.gradient} rounded-2xl flex items-center justify-center mb-4`}>
                 <span className="text-4xl">{quiz.emoji}</span>
               </div>
-              
+
               <h2 className="text-2xl font-bold text-foreground mb-2">
                 {quiz.title}
               </h2>
-              
+
               <p className="text-muted-foreground mb-4">
                 {quiz.description}
               </p>
-              
+
               <div className="flex gap-2 mb-6">
                 <span className="px-3 py-1 bg-muted rounded-full text-sm font-semibold text-foreground">
                   {quiz.count}
@@ -145,7 +116,7 @@ const QuizSelection = ({ onSelectQuiz, onBack, onOpenSettings, onOpenHistory }: 
                   {quiz.badge}
                 </span>
               </div>
-              
+
               <Button
                 className={`w-full bg-gradient-to-r ${quiz.gradient} hover:opacity-90 transition-all shadow-button btn-bounce`}
                 size="lg"
@@ -157,6 +128,39 @@ const QuizSelection = ({ onSelectQuiz, onBack, onOpenSettings, onOpenHistory }: 
           ))}
         </div>
       </div>
+
+      {/* Settings and History buttons at the bottom */}
+      {(onOpenSettings || onOpenHistory) && (
+        <div className="mt-8 p-4 bg-card/50 backdrop-blur-sm border-t">
+          <div className="max-w-4xl mx-auto">
+            <div className="grid grid-cols-2 gap-4">
+              {onOpenSettings && (
+                <Button
+                  variant="outline"
+                  size="lg"
+                  className="h-20 text-base bg-card hover:bg-muted border-2 shadow-button btn-bounce"
+                  onClick={onOpenSettings}
+                >
+                  <Settings className="w-5 h-5 mr-2" />
+                  Pengaturan
+                </Button>
+              )}
+
+              {onOpenHistory && (
+                <Button
+                  variant="outline"
+                  size="lg"
+                  className="h-20 text-base bg-card hover:bg-muted border-2 shadow-button btn-bounce"
+                  onClick={onOpenHistory}
+                >
+                  <History className="w-5 h-5 mr-2" />
+                  Riwayat
+                </Button>
+              )}
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
