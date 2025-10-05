@@ -17,7 +17,7 @@ const QuizSelection = ({ onSelectQuiz, onBack, onOpenSettings, onOpenHistory, se
       emoji: '📚',
       title: 'Suku Kata',
       description: 'Pelajari suku kata dasar',
-      count: '130 Soal',
+      count: '150 Soal',
       badge: 'Dasar',
       gradient: 'from-blue-500 to-purple-600'
     },
@@ -35,7 +35,7 @@ const QuizSelection = ({ onSelectQuiz, onBack, onOpenSettings, onOpenHistory, se
       emoji: '🎯',
       title: 'Akhir Kata',
       description: 'Tebak huruf akhir dari kata',
-      count: '120 Soal',
+      count: '150 Soal',
       badge: 'Huruf Akhir',
       gradient: 'from-orange-500 to-red-600'
     },
@@ -44,7 +44,7 @@ const QuizSelection = ({ onSelectQuiz, onBack, onOpenSettings, onOpenHistory, se
       emoji: '🔍',
       title: 'Kuis Tengah Kata',
       description: 'Tebak huruf tengah dari kata yang didengar',
-      count: '100 Soal',
+      count: '150 Soal',
       badge: 'Kata Menarik',
       gradient: 'from-success to-primary'
     },
@@ -53,7 +53,7 @@ const QuizSelection = ({ onSelectQuiz, onBack, onOpenSettings, onOpenHistory, se
       emoji: '🔄',
       title: 'Lengkapi Suku Kata Belakang',
       description: 'Lengkapi bagian depan kata dengan suku kata yang tepat',
-      count: '80 Soal',
+      count: '150 Soal',
       badge: 'Kata Sehari-hari',
       gradient: 'from-warning to-secondary'
     },
@@ -62,7 +62,7 @@ const QuizSelection = ({ onSelectQuiz, onBack, onOpenSettings, onOpenHistory, se
       emoji: '✏️',
       title: 'Lengkapi Suku Kata Depan',
       description: 'Lengkapi kata dengan suku kata yang tepat',
-      count: '80 Soal',
+      count: '150 Soal',
       badge: 'Kata Sehari-hari',
       gradient: 'from-info to-primary'
     }
