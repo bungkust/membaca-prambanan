@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Settings as SettingsType } from "@/types/quiz";
 import { ArrowLeft, Volume2 } from "lucide-react";
 import { speak } from "@/utils/tts";
+import { APP_VERSION, APP_NAME, VERSION_DATE } from "@/version";
 
 interface SettingsProps {
   settings: SettingsType;
@@ -127,7 +128,31 @@ const Settings = ({ settings, onUpdateSettings, onResetProgress, onBack }: Setti
             🎵 Test Audio
           </Button>
         </div>
-        
+
+        {/* App Version Info */}
+        <div className="bg-card rounded-3xl shadow-playful p-6 mb-6">
+          <h2 className="text-2xl font-bold mb-4">📱 Informasi Aplikasi</h2>
+          <div className="space-y-4">
+            <div className="bg-gradient-to-r from-primary/10 to-accent/10 rounded-2xl p-4">
+              <div className="flex items-center justify-between mb-2">
+                <span className="font-semibold text-lg">{APP_NAME}</span>
+                <span className="px-3 py-1 bg-primary/20 rounded-full text-sm font-bold text-primary">
+                  v{APP_VERSION}
+                </span>
+              </div>
+              <div className="text-sm text-muted-foreground">
+                <div className="flex items-center gap-2">
+                  <span>📅 Tanggal Rilis:</span>
+                  <span className="font-medium">{VERSION_DATE}</span>
+                </div>
+                <div className="mt-1 text-xs">
+                  Setiap versi baru menambahkan fitur dan perbaikan
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
         {/* Reset Progress */}
         <div className="bg-card rounded-3xl shadow-playful p-6 mb-6">
           <h2 className="text-2xl font-bold mb-2">Reset Progress</h2>
