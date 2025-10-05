@@ -7,6 +7,8 @@ import Quiz from "@/components/Quiz";
 import Results from "@/components/Results";
 import Settings from "@/components/Settings";
 import InstallInstructions from "@/components/InstallInstructions";
+import History from "@/components/History";
+import { Settings as SettingsType, AppState, SessionHistory } from "@/types/quiz";
 
 const Index = () => {
   const [screen, setScreen] = useState<'AUDIO_PERMISSION' | 'ONBOARDING' | 'HOME' | 'QUIZ_SELECTION' | 'QUIZ' | 'RESULTS' | 'SETTINGS' | 'HISTORY' | 'INSTALL'>('AUDIO_PERMISSION');
