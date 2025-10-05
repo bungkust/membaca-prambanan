@@ -5,22 +5,13 @@ interface ResultsProps {
   appState: AppState;
   onRetry: () => void;
   onHome: () => void;
+  onQuizSelection?: () => void;
 }
 
-const Results = ({ appState, onRetry, onHome }: ResultsProps) => {
+const Results = ({ appState, onRetry, onHome, onQuizSelection }: ResultsProps) => {
   const totalQuestions = appState.currentSession.length;
   const score = appState.score;
   const percentage = (score / totalQuestions) * 100;
-  
-  const getStars = () => {
-    if (percentage >= 90) return 5;
-    if (percentage >= 70) return 4;
-    if (percentage >= 50) return 3;
-    if (percentage >= 30) return 2;
-    return 1;
-  };
-  
-  const stars = getStars();
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-primary/10 via-accent/10 to-secondary/10 flex items-center justify-center p-4">
@@ -38,21 +29,28 @@ const Results = ({ appState, onRetry, onHome }: ResultsProps) => {
             {score}/{totalQuestions}
           </span>
         </div>
-        
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-8">
           <div className="bg-gradient-to-br from-success/10 to-accent/10 rounded-2xl p-6">
             <div className="text-6xl mb-2">{score}</div>
             <div className="text-xl font-bold text-foreground">✅ Benar</div>
           </div>
-          
+
           <div className="bg-gradient-to-br from-destructive/10 to-warning/10 rounded-2xl p-6">
             <div className="text-6xl mb-2">{totalQuestions - score}</div>
             <div className="text-xl font-bold text-foreground">❌ Salah</div>
           </div>
         </div>
-        
-        <div className="text-6xl mb-8">
-          {'⭐'.repeat(stars)}
+
+        {/* Show actual stars earned in this session - make it more prominent */}
+        <div className="bg-gradient-to-r from-yellow-50 via-orange-50 to-amber-50 rounded-3xl p-8 mb-6 border-3 border-yellow-200 shadow-2xl">
+          <div className="text-center">
+            <div className="text-3xl font-bold text-yellow-700 mb-2">
+              ⭐ {appState.currentStars || 0} Bintang Dikumpulkan
+            </div>
+            <p className="text-lg text-yellow-600">
+              Dari {totalQuestions} soal yang dijawab dengan benar!
+            </p>
+          </div>
         </div>
         
         {appState.wrongAnswers.length > 0 && (
@@ -94,9 +92,9 @@ const Results = ({ appState, onRetry, onHome }: ResultsProps) => {
             variant="outline"
             size="lg"
             className="w-full text-xl py-6 shadow-button btn-bounce"
-            onClick={onHome}
+            onClick={onQuizSelection || onHome}
           >
-            🏠 Ke Beranda
+            📋 Pilih Kuis Lain
           </Button>
         </div>
       </div>

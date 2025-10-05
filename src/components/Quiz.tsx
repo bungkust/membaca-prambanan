@@ -11,7 +11,7 @@ interface QuizProps {
   settings: Settings;
   appState: AppState;
   setAppState: React.Dispatch<React.SetStateAction<AppState>>;
-  onComplete: (score: number, wrongAnswers: WrongAnswer[]) => void;
+  onComplete: (score: number, wrongAnswers: WrongAnswer[], sessionStartTime?: number, finalStars?: number) => void;
   onBack: () => void;
 }
 
@@ -97,11 +97,31 @@ const Quiz = ({ quizType, settings, appState, setAppState, onComplete, onBack }:
     setShowFeedback(true);
     
     if (correct) {
-      setAppState(prev => ({
-        ...prev,
-        score: prev.score + 1,
-        currentStars: (prev.currentStars || 0) + 1
-      }));
+      setAppState(prev => {
+        const newScore = prev.score + 1;
+        const newStars = (prev.currentStars || 0) + 1;
+
+        console.log('🎯 CORRECT ANSWER - Final calculation:', {
+          previousScore: prev.score,
+          newScore: newScore,
+          previousStars: prev.currentStars || 0,
+          newStars: newStars,
+          questionIndex: prev.currentQuestionIndex,
+          totalQuestions: prev.currentSession.length,
+          isLastQuestion: prev.currentQuestionIndex >= prev.currentSession.length - 1
+        });
+
+        const updatedState = {
+          ...prev,
+          score: newScore,
+          currentStars: newStars
+        };
+
+        // If this is the last question, let handleNext handle the completion
+        // (No onComplete call here to avoid duplication)
+
+        return updatedState;
+      });
       // Note: TTS feedback disabled
     } else {
       // Note: TTS feedback disabled
@@ -112,51 +132,83 @@ const Quiz = ({ quizType, settings, appState, setAppState, onComplete, onBack }:
           userAnswer: answer
         };
         
-        setAppState(prev => ({
-          ...prev,
-          wrongAnswers: [...prev.wrongAnswers, wrongAnswer]
-        }));
+        setAppState(prev => {
+          const updatedState = {
+            ...prev,
+            wrongAnswers: [...prev.wrongAnswers, wrongAnswer]
+          };
+
+          // If this is the last question, let handleNext handle the completion
+          // (No onComplete call here to avoid duplication)
+
+          return updatedState;
+        });
       }
     }
     
+    // Always call handleNext after answering (whether correct or wrong)
     setTimeout(handleNext, 2500);
   };
 
   const handleNext = () => {
     const nextIndex = appState.currentQuestionIndex + 1;
-    
+
     if (nextIndex < appState.currentSession.length) {
       const nextQuestion = appState.currentSession[nextIndex];
-      
+
       setAppState(prev => ({
         ...prev,
         currentQuestionIndex: nextIndex,
-        seenIds: settings.rememberAcrossSessions 
+        seenIds: settings.rememberAcrossSessions
           ? new Set([...prev.seenIds, currentQuestion?.id || ''])
           : prev.seenIds
       }));
-      
+
       setCurrentQuestion(nextQuestion);
       setSelectedAnswer(null);
       setShowFeedback(false);
       setIsCorrect(false);
       setHasAnswered(false);
-      
+
       // Save seen IDs
       if (settings.rememberAcrossSessions && currentQuestion) {
         const seenArray = Array.from(new Set([...appState.seenIds, currentQuestion.id]));
         localStorage.setItem('seenIds', JSON.stringify(seenArray));
       }
-      
+
       // Note: TTS only triggered manually via button click
     } else {
-      // Quiz complete
-      if (settings.rememberAcrossSessions && currentQuestion) {
-        const seenArray = Array.from(new Set([...appState.seenIds, currentQuestion.id]));
-        localStorage.setItem('seenIds', JSON.stringify(seenArray));
-      }
-      
-      onComplete(appState.score, appState.wrongAnswers);
+      // Quiz complete - use a callback to get the latest state
+      setAppState(prev => {
+        const latestState = {
+          ...prev,
+          seenIds: settings.rememberAcrossSessions && currentQuestion
+            ? new Set([...prev.seenIds, currentQuestion.id])
+            : prev.seenIds
+        };
+
+        console.log('🎯 QUIZ COMPLETING - Latest state from callback:', {
+          currentSessionStart: latestState.currentSessionStart,
+          currentStars: latestState.currentStars,
+          score: latestState.score,
+          totalQuestions: latestState.currentSession.length,
+          finalQuestionIndex: latestState.currentQuestionIndex,
+          questionAnswered: currentQuestion?.id
+        });
+
+        // Save seen IDs for the final question
+        if (settings.rememberAcrossSessions && currentQuestion) {
+          const seenArray = Array.from(latestState.seenIds);
+          localStorage.setItem('seenIds', JSON.stringify(seenArray));
+        }
+
+        // Schedule onComplete with the latest state
+        setTimeout(() => {
+          onComplete(latestState.score, latestState.wrongAnswers, latestState.currentSessionStart, latestState.currentStars);
+        }, 50);
+
+        return latestState;
+      });
     }
   };
 

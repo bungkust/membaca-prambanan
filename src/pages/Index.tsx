@@ -6,11 +6,10 @@ import QuizSelection from "@/components/QuizSelection";
 import Quiz from "@/components/Quiz";
 import Results from "@/components/Results";
 import Settings from "@/components/Settings";
-import History from "@/components/History";
-import { AppState, Settings as SettingsType, SessionHistory } from "@/types/quiz";
+import InstallInstructions from "@/components/InstallInstructions";
 
 const Index = () => {
-  const [screen, setScreen] = useState<'AUDIO_PERMISSION' | 'ONBOARDING' | 'HOME' | 'QUIZ_SELECTION' | 'QUIZ' | 'RESULTS' | 'SETTINGS' | 'HISTORY'>('AUDIO_PERMISSION');
+  const [screen, setScreen] = useState<'AUDIO_PERMISSION' | 'ONBOARDING' | 'HOME' | 'QUIZ_SELECTION' | 'QUIZ' | 'RESULTS' | 'SETTINGS' | 'HISTORY' | 'INSTALL'>('AUDIO_PERMISSION');
   const [audioPermissionGranted, setAudioPermissionGranted] = useState(false);
   const [onboardingSeen, setOnboardingSeen] = useState(false);
   const [selectedQuizType, setSelectedQuizType] = useState<'suku_kata' | 'awal_kata' | 'akhir_kata' | 'tengah_kata' | 'lengkapi_suku_kata'>('suku_kata');
@@ -39,40 +38,55 @@ const Index = () => {
     const savedSettings = localStorage.getItem('settings');
     const savedSeenIds = localStorage.getItem('seenIds');
     const savedHistory = localStorage.getItem('sessionHistory');
-    
+
+    console.log('💾 LOADING SAVED DATA:', {
+      hasHistory: !!savedHistory,
+      historyLength: savedHistory ? JSON.parse(savedHistory).length : 0,
+      historyData: savedHistory ? JSON.parse(savedHistory) : null
+    });
+
     if (savedOnboarding === 'true') {
       setOnboardingSeen(true);
     }
-    
     if (savedAudio === 'true') {
       setAudioPermissionGranted(true);
     }
-    
     if (savedSettings) {
       setSettings(JSON.parse(savedSettings));
     }
-    
     if (savedSeenIds) {
       setAppState(prev => ({
         ...prev,
         seenIds: new Set(JSON.parse(savedSeenIds))
       }));
     }
-    
     if (savedHistory) {
+      const history = JSON.parse(savedHistory);
+      console.log('📚 LOADED HISTORY SESSIONS:', history.map((session: any) => ({
+        id: session.id,
+        score: session.score,
+        totalQuestions: session.totalQuestions,
+        stars: session.stars,
+        quizType: session.quizType
+      })));
+
       setAppState(prev => ({
         ...prev,
-        sessionHistory: JSON.parse(savedHistory)
+        sessionHistory: history
       }));
     }
-    
-    // Navigate to appropriate screen
-    if (savedAudio === 'true' && savedOnboarding === 'true') {
-      setScreen('HOME');
-    } else if (savedAudio === 'true') {
-      setScreen('ONBOARDING');
-    }
   }, []);
+
+  // Navigate to appropriate screen
+  useEffect(() => {
+    if (audioPermissionGranted && onboardingSeen) {
+      setScreen('HOME');
+    } else if (audioPermissionGranted) {
+      setScreen('ONBOARDING');
+    } else {
+      setScreen('AUDIO_PERMISSION');
+    }
+  }, [audioPermissionGranted, onboardingSeen]);
 
   const handleAudioPermission = () => {
     setAudioPermissionGranted(true);
@@ -107,9 +121,32 @@ const Index = () => {
     setScreen('HISTORY');
   };
 
-  const handleQuizComplete = (finalScore: number, wrongAnswers: any[]) => {
-    // Use the stars earned during the quiz session
-    const starsEarned = appState.currentStars || 0;
+  const handleNavigateInstall = () => {
+    setScreen('INSTALL');
+  };
+
+  const handleQuizComplete = (finalScore: number, wrongAnswers: any[], sessionStartTime?: number, finalStars?: number) => {
+    // Use the stars earned during the quiz session (from Quiz component if provided, fallback to appState)
+    const starsEarned = finalStars !== undefined ? finalStars : (appState.currentStars || 0);
+
+    // Calculate duration - use provided sessionStartTime or fallback to currentSessionStart
+    const endTime = Date.now();
+    const startTime = sessionStartTime || appState.currentSessionStart || endTime;
+    const duration = Math.max(0, endTime - startTime);
+
+    console.log('🔍 QUIZ COMPLETION DEBUG:', {
+      finalScore,
+      starsEarned,
+      providedFinalStars: finalStars,
+      appStateScore: appState.score,
+      appStateCurrentStars: appState.currentStars,
+      totalQuestions: appState.currentSession.length,
+      startTime,
+      endTime,
+      duration,
+      currentSessionStart: appState.currentSessionStart,
+      providedSessionStart: sessionStartTime
+    });
 
     // Save session to history with stars earned during session
     const session: SessionHistory = {
@@ -117,11 +154,18 @@ const Index = () => {
       quizType: selectedQuizType,
       score: finalScore,
       totalQuestions: appState.currentSession.length,
-      timestamp: Date.now(),
+      timestamp: endTime,
       wrongAnswers: wrongAnswers,
-      duration: Date.now() - (appState.currentSessionStart || Date.now()),
+      duration: duration,
       stars: starsEarned
     };
+
+    console.log('💾 SESSION SAVED:', {
+      sessionId: session.id,
+      sessionScore: session.score,
+      sessionStars: session.stars,
+      sessionTotalQuestions: session.totalQuestions
+    });
 
     const newHistory = [session, ...appState.sessionHistory];
     setAppState(prev => ({
@@ -170,6 +214,7 @@ const Index = () => {
       {screen === 'HOME' && (
         <Home 
           onStartQuiz={handleNavigateQuizSelection}
+          onOpenInstall={handleNavigateInstall}
         />
       )}
       
@@ -199,22 +244,27 @@ const Index = () => {
           appState={appState}
           onRetry={handleRetryQuiz}
           onHome={handleNavigateHome}
+          onQuizSelection={handleNavigateQuizSelection}
         />
       )}
       
+      {screen === 'INSTALL' && (
+        <InstallInstructions onBack={handleNavigateQuizSelection} />
+      )}
+
       {screen === 'SETTINGS' && (
         <Settings 
           settings={settings}
           onUpdateSettings={handleSettingsUpdate}
           onResetProgress={handleResetProgress}
-          onBack={handleNavigateHome}
+          onBack={handleNavigateQuizSelection}
         />
       )}
       
       {screen === 'HISTORY' && (
         <History 
           sessionHistory={appState.sessionHistory}
-          onBack={handleNavigateHome}
+          onBack={handleNavigateQuizSelection}
           onClearHistory={() => {
             setAppState(prev => ({
               ...prev,
@@ -222,6 +272,7 @@ const Index = () => {
             }));
             localStorage.removeItem('sessionHistory');
           }}
+          onQuizSelection={handleNavigateQuizSelection}
         />
       )}
     </>

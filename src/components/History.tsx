@@ -1,15 +1,16 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { SessionHistory } from "@/types/quiz";
-import { ArrowLeft } from "lucide-react";
+import { ArrowLeft, Star } from "lucide-react";
 
 interface HistoryProps {
   sessionHistory: SessionHistory[];
   onBack: () => void;
   onClearHistory: () => void;
+  onQuizSelection?: () => void;
 }
 
-const History = ({ sessionHistory, onBack, onClearHistory }: HistoryProps) => {
+const History = ({ sessionHistory, onBack, onClearHistory, onQuizSelection }: HistoryProps) => {
   const [filter, setFilter] = useState<'all' | 'today' | 'week' | 'month'>('all');
   const [sortBy, setSortBy] = useState<'newest' | 'oldest' | 'highest' | 'lowest'>('newest');
   const [showClearConfirm, setShowClearConfirm] = useState(false);
@@ -62,6 +63,15 @@ const History = ({ sessionHistory, onBack, onClearHistory }: HistoryProps) => {
   const totalMinutes = Math.floor(totalTime / 60000);
 
   const filteredSessions = filterSessions();
+
+  // Debug: Log what we're displaying
+  console.log('📋 HISTORY DEBUG - Displaying sessions:', filteredSessions.map(session => ({
+    id: session.id,
+    score: session.score,
+    totalQuestions: session.totalQuestions,
+    stars: session.stars,
+    displayText: `${session.score}/${session.totalQuestions}`
+  })));
 
   const handleClear = () => {
     onClearHistory();
@@ -165,7 +175,7 @@ const History = ({ sessionHistory, onBack, onClearHistory }: HistoryProps) => {
             <Button
               size="lg"
               className="bg-gradient-to-r from-primary to-accent hover:opacity-90 shadow-button btn-bounce"
-              onClick={onBack}
+              onClick={onQuizSelection || onBack}
             >
               🚀 Pilih Kuis
             </Button>
@@ -195,12 +205,20 @@ const History = ({ sessionHistory, onBack, onClearHistory }: HistoryProps) => {
                         </div>
                         <div className="text-sm text-muted-foreground">Skor</div>
                       </div>
-                      
+
                       <div className="flex-1 bg-muted rounded-xl p-4">
                         <div className="text-3xl font-bold">{percentage}%</div>
                         <div className="text-sm text-muted-foreground">Persentase</div>
                       </div>
-                      
+
+                      <div className="flex-1 bg-muted rounded-xl p-4">
+                        <div className="flex items-center justify-center gap-1 text-3xl font-bold">
+                          <Star className="w-6 h-6 text-yellow-400 fill-yellow-400" />
+                          {session.stars || 0}
+                        </div>
+                        <div className="text-sm text-muted-foreground">Bintang</div>
+                      </div>
+
                       <div className="flex-1 bg-muted rounded-xl p-4">
                         <div className="text-3xl font-bold">
                           {Math.floor((session.duration || 0) / 60000)}m

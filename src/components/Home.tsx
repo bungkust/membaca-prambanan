@@ -4,9 +4,10 @@ import { Target, Download } from "lucide-react";
 
 interface HomeProps {
   onStartQuiz: () => void;
+  onOpenInstall?: () => void;
 }
 
-const Home = ({ onStartQuiz }: HomeProps) => {
+const Home = ({ onStartQuiz, onOpenInstall }: HomeProps) => {
   const [canInstall, setCanInstall] = useState(false);
   const [deferredPrompt, setDeferredPrompt] = useState<any>(null);
 
@@ -111,26 +112,34 @@ const Home = ({ onStartQuiz }: HomeProps) => {
               size="lg"
               variant="outline"
               className="w-full text-lg py-6 border-2 border-primary/20 hover:bg-primary/5 shadow-button btn-bounce"
-              onClick={handleInstallClick}
-            >
-              <Download className="w-5 h-5 mr-2" />
-              📱 Install Aplikasi
-            </Button>
-
-            <Button
-              size="sm"
-              variant="ghost"
-              className="w-full text-sm py-2 opacity-50 hover:opacity-75 mt-2"
               onClick={() => {
-                console.log('🔧 Debug info:');
-                console.log('canInstall:', canInstall);
-                console.log('deferredPrompt:', deferredPrompt);
-                console.log('Browser support:', 'serviceWorker' in navigator);
-                console.log('Display mode:', window.matchMedia?.('(display-mode: standalone)')?.matches);
-                alert('Check console for PWA debug info');
+                if (onOpenInstall) {
+                  onOpenInstall();
+                } else {
+                  // Fallback to instructions if handler not provided
+                  const instructions = `
+📱 Cara Install Aplikasi:
+
+💻 Desktop:
+• Chrome/Edge: Klik ikon install di address bar
+• Atau: Menu → Install "Kuis Belajar"
+
+📱 Android:
+• Chrome: Menu (⋮) → "Install app"
+• Firefox: Menu (⋮) → "Install"
+
+🍎 iOS (Safari):
+• Tap tombol share → "Add to Home Screen"
+• Pilih "Add" untuk install
+
+Aplikasi akan terinstall sebagai PWA dan bisa digunakan offline! 🚀
+                  `;
+                  alert(instructions);
+                }
               }}
             >
-              🔧 Debug PWA
+              <Download className="w-5 h-5 mr-2" />
+              📱 Cara Install
             </Button>
           </div>
         </div>
