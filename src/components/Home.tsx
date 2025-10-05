@@ -29,8 +29,14 @@ const Home = ({ onStartQuiz }: HomeProps) => {
       console.log('📱 App is already installed');
       setCanInstall(false);
     } else {
-      console.log('🔍 Checking PWA install availability...');
-      setCanInstall(true); // Show button for testing
+      // Show install button if PWA is supported and not already installed
+      if ('serviceWorker' in navigator && 'beforeinstallprompt' in window) {
+        console.log('🔍 PWA supported, showing install button');
+        setCanInstall(true);
+      } else {
+        console.log('⚠️ PWA not fully supported in this browser');
+        setCanInstall(false);
+      }
     }
 
     window.addEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
@@ -57,8 +63,18 @@ const Home = ({ onStartQuiz }: HomeProps) => {
       }
     } else {
       console.log('⚠️ No deferred prompt available');
-      // Try to force show button anyway for testing
-      alert('Install prompt not available, but trying manual install...');
+      // Provide alternative installation methods
+      const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+      const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
+      const isAndroid = /Android/i.test(navigator.userAgent);
+
+      if (isIOS) {
+        alert('📱 On iOS: Tap share button → "Add to Home Screen"');
+      } else if (isAndroid) {
+        alert('📱 On Android: Tap menu (⋮) → "Install app" or "Add to Home screen"');
+      } else {
+        alert('🖥️ On Desktop: Look for install icon in address bar or use browser menu');
+      }
     }
   };
 
