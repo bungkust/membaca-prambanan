@@ -173,6 +173,7 @@ const Index = () => {
           onBack={handleNavigateHome}
           onOpenSettings={handleNavigateSettings}
           onOpenHistory={handleNavigateHistory}
+          sessionHistory={appState.sessionHistory}
         />
       )}
       

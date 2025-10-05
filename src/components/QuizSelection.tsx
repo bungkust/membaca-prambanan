@@ -1,14 +1,16 @@
 import { Button } from "@/components/ui/button";
-import { ArrowLeft, Settings, History } from "lucide-react";
+import { ArrowLeft, Settings, History, Trophy, Target, Clock, TrendingUp } from "lucide-react";
+import { SessionHistory } from "@/types/quiz";
 
 interface QuizSelectionProps {
   onSelectQuiz: (type: 'suku_kata' | 'awal_kata' | 'akhir_kata' | 'tengah_kata' | 'lengkapi_suku_kata' | 'lengkapi_suku_kata_belakang') => void;
   onBack: () => void;
   onOpenSettings?: () => void;
   onOpenHistory?: () => void;
+  sessionHistory?: SessionHistory[];
 }
 
-const QuizSelection = ({ onSelectQuiz, onBack, onOpenSettings, onOpenHistory }: QuizSelectionProps) => {
+const QuizSelection = ({ onSelectQuiz, onBack, onOpenSettings, onOpenHistory, sessionHistory = [] }: QuizSelectionProps) => {
   const quizTypes = [
     {
       id: 'suku_kata' as const,
@@ -66,6 +68,21 @@ const QuizSelection = ({ onSelectQuiz, onBack, onOpenSettings, onOpenHistory }: 
     }
   ];
 
+  // Calculate score summary
+  const totalSessions = sessionHistory.length;
+  const averageScore = totalSessions > 0 ? Math.round(sessionHistory.reduce((acc, session) => acc + (session.score / session.totalQuestions * 100), 0) / totalSessions) : 0;
+  const bestScore = totalSessions > 0 ? Math.max(...sessionHistory.map(session => session.score / session.totalQuestions * 100)) : 0;
+  const totalQuestionsAnswered = sessionHistory.reduce((acc, session) => acc + session.totalQuestions, 0);
+
+  // Get recent sessions for streak calculation
+  const recentSessions = sessionHistory
+    .sort((a, b) => b.timestamp - a.timestamp)
+    .slice(0, 5);
+
+  const currentStreak = recentSessions.length > 0 && recentSessions.every(session => (session.score / session.totalQuestions) >= 0.8)
+    ? recentSessions.length
+    : 0;
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-primary/10 via-accent/10 to-secondary/10 flex flex-col p-4 py-8">
       <div className="max-w-4xl mx-auto flex-1">
@@ -89,6 +106,49 @@ const QuizSelection = ({ onSelectQuiz, onBack, onOpenSettings, onOpenHistory }: 
             Pilih jenis kuis yang ingin dimainkan!
           </p>
         </div>
+
+        {/* Score Summary */}
+        {totalSessions > 0 && (
+          <div className="bg-gradient-to-r from-primary/10 to-accent/10 rounded-3xl shadow-playful p-6 mb-8 border border-primary/20">
+            <div className="flex items-center justify-center mb-4">
+              <Trophy className="w-6 h-6 text-primary mr-2" />
+              <h2 className="text-2xl font-bold text-primary">Ringkasan Pencapaian</h2>
+            </div>
+
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+              <div className="text-center p-4 bg-card/50 rounded-2xl">
+                <div className="text-3xl font-bold text-primary mb-1">{totalSessions}</div>
+                <div className="text-sm text-muted-foreground">Total Sesi</div>
+              </div>
+
+              <div className="text-center p-4 bg-card/50 rounded-2xl">
+                <div className="text-3xl font-bold text-accent mb-1">{averageScore}%</div>
+                <div className="text-sm text-muted-foreground">Rata-rata Skor</div>
+              </div>
+
+              <div className="text-center p-4 bg-card/50 rounded-2xl">
+                <div className="text-3xl font-bold text-success mb-1">{bestScore}%</div>
+                <div className="text-sm text-muted-foreground">Skor Terbaik</div>
+              </div>
+
+              <div className="text-center p-4 bg-card/50 rounded-2xl">
+                <div className="text-3xl font-bold text-secondary mb-1">{totalQuestionsAnswered}</div>
+                <div className="text-sm text-muted-foreground">Soal Dijawab</div>
+              </div>
+            </div>
+
+            {currentStreak > 0 && (
+              <div className="mt-4 text-center">
+                <div className="inline-flex items-center px-4 py-2 bg-gradient-to-r from-success/20 to-primary/20 rounded-full border border-success/30">
+                  <TrendingUp className="w-4 h-4 text-success mr-2" />
+                  <span className="text-sm font-semibold text-success">
+                    🔥 Streak {currentStreak} kuis berturut-turut dengan skor 80%+
+                  </span>
+                </div>
+              </div>
+            )}
+          </div>
+        )}
 
         <div className="grid md:grid-cols-2 gap-6">
           {quizTypes.map((quiz) => (
