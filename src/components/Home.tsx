@@ -29,14 +29,9 @@ const Home = ({ onStartQuiz }: HomeProps) => {
       console.log('📱 App is already installed');
       setCanInstall(false);
     } else {
-      // Show install button if PWA is supported and not already installed
-      if ('serviceWorker' in navigator && 'beforeinstallprompt' in window) {
-        console.log('🔍 PWA supported, showing install button');
-        setCanInstall(true);
-      } else {
-        console.log('⚠️ PWA not fully supported in this browser');
-        setCanInstall(false);
-      }
+      // Show install button for production HTTPS sites
+      console.log('🔍 Production site detected, showing install button');
+      setCanInstall(true);
     }
 
     window.addEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
