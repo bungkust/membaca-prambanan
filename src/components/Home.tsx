@@ -105,7 +105,7 @@ const Home = ({ onStartQuiz }: HomeProps) => {
 
       {/* Install button at the bottom */}
       {canInstall && (
-        <div className="p-4 bg-card/30 backdrop-blur-sm border-t border-border/20">
+        <div className="p-4 bg-card/50 backdrop-blur-sm border-t">
           <div className="max-w-2xl mx-auto">
             <Button
               size="lg"
