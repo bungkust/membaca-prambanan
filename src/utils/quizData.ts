@@ -361,135 +361,1656 @@ const generateLengkapiSukuKataBelakangQuestions = (): Question[] => {
 
 // Lengkapi Suku Kata questions (150 questions) - from document
 const lengkapiSukaKataData = [
-  { id: 'sapu', display: 'sa__', answer: 'pu', choices: ['pu', 'pa', 'pi'], image: '🧹' },
-  { id: 'buka', display: 'bu__', answer: 'ka', choices: ['ka', 'ki', 'ku'], image: '📖' },
-  { id: 'topi', display: 'to__', answer: 'pi', choices: ['pi', 'pa', 'pe'], image: '🎩' },
-  { id: 'roda', display: 'ro__', answer: 'da', choices: ['da', 'di', 'du'], image: '🛞' },
-  { id: 'baju', display: 'ba__', answer: 'ju', choices: ['ju', 'ja', 'jo'], image: '👕' },
-  { id: 'mata', display: 'ma__', answer: 'ta', choices: ['ta', 'ti', 'tu'], image: '👁️' },
-  { id: 'kaki', display: 'ka__', answer: 'ki', choices: ['ki', 'ka', 'ko'], image: '🦵' },
-  { id: 'nasi', display: 'na__', answer: 'si', choices: ['si', 'sa', 'se'], image: '🍚' },
-  { id: 'gigi', display: 'gi__', answer: 'gi', choices: ['gi', 'ga', 'go'], image: '🦷' },
-  { id: 'dada', display: 'da__', answer: 'da', choices: ['da', 'di', 'de'], image: '🫁' },
-  { id: 'mama', display: 'ma__', answer: 'ma', choices: ['ma', 'mi', 'me'], image: '👩' },
-  { id: 'papa', display: 'pa__', answer: 'pa', choices: ['pa', 'pi', 'pe'], image: '👨' },
-  { id: 'susu', display: 'su__', answer: 'su', choices: ['su', 'si', 'se'], image: '🥛' },
-  { id: 'kuku', display: 'ku__', answer: 'ku', choices: ['ku', 'ka', 'ki'], image: '💅' },
-  { id: 'lala', display: 'la__', answer: 'la', choices: ['la', 'li', 'le'], image: '🎵' },
-  { id: 'tahu', display: 'ta__', answer: 'hu', choices: ['hu', 'ha', 'hi'], image: '🧈' },
-  { id: 'soto', display: 'so__', answer: 'to', choices: ['to', 'ta', 'ti'], image: '🍲' },
-  { id: 'kopi', display: 'ko__', answer: 'pi', choices: ['pi', 'pa', 'pe'], image: '☕' },
-  { id: 'teh', display: 'te__', answer: 'h', choices: ['h', 'k', 't'], image: '🍵' },
-  { id: 'air', display: 'a__', answer: 'ir', choices: ['ir', 'ar', 'er'], image: '💧' },
-  { id: 'lari', display: 'la__', answer: 'ri', choices: ['ri', 'ra', 're'], image: '🏃' },
-  { id: 'babi', display: 'ba__', answer: 'bi', choices: ['bi', 'ba', 'be'], image: '🐖' },
-  { id: 'cari', display: 'ca__', answer: 'ri', choices: ['ri', 'ra', 'ru'], image: '🔍' },
-  { id: 'duri', display: 'du__', answer: 'ri', choices: ['ri', 'ra', 're'], image: '🌵' },
-  { id: 'foto', display: 'fo__', answer: 'to', choices: ['to', 'ta', 'ti'], image: '📷' },
-  { id: 'guru', display: 'gu__', answer: 'ru', choices: ['ru', 'ra', 're'], image: '👩‍🏫' },
-  { id: 'hati', display: 'ha__', answer: 'ti', choices: ['ti', 'ta', 'te'], image: '❤️' },
-  { id: 'ikan', display: 'i__', answer: 'kan', choices: ['kan', 'kin', 'ken'], image: '🐟' },
-  { id: 'jari', display: 'ja__', answer: 'ri', choices: ['ri', 'ra', 're'], image: '👆' },
-  { id: 'kota', display: 'ko__', answer: 'ta', choices: ['ta', 'ti', 'te'], image: '🏙️' },
-  { id: 'lucu', display: 'lu__', answer: 'cu', choices: ['cu', 'ca', 'ci'], image: '😄' },
-  { id: 'meja', display: 'me__', answer: 'ja', choices: ['ja', 'ji', 'je'], image: '🪑' },
-  { id: 'nada', display: 'na__', answer: 'da', choices: ['da', 'di', 'de'], image: '🎵' },
-  { id: 'pagi', display: 'pa__', answer: 'gi', choices: ['gi', 'ga', 'ge'], image: '🌅' },
-  { id: 'rusa', display: 'ru__', answer: 'sa', choices: ['sa', 'si', 'se'], image: '🦌' },
-  { id: 'sapi', display: 'sa__', answer: 'pi', choices: ['pi', 'pa', 'pe'], image: '🐄' },
-  { id: 'tangan', display: 'tan__', answer: 'gan', choices: ['gan', 'gin', 'gen'], image: '✋' },
-  { id: 'ular', display: 'u__', answer: 'lar', choices: ['lar', 'lir', 'ler'], image: '🐍' },
-  { id: 'vas', display: 'v__', answer: 'as', choices: ['as', 'is', 'es'], image: '🏺' },
-  { id: 'wangi', display: 'wan__', answer: 'gi', choices: ['gi', 'ga', 'ge'], image: '🌸' },
-  { id: 'bola', display: 'bo__', answer: 'la', choices: ['la', 'li', 'le'], image: '⚽' },
-  { id: 'cinta', display: 'cin__', answer: 'ta', choices: ['ta', 'ti', 'te'], image: '💕' },
-  { id: 'dapur', display: 'da__', answer: 'pur', choices: ['pur', 'pir', 'per'], image: '🍳' },
-  { id: 'emas', display: 'e__', answer: 'mas', choices: ['mas', 'mis', 'mes'], image: '��' },
-  { id: 'film', display: 'f__', answer: 'ilm', choices: ['ilm', 'alm', 'elm'], image: '🎬' },
-  { id: 'gula', display: 'gu__', answer: 'la', choices: ['la', 'li', 'le'], image: '🍯' },
-  { id: 'hujan', display: 'hu__', answer: 'jan', choices: ['jan', 'jin', 'jen'], image: '🌧️' },
-  { id: 'jaket', display: 'ja__', answer: 'ket', choices: ['ket', 'kit', 'kat'], image: '🧥' },
-  { id: 'kamar', display: 'ka__', answer: 'mar', choices: ['mar', 'mir', 'mer'], image: '🛏️' },
-  { id: 'laptop', display: 'lap__', answer: 'top', choices: ['top', 'tip', 'tap'], image: '💻' },
-  { id: 'mobil', display: 'mo__', answer: 'bil', choices: ['bil', 'bal', 'bel'], image: '🚗' },
-  { id: 'novel', display: 'no__', answer: 'vel', choices: ['vel', 'val', 'vil'], image: '📚' },
-  { id: 'pantai', display: 'pan__', answer: 'tai', choices: ['tai', 'tii', 'tai'], image: '🏖️' },
-  { id: 'rumah', display: 'ru__', answer: 'mah', choices: ['mah', 'mih', 'meh'], image: '🏠' },
-  { id: 'sepatu', display: 'se__', answer: 'patu', choices: ['patu', 'pitu', 'petu'], image: '👟' },
-  { id: 'tas', display: 't__', answer: 'as', choices: ['as', 'is', 'es'], image: '👜' },
-  { id: 'uang', display: 'u__', answer: 'ang', choices: ['ang', 'ing', 'eng'], image: '��' },
-  { id: 'vitamin', display: 'vi__', answer: 'tamin', choices: ['tamin', 'timin', 'teman'], image: '💊' },
-  { id: 'warna', display: 'wa__', answer: 'rna', choices: ['rna', 'rni', 'rne'], image: '🎨' },
-  { id: 'telepon', display: 'te__', answer: 'lepon', choices: ['lepon', 'lapon', 'lipon'], image: '📞' },
-  { id: 'kucing', display: 'ku__', answer: 'cing', choices: ['cing', 'cang', 'cing'], image: '🐱' },
-  { id: 'mangga', display: 'ma__', answer: 'ngga', choices: ['ngga', 'nggi', 'ngge'], image: '🥭' },
-  { id: 'pisang', display: 'pi__', answer: 'sang', choices: ['sang', 'sing', 'seng'], image: '🍌' },
-  { id: 'kelapa', display: 'ke__', answer: 'lapa', choices: ['lapa', 'lipa', 'lepa'], image: '🥥' },
-  { id: 'jeruk', display: 'je__', answer: 'ruk', choices: ['ruk', 'rik', 'rek'], image: '🍊' },
-  { id: 'wortel', display: 'wo__', answer: 'tel', choices: ['tel', 'til', 'tel'], image: '🥕' },
-  { id: 'ayam', display: 'a__', answer: 'yam', choices: ['yam', 'yim', 'yem'], image: '🐔' },
-  { id: 'telur', display: 'te__', answer: 'lur', choices: ['lur', 'lar', 'ler'], image: '🥚' },
-  { id: 'itik', display: 'i__', answer: 'tik', choices: ['tik', 'tak', 'tik'], image: '🦆' },
-  { id: 'kambing', display: 'ka__', answer: 'mbing', choices: ['mbing', 'mbang', 'mbeng'], image: '🐐' },
-  { id: 'boneka', display: 'bo__', answer: 'neka', choices: ['neka', 'nika', 'neka'], image: '🧸' },
-  { id: 'balok', display: 'ba__', answer: 'lok', choices: ['lok', 'lak', 'lek'], image: '🧱' },
-  { id: 'kunci', display: 'ku__', answer: 'nci', choices: ['nci', 'nca', 'nce'], image: '🔑' },
-  { id: 'lemari', display: 'le__', answer: 'mari', choices: ['mari', 'miri', 'meri'], image: '🗄️' },
-  { id: 'kasur', display: 'ka__', answer: 'sur', choices: ['sur', 'sar', 'sir'], image: '🛏️' },
-  { id: 'bantal', display: 'ba__', answer: 'ntal', choices: ['ntal', 'ntel', 'nten'], image: '🛏️' },
-  { id: 'cermin', display: 'ce__', answer: 'rmin', choices: ['rmin', 'rman', 'rmen'], image: '🪞' },
-  { id: 'lampu', display: 'la__', answer: 'mpu', choices: ['mpu', 'mpa', 'mpi'], image: '💡' },
-  { id: 'kipas', display: 'ki__', answer: 'pas', choices: ['pas', 'pis', 'pes'], image: '🌀' },
-  { id: 'tv', display: 't__', answer: 'v', choices: ['v', 'f', 'w'], image: '📺' },
-  { id: 'radio', display: 'ra__', answer: 'dio', choices: ['dio', 'dia', 'die'], image: '��' },
-  { id: 'kompor', display: 'ko__', answer: 'mpor', choices: ['mpor', 'mpir', 'mper'], image: '🔥' },
-  { id: 'wajan', display: 'wa__', answer: 'jan', choices: ['jan', 'jin', 'jen'], image: '🍳' },
-  { id: 'piring', display: 'pi__', answer: 'ring', choices: ['ring', 'rang', 'reng'], image: '🍽️' },
-  { id: 'gelas', display: 'ge__', answer: 'las', choices: ['las', 'lis', 'les'], image: '🥤' },
-  { id: 'sendok', display: 'se__', answer: 'ndok', choices: ['ndok', 'ndak', 'ndek'], image: '🥄' },
-  { id: 'garpu', display: 'ga__', answer: 'rpu', choices: ['rpu', 'rpa', 'rpi'], image: '🍴' },
-  { id: 'pisau', display: 'pi__', answer: 'sau', choices: ['sau', 'sai', 'sei'], image: '🔪' },
-  { id: 'sapu', display: 'sa__', answer: 'pu', choices: ['pu', 'pa', 'pi'], image: '🧹' },
-  { id: 'ember', display: 'e__', answer: 'mber', choices: ['mber', 'mbir', 'mber'], image: '🪣' },
-  { id: 'kain', display: 'ka__', answer: 'in', choices: ['in', 'an', 'en'], image: '🧺' },
-  { id: 'sabun', display: 'sa__', answer: 'bun', choices: ['bun', 'ban', 'ben'], image: '🧼' },
-  { id: 'sikat', display: 'si__', answer: 'kat', choices: ['kat', 'kit', 'ket'], image: '🪥' },
-  { id: 'sampo', display: 'sa__', answer: 'mpo', choices: ['mpo', 'mpa', 'mpi'], image: '🧴' },
-  { id: 'handuk', display: 'ha__', answer: 'nduk', choices: ['nduk', 'ndak', 'ndek'], image: '🧺' },
-  { id: 'tisu', display: 'ti__', answer: 'su', choices: ['su', 'sa', 'si'], image: '🧻' },
-  { id: 'susu', display: 'su__', answer: 'su', choices: ['su', 'sa', 'si'], image: '🥛' },
-  { id: 'roti', display: 'ro__', answer: 'ti', choices: ['ti', 'ta', 'te'], image: '🍞' },
-  { id: 'kue', display: 'k__', answer: 'ue', choices: ['ue', 'ua', 'ui'], image: '🍰' },
-  { id: 'buah', display: 'b__', answer: 'uah', choices: ['uah', 'uih', 'ueh'], image: '🍎' },
-  { id: 'air', display: 'a__', answer: 'ir', choices: ['ir', 'ar', 'er'], image: '💧' },
-  { id: 'topi', display: 'to__', answer: 'pi', choices: ['pi', 'pa', 'pe'], image: '🎩' },
-  { id: 'jeruk', display: 'je__', answer: 'ruk', choices: ['ruk', 'rik', 'rek'], image: '🍊' },
-  { id: 'kupu', display: 'ku__', answer: 'pu', choices: ['pu', 'pa', 'pi'], image: '🦋' },
-  { id: 'rumah', display: 'ru__', answer: 'mah', choices: ['mah', 'mih', 'meh'], image: '🏠' },
-  { id: 'pisang', display: 'pi__', answer: 'sang', choices: ['sang', 'sing', 'seng'], image: '🍌' },
-  { id: 'kelapa', display: 'ke__', answer: 'lapa', choices: ['lapa', 'lipa', 'lepa'], image: '🥥' },
-  { id: 'bunga', display: 'bu__', answer: 'nga', choices: ['nga', 'ngi', 'nge'], image: '🌸' },
-  { id: 'hp', display: 'h__', answer: 'p', choices: ['p', 'b', 'f'], image: '📱' },
-  { id: 'boneka', display: 'bo__', answer: 'neka', choices: ['neka', 'nika', 'neka'], image: '🧸' },
-  { id: 'burung', display: 'bu__', answer: 'rung', choices: ['rung', 'rang', 'ring'], image: '🐦' },
-  { id: 'cangkir', display: 'ca__', answer: 'ngkir', choices: ['ngkir', 'ngkar', 'ngker'], image: '☕' },
-  { id: 'kambing', display: 'ka__', answer: 'mbing', choices: ['mbing', 'mbang', 'mbeng'], image: '🐐' },
-  { id: 'mainan', display: 'ma__', answer: 'inan', choices: ['inan', 'inen', 'inan'], image: '🧸' },
-  { id: 'piano', display: 'pi__', answer: 'ano', choices: ['ano', 'ani', 'ane'], image: '🎹' },
-  { id: 'ikan', display: 'i__', answer: 'kan', choices: ['kan', 'kin', 'ken'], image: '🐟' },
-  { id: 'jalan', display: 'ja__', answer: 'lan', choices: ['lan', 'lin', 'len'], image: '🛤️' },
-  { id: 'laut', display: 'la__', answer: 'ut', choices: ['ut', 'at', 'it'], image: '🌊' },
-  { id: 'kepala', display: 'ke__', answer: 'pala', choices: ['pala', 'pila', 'pela'], image: '🗣️' },
-  { id: 'pintu', display: 'pi__', answer: 'ntu', choices: ['ntu', 'nta', 'nti'], image: '🚪' },
-  { id: 'rambut', display: 'ra__', answer: 'mbut', choices: ['mbut', 'mbat', 'mbit'], image: '💇' },
-  { id: 'susu', display: 'su__', answer: 'su', choices: ['su', 'sa', 'si'], image: '🥛' },
-  { id: 'tangga', display: 'ta__', answer: 'ngga', choices: ['ngga', 'nggi', 'ngge'], image: '🪜' },
-  { id: 'angin', display: 'a__', answer: 'ngin', choices: ['ngin', 'ngan', 'ngen'], image: '💨' },
-  { id: 'vas', display: 'v__', answer: 'as', choices: ['as', 'is', 'es'], image: '🏺' },
-  { id: 'warna', display: 'wa__', answer: 'rna', choices: ['rna', 'rni', 'rne'], image: '🎨' },
-  { id: 'kertas', display: 'ke__', answer: 'rtas', choices: ['rtas', 'rtis', 'rtes'], image: '📄' },
-  { id: 'bola', display: 'bo__', answer: 'la', choices: ['la', 'li', 'le'], image: '⚽' },
-  { id: 'zaitun', display: 'za__', answer: 'itun', choices: ['itun', 'itan', 'iten'], image: '🫒' }
+  {
+    "id": "roti",
+    "display": "ro-__",
+    "answer": "ti",
+    "choices": [
+      "to",
+      "tu",
+      "ti"
+    ],
+    "image": "🍞"
+  },
+  {
+    "id": "kota",
+    "display": "ko-__",
+    "answer": "ta",
+    "choices": [
+      "te",
+      "ta",
+      "ti"
+    ],
+    "image": "✨"
+  },
+  {
+    "id": "pelaut",
+    "display": "pe-la-__",
+    "answer": "ut",
+    "choices": [
+      "um",
+      "un",
+      "ut"
+    ],
+    "image": "🌊"
+  },
+  {
+    "id": "komputer",
+    "display": "kom-pu-__",
+    "answer": "ter",
+    "choices": [
+      "ter",
+      "tem",
+      "ten"
+    ],
+    "image": "🖥️"
+  },
+  {
+    "id": "perahu",
+    "display": "pe-ra-__",
+    "answer": "hu",
+    "choices": [
+      "he",
+      "hu",
+      "ha"
+    ],
+    "image": "🛶"
+  },
+  {
+    "id": "gelas",
+    "display": "ge-__",
+    "answer": "las",
+    "choices": [
+      "lam",
+      "las",
+      "lan"
+    ],
+    "image": "🥤"
+  },
+  {
+    "id": "berjalan",
+    "display": "ber-ja-__",
+    "answer": "lan",
+    "choices": [
+      "lat",
+      "lam",
+      "lan"
+    ],
+    "image": "🚶"
+  },
+  {
+    "id": "alpukat",
+    "display": "al-pu-__",
+    "answer": "kat",
+    "choices": [
+      "kan",
+      "kam",
+      "kat"
+    ],
+    "image": "🥑"
+  },
+  {
+    "id": "angin",
+    "display": "ang-__",
+    "answer": "in",
+    "choices": [
+      "im",
+      "in",
+      "it"
+    ],
+    "image": "💨"
+  },
+  {
+    "id": "bantal",
+    "display": "ban-__",
+    "answer": "tal",
+    "choices": [
+      "tan",
+      "tal",
+      "tam"
+    ],
+    "image": "🛏️"
+  },
+  {
+    "id": "kompor",
+    "display": "kom-__",
+    "answer": "por",
+    "choices": [
+      "pom",
+      "pon",
+      "por"
+    ],
+    "image": "🔥"
+  },
+  {
+    "id": "sampo",
+    "display": "sam-__",
+    "answer": "po",
+    "choices": [
+      "pa",
+      "po",
+      "pu"
+    ],
+    "image": "🧴"
+  },
+  {
+    "id": "kakek",
+    "display": "ka-__",
+    "answer": "kek",
+    "choices": [
+      "kem",
+      "ken",
+      "kek"
+    ],
+    "image": "👴"
+  },
+  {
+    "id": "merpati",
+    "display": "mer-pa-__",
+    "answer": "ti",
+    "choices": [
+      "to",
+      "ti",
+      "tu"
+    ],
+    "image": "🕊️"
+  },
+  {
+    "id": "kasur",
+    "display": "ka-__",
+    "answer": "sur",
+    "choices": [
+      "sur",
+      "sum",
+      "sun"
+    ],
+    "image": "🛏️"
+  },
+  {
+    "id": "penggaris",
+    "display": "peng-ga-__",
+    "answer": "ris",
+    "choices": [
+      "rim",
+      "rin",
+      "ris"
+    ],
+    "image": "📏"
+  },
+  {
+    "id": "lari",
+    "display": "la-__",
+    "answer": "ri",
+    "choices": [
+      "ru",
+      "ri",
+      "ro"
+    ],
+    "image": "✨"
+  },
+  {
+    "id": "bolu",
+    "display": "bo-__",
+    "answer": "lu",
+    "choices": [
+      "lo",
+      "lu",
+      "le"
+    ],
+    "image": "🍰"
+  },
+  {
+    "id": "saringan",
+    "display": "sa-ring-__",
+    "answer": "an",
+    "choices": [
+      "am",
+      "at",
+      "an"
+    ],
+    "image": "🧺"
+  },
+  {
+    "id": "ular",
+    "display": "u-__",
+    "answer": "lar",
+    "choices": [
+      "lam",
+      "lan",
+      "lar"
+    ],
+    "image": "✨"
+  },
+  {
+    "id": "pensil",
+    "display": "pen-__",
+    "answer": "sil",
+    "choices": [
+      "sil",
+      "sin",
+      "sim"
+    ],
+    "image": "✏️"
+  },
+  {
+    "id": "printer",
+    "display": "prin-__",
+    "answer": "ter",
+    "choices": [
+      "tem",
+      "ten",
+      "ter"
+    ],
+    "image": "🖨️"
+  },
+  {
+    "id": "kepala",
+    "display": "ke-pa-__",
+    "answer": "la",
+    "choices": [
+      "le",
+      "li",
+      "la"
+    ],
+    "image": "✨"
+  },
+  {
+    "id": "ember",
+    "display": "em-__",
+    "answer": "ber",
+    "choices": [
+      "bem",
+      "ben",
+      "ber"
+    ],
+    "image": "🪣"
+  },
+  {
+    "id": "dokter",
+    "display": "dok-__",
+    "answer": "ter",
+    "choices": [
+      "ten",
+      "tem",
+      "ter"
+    ],
+    "image": "🧑‍⚕️"
+  },
+  {
+    "id": "kamar",
+    "display": "ka-__",
+    "answer": "mar",
+    "choices": [
+      "mam",
+      "mar",
+      "man"
+    ],
+    "image": "🏠"
+  },
+  {
+    "id": "dompet",
+    "display": "dom-__",
+    "answer": "pet",
+    "choices": [
+      "pet",
+      "pen",
+      "pem"
+    ],
+    "image": "👛"
+  },
+  {
+    "id": "rumah",
+    "display": "ru-__",
+    "answer": "mah",
+    "choices": [
+      "man",
+      "mah",
+      "mam"
+    ],
+    "image": "🏠"
+  },
+  {
+    "id": "sepakbola",
+    "display": "se-pak-bo-__",
+    "answer": "la",
+    "choices": [
+      "le",
+      "li",
+      "la"
+    ],
+    "image": "⚽"
+  },
+  {
+    "id": "sabun",
+    "display": "sa-__",
+    "answer": "bun",
+    "choices": [
+      "but",
+      "bun",
+      "bum"
+    ],
+    "image": "🧼"
+  },
+  {
+    "id": "meja",
+    "display": "me-__",
+    "answer": "ja",
+    "choices": [
+      "je",
+      "ji",
+      "ja"
+    ],
+    "image": "🪑"
+  },
+  {
+    "id": "gula",
+    "display": "gu-__",
+    "answer": "la",
+    "choices": [
+      "le",
+      "li",
+      "la"
+    ],
+    "image": "🍯"
+  },
+  {
+    "id": "lucu",
+    "display": "lu-__",
+    "answer": "cu",
+    "choices": [
+      "ce",
+      "ca",
+      "cu"
+    ],
+    "image": "✨"
+  },
+  {
+    "id": "perawat",
+    "display": "pe-ra-__",
+    "answer": "wat",
+    "choices": [
+      "wat",
+      "wan",
+      "wam"
+    ],
+    "image": "🧑‍⚕️"
+  },
+  {
+    "id": "piring",
+    "display": "pi-__",
+    "answer": "ring",
+    "choices": [
+      "rinn",
+      "rinm",
+      "ring"
+    ],
+    "image": "🍽️"
+  },
+  {
+    "id": "susu",
+    "display": "su-__",
+    "answer": "su",
+    "choices": [
+      "sa",
+      "su",
+      "se"
+    ],
+    "image": "🥛"
+  },
+  {
+    "id": "rubah",
+    "display": "ru-__",
+    "answer": "bah",
+    "choices": [
+      "bah",
+      "bam",
+      "ban"
+    ],
+    "image": "🦊"
+  },
+  {
+    "id": "sikat",
+    "display": "si-__",
+    "answer": "kat",
+    "choices": [
+      "kat",
+      "kan",
+      "kam"
+    ],
+    "image": "🪥"
+  },
+  {
+    "id": "boneka",
+    "display": "bo-ne-__",
+    "answer": "ka",
+    "choices": [
+      "ki",
+      "ke",
+      "ka"
+    ],
+    "image": "✨"
+  },
+  {
+    "id": "pisang",
+    "display": "pi-__",
+    "answer": "sang",
+    "choices": [
+      "sang",
+      "sanm",
+      "sann"
+    ],
+    "image": "🍌"
+  },
+  {
+    "id": "wanita",
+    "display": "wa-ni-__",
+    "answer": "ta",
+    "choices": [
+      "te",
+      "ta",
+      "tu"
+    ],
+    "image": "👩"
+  },
+  {
+    "id": "burung",
+    "display": "bu-__",
+    "answer": "rung",
+    "choices": [
+      "runn",
+      "rung",
+      "runm"
+    ],
+    "image": "🐦"
+  },
+  {
+    "id": "piano",
+    "display": "pi-a-__",
+    "answer": "no",
+    "choices": [
+      "na",
+      "no",
+      "nu"
+    ],
+    "image": "✨"
+  },
+  {
+    "id": "kertas",
+    "display": "ker-__",
+    "answer": "tas",
+    "choices": [
+      "tas",
+      "tam",
+      "tan"
+    ],
+    "image": "📄"
+  },
+  {
+    "id": "jari",
+    "display": "ja-__",
+    "answer": "ri",
+    "choices": [
+      "ri",
+      "ru",
+      "ro"
+    ],
+    "image": "☝️"
+  },
+  {
+    "id": "nada",
+    "display": "na-__",
+    "answer": "da",
+    "choices": [
+      "di",
+      "de",
+      "da"
+    ],
+    "image": "✨"
+  },
+  {
+    "id": "kamera",
+    "display": "ka-me-__",
+    "answer": "ra",
+    "choices": [
+      "re",
+      "ra",
+      "ri"
+    ],
+    "image": "📷"
+  },
+  {
+    "id": "tuna",
+    "display": "tu-__",
+    "answer": "na",
+    "choices": [
+      "na",
+      "an",
+      "ni"
+    ],
+    "image": "🐟"
+  },
+  {
+    "id": "nenek",
+    "display": "ne-__",
+    "answer": "nek",
+    "choices": [
+      "nem",
+      "nen",
+      "nek"
+    ],
+    "image": "👵"
+  },
+  {
+    "id": "dapur",
+    "display": "da-__",
+    "answer": "pur",
+    "choices": [
+      "pur",
+      "pun",
+      "pum"
+    ],
+    "image": "🍳"
+  },
+  {
+    "id": "baju",
+    "display": "ba-__",
+    "answer": "ju",
+    "choices": [
+      "ja",
+      "je",
+      "ju"
+    ],
+    "image": "👕"
+  },
+  {
+    "id": "adik",
+    "display": "a-__",
+    "answer": "dik",
+    "choices": [
+      "dik",
+      "din",
+      "dim"
+    ],
+    "image": "🧒"
+  },
+  {
+    "id": "bermain",
+    "display": "ber-ma__",
+    "answer": "in",
+    "choices": [
+      "it",
+      "in",
+      "im"
+    ],
+    "image": "🎮"
+  },
+  {
+    "id": "kursi",
+    "display": "kur-__",
+    "answer": "si",
+    "choices": [
+      "su",
+      "si",
+      "so"
+    ],
+    "image": "🪑"
+  },
+  {
+    "id": "telur",
+    "display": "te-__",
+    "answer": "lur",
+    "choices": [
+      "lum",
+      "lur",
+      "lun"
+    ],
+    "image": "🥚"
+  },
+  {
+    "id": "cermin",
+    "display": "cer-__",
+    "answer": "min",
+    "choices": [
+      "mit",
+      "min",
+      "mim"
+    ],
+    "image": "🪞"
+  },
+  {
+    "id": "tisu",
+    "display": "ti-__",
+    "answer": "su",
+    "choices": [
+      "su",
+      "sa",
+      "se"
+    ],
+    "image": "✨"
+  },
+  {
+    "id": "cumi",
+    "display": "cu-__",
+    "answer": "mi",
+    "choices": [
+      "mi",
+      "mu",
+      "mo"
+    ],
+    "image": "🦑"
+  },
+  {
+    "id": "layar",
+    "display": "la-__",
+    "answer": "yar",
+    "choices": [
+      "yam",
+      "yar",
+      "yan"
+    ],
+    "image": "🖥️"
+  },
+  {
+    "id": "bola",
+    "display": "bo-__",
+    "answer": "la",
+    "choices": [
+      "le",
+      "li",
+      "la"
+    ],
+    "image": "⚽"
+  },
+  {
+    "id": "gorden",
+    "display": "gor-__",
+    "answer": "den",
+    "choices": [
+      "den",
+      "det",
+      "dem"
+    ],
+    "image": "✨"
+  },
+  {
+    "id": "tahu",
+    "display": "ta-__",
+    "answer": "hu",
+    "choices": [
+      "hu",
+      "ha",
+      "he"
+    ],
+    "image": "🧈"
+  },
+  {
+    "id": "kuku",
+    "display": "ku-__",
+    "answer": "ku",
+    "choices": [
+      "ke",
+      "ku",
+      "ka"
+    ],
+    "image": "✨"
+  },
+  {
+    "id": "nasi",
+    "display": "na-__",
+    "answer": "si",
+    "choices": [
+      "so",
+      "su",
+      "si"
+    ],
+    "image": "✨"
+  },
+  {
+    "id": "harimau",
+    "display": "ha-ri-__",
+    "answer": "mau",
+    "choices": [
+      "mae",
+      "maa",
+      "mau"
+    ],
+    "image": "🐯"
+  },
+  {
+    "id": "pulpen",
+    "display": "pul-__",
+    "answer": "pen",
+    "choices": [
+      "pem",
+      "pet",
+      "pen"
+    ],
+    "image": "🖊️"
+  },
+  {
+    "id": "lampu",
+    "display": "lam-__",
+    "answer": "pu",
+    "choices": [
+      "pu",
+      "pe",
+      "pa"
+    ],
+    "image": "💡"
+  },
+  {
+    "id": "mainan",
+    "display": "mai-__",
+    "answer": "nan",
+    "choices": [
+      "nam",
+      "nan",
+      "nat"
+    ],
+    "image": "✨"
+  },
+  {
+    "id": "kipas",
+    "display": "ki-__",
+    "answer": "pas",
+    "choices": [
+      "pan",
+      "pam",
+      "pas"
+    ],
+    "image": "🌀"
+  },
+  {
+    "id": "bulan",
+    "display": "bu-__",
+    "answer": "lan",
+    "choices": [
+      "lan",
+      "lat",
+      "lam"
+    ],
+    "image": "🌙"
+  },
+  {
+    "id": "mewarnai",
+    "display": "me-war-__",
+    "answer": "nai",
+    "choices": [
+      "nau",
+      "nao",
+      "nai"
+    ],
+    "image": "🖍️"
+  },
+  {
+    "id": "kupu",
+    "display": "ku-__",
+    "answer": "pu",
+    "choices": [
+      "pa",
+      "pe",
+      "pu"
+    ],
+    "image": "🦋"
+  },
+  {
+    "id": "radio",
+    "display": "ra-di-__",
+    "answer": "o",
+    "choices": [
+      "o",
+      "r",
+      "y"
+    ],
+    "image": "📻"
+  },
+  {
+    "id": "hati",
+    "display": "ha-__",
+    "answer": "ti",
+    "choices": [
+      "tu",
+      "to",
+      "ti"
+    ],
+    "image": "❤️"
+  },
+  {
+    "id": "sapu",
+    "display": "sa-__",
+    "answer": "pu",
+    "choices": [
+      "pe",
+      "pu",
+      "pa"
+    ],
+    "image": "🧹"
+  },
+  {
+    "id": "rusa",
+    "display": "ru-__",
+    "answer": "sa",
+    "choices": [
+      "se",
+      "si",
+      "sa"
+    ],
+    "image": "✨"
+  },
+  {
+    "id": "pesawat",
+    "display": "pe-sa-__",
+    "answer": "wat",
+    "choices": [
+      "wan",
+      "wat",
+      "wam"
+    ],
+    "image": "✈️"
+  },
+  {
+    "id": "sepatu",
+    "display": "se-pa-__",
+    "answer": "tu",
+    "choices": [
+      "te",
+      "tu",
+      "ta"
+    ],
+    "image": "👟"
+  },
+  {
+    "id": "lapar",
+    "display": "la-__",
+    "answer": "par",
+    "choices": [
+      "par",
+      "pam",
+      "pan"
+    ],
+    "image": "😋"
+  },
+  {
+    "id": "kelinci",
+    "display": "ke-lin-__",
+    "answer": "ci",
+    "choices": [
+      "cu",
+      "co",
+      "ci"
+    ],
+    "image": "🐰"
+  },
+  {
+    "id": "sepeda",
+    "display": "se-pe-__",
+    "answer": "da",
+    "choices": [
+      "di",
+      "de",
+      "da"
+    ],
+    "image": "🚲"
+  },
+  {
+    "id": "pisau",
+    "display": "pi-__",
+    "answer": "sau",
+    "choices": [
+      "saa",
+      "sae",
+      "sau"
+    ],
+    "image": "🔪"
+  },
+  {
+    "id": "nanas",
+    "display": "na-__",
+    "answer": "nas",
+    "choices": [
+      "nas",
+      "nam",
+      "nan"
+    ],
+    "image": "🍍"
+  },
+  {
+    "id": "topi",
+    "display": "to-__",
+    "answer": "pi",
+    "choices": [
+      "pu",
+      "pi",
+      "po"
+    ],
+    "image": "🎩"
+  },
+  {
+    "id": "wangi",
+    "display": "wan-__",
+    "answer": "gi",
+    "choices": [
+      "gu",
+      "gi",
+      "go"
+    ],
+    "image": "✨"
+  },
+  {
+    "id": "badak",
+    "display": "ba-__",
+    "answer": "dak",
+    "choices": [
+      "dak",
+      "dam",
+      "dan"
+    ],
+    "image": "🦏"
+  },
+  {
+    "id": "basket",
+    "display": "bas-__",
+    "answer": "ket",
+    "choices": [
+      "ken",
+      "kem",
+      "ket"
+    ],
+    "image": "🏀"
+  },
+  {
+    "id": "mata",
+    "display": "ma-__",
+    "answer": "ta",
+    "choices": [
+      "ta",
+      "ti",
+      "te"
+    ],
+    "image": "👁️"
+  },
+  {
+    "id": "pepaya",
+    "display": "pe-pa-__",
+    "answer": "ya",
+    "choices": [
+      "yi",
+      "ya",
+      "ye"
+    ],
+    "image": "🥭"
+  },
+  {
+    "id": "papa",
+    "display": "pa-__",
+    "answer": "pa",
+    "choices": [
+      "pi",
+      "pe",
+      "pa"
+    ],
+    "image": "👨"
+  },
+  {
+    "id": "gajah",
+    "display": "ga-__",
+    "answer": "jah",
+    "choices": [
+      "jan",
+      "jam",
+      "jah"
+    ],
+    "image": "🐘"
+  },
+  {
+    "id": "embun",
+    "display": "em-__",
+    "answer": "bun",
+    "choices": [
+      "bum",
+      "bun",
+      "but"
+    ],
+    "image": "💧"
+  },
+  {
+    "id": "gigi",
+    "display": "gi-__",
+    "answer": "gi",
+    "choices": [
+      "gi",
+      "go",
+      "gu"
+    ],
+    "image": "🦷"
+  },
+  {
+    "id": "melukis",
+    "display": "me-lu-__",
+    "answer": "kis",
+    "choices": [
+      "kin",
+      "kim",
+      "kis"
+    ],
+    "image": "🎨"
+  },
+  {
+    "id": "semangka",
+    "display": "se-mang-__",
+    "answer": "ka",
+    "choices": [
+      "ki",
+      "ka",
+      "ke"
+    ],
+    "image": "🍉"
+  },
+  {
+    "id": "mangkuk",
+    "display": "mang-__",
+    "answer": "kuk",
+    "choices": [
+      "kuk",
+      "kum",
+      "kun"
+    ],
+    "image": "🥣"
+  },
+  {
+    "id": "padi",
+    "display": "pa-__",
+    "answer": "di",
+    "choices": [
+      "du",
+      "do",
+      "di"
+    ],
+    "image": "✨"
+  },
+  {
+    "id": "guru",
+    "display": "gu-__",
+    "answer": "ru",
+    "choices": [
+      "ru",
+      "re",
+      "ra"
+    ],
+    "image": "👩‍🏫"
+  },
+  {
+    "id": "danau",
+    "display": "da-__",
+    "answer": "nau",
+    "choices": [
+      "nae",
+      "naa",
+      "nau"
+    ],
+    "image": "🏞️"
+  },
+  {
+    "id": "pelangi",
+    "display": "pe-la-__",
+    "answer": "ngi",
+    "choices": [
+      "ngu",
+      "ngo",
+      "ngi"
+    ],
+    "image": "🌈"
+  },
+  {
+    "id": "kaki",
+    "display": "ka-__",
+    "answer": "ki",
+    "choices": [
+      "ko",
+      "ki",
+      "ku"
+    ],
+    "image": "🦵"
+  },
+  {
+    "id": "bahagia",
+    "display": "ba-ha-gi-__",
+    "answer": "a",
+    "choices": [
+      "d",
+      "k",
+      "a"
+    ],
+    "image": "😊"
+  },
+  {
+    "id": "balok",
+    "display": "ba-__",
+    "answer": "lok",
+    "choices": [
+      "lon",
+      "lom",
+      "lok"
+    ],
+    "image": "🧱"
+  },
+  {
+    "id": "mangga",
+    "display": "mang-__",
+    "answer": "ga",
+    "choices": [
+      "gi",
+      "ga",
+      "ge"
+    ],
+    "image": "🥭"
+  },
+  {
+    "id": "ayah",
+    "display": "a-__",
+    "answer": "yah",
+    "choices": [
+      "yan",
+      "yah",
+      "yam"
+    ],
+    "image": "👨"
+  },
+  {
+    "id": "buah",
+    "display": "bu-__",
+    "answer": "ah",
+    "choices": [
+      "ah",
+      "am",
+      "an"
+    ],
+    "image": "🥗"
+  },
+  {
+    "id": "perpustakaan",
+    "display": "per-pus-ta-__",
+    "answer": "kaan",
+    "choices": [
+      "kaam",
+      "kaan",
+      "kaat"
+    ],
+    "image": "📚"
+  },
+  {
+    "id": "warna",
+    "display": "war-__",
+    "answer": "na",
+    "choices": [
+      "na",
+      "ni",
+      "ne"
+    ],
+    "image": "✨"
+  },
+  {
+    "id": "ayam",
+    "display": "a-__",
+    "answer": "yam",
+    "choices": [
+      "yam",
+      "yan",
+      "yad"
+    ],
+    "image": "🐔"
+  },
+  {
+    "id": "jaket",
+    "display": "ja-__",
+    "answer": "ket",
+    "choices": [
+      "kem",
+      "ken",
+      "ket"
+    ],
+    "image": "✨"
+  },
+  {
+    "id": "bintang",
+    "display": "bin-__",
+    "answer": "tang",
+    "choices": [
+      "tann",
+      "tanm",
+      "tang"
+    ],
+    "image": "⭐"
+  },
+  {
+    "id": "roda",
+    "display": "ro-__",
+    "answer": "da",
+    "choices": [
+      "di",
+      "de",
+      "da"
+    ],
+    "image": "🚗"
+  },
+  {
+    "id": "mobil",
+    "display": "mo-__",
+    "answer": "bil",
+    "choices": [
+      "bin",
+      "bil",
+      "bim"
+    ],
+    "image": "🚗"
+  },
+  {
+    "id": "sendok",
+    "display": "sen-__",
+    "answer": "dok",
+    "choices": [
+      "don",
+      "dom",
+      "dok"
+    ],
+    "image": "🥄"
+  },
+  {
+    "id": "renang",
+    "display": "re-__",
+    "answer": "nang",
+    "choices": [
+      "nann",
+      "nanm",
+      "nang"
+    ],
+    "image": "🏊"
+  },
+  {
+    "id": "novel",
+    "display": "no-__",
+    "answer": "vel",
+    "choices": [
+      "ven",
+      "vem",
+      "vel"
+    ],
+    "image": "✨"
+  },
+  {
+    "id": "taman",
+    "display": "ta-__",
+    "answer": "man",
+    "choices": [
+      "mam",
+      "man",
+      "mat"
+    ],
+    "image": "🏞️"
+  },
+  {
+    "id": "kebun",
+    "display": "ke-__",
+    "answer": "bun",
+    "choices": [
+      "bun",
+      "bum",
+      "but"
+    ],
+    "image": "🪴"
+  },
+  {
+    "id": "emas",
+    "display": "e-__",
+    "answer": "mas",
+    "choices": [
+      "mas",
+      "mam",
+      "man"
+    ],
+    "image": "🪙"
+  },
+  {
+    "id": "hujan",
+    "display": "hu-__",
+    "answer": "jan",
+    "choices": [
+      "jam",
+      "jan",
+      "jat"
+    ],
+    "image": "🌧️"
+  },
+  {
+    "id": "kopi",
+    "display": "ko-__",
+    "answer": "pi",
+    "choices": [
+      "pu",
+      "po",
+      "pi"
+    ],
+    "image": "☕"
+  },
+  {
+    "id": "motor",
+    "display": "mo-__",
+    "answer": "tor",
+    "choices": [
+      "ton",
+      "tom",
+      "tor"
+    ],
+    "image": "🏍️"
+  },
+  {
+    "id": "kakak",
+    "display": "ka-__",
+    "answer": "kak",
+    "choices": [
+      "kam",
+      "kak",
+      "kan"
+    ],
+    "image": "🧑"
+  },
+  {
+    "id": "keyboard",
+    "display": "key-__",
+    "answer": "board",
+    "choices": [
+      "boarm",
+      "board",
+      "boarn"
+    ],
+    "image": "⌨️"
+  },
+  {
+    "id": "badai",
+    "display": "ba-__",
+    "answer": "dai",
+    "choices": [
+      "dau",
+      "dao",
+      "dai"
+    ],
+    "image": "🌩️"
+  },
+  {
+    "id": "penggorengan",
+    "display": "peng-go-ren-__",
+    "answer": "gan",
+    "choices": [
+      "gan",
+      "gat",
+      "gam"
+    ],
+    "image": "🍳"
+  },
+  {
+    "id": "gerimis",
+    "display": "ge-ri-__",
+    "answer": "mis",
+    "choices": [
+      "mim",
+      "mis",
+      "min"
+    ],
+    "image": "🌦️"
+  },
+  {
+    "id": "lala",
+    "display": "la-__",
+    "answer": "la",
+    "choices": [
+      "le",
+      "li",
+      "la"
+    ],
+    "image": "✨"
+  },
+  {
+    "id": "kereta",
+    "display": "ke-re-__",
+    "answer": "ta",
+    "choices": [
+      "ti",
+      "te",
+      "ta"
+    ],
+    "image": "🚆"
+  },
+  {
+    "id": "kolam",
+    "display": "ko-__",
+    "answer": "lam",
+    "choices": [
+      "lam",
+      "lan",
+      "lad"
+    ],
+    "image": "✨"
+  },
+  {
+    "id": "pagi",
+    "display": "pa-__",
+    "answer": "gi",
+    "choices": [
+      "go",
+      "gu",
+      "gi"
+    ],
+    "image": "✨"
+  },
+  {
+    "id": "soto",
+    "display": "so-__",
+    "answer": "to",
+    "choices": [
+      "ta",
+      "to",
+      "tu"
+    ],
+    "image": "🍲"
+  },
+  {
+    "id": "karpet",
+    "display": "kar-__",
+    "answer": "pet",
+    "choices": [
+      "pet",
+      "pem",
+      "pen"
+    ],
+    "image": "🧶"
+  },
+  {
+    "id": "cari",
+    "display": "ca-__",
+    "answer": "ri",
+    "choices": [
+      "ro",
+      "ru",
+      "ri"
+    ],
+    "image": "✨"
+  },
+  {
+    "id": "zaitun",
+    "display": "zai-__",
+    "answer": "tun",
+    "choices": [
+      "tut",
+      "tun",
+      "tum"
+    ],
+    "image": "🫒"
+  },
+  {
+    "id": "kudanil",
+    "display": "ku-da-__",
+    "answer": "nil",
+    "choices": [
+      "nin",
+      "nim",
+      "nil"
+    ],
+    "image": "🐴"
+  },
+  {
+    "id": "jeruk",
+    "display": "je-__",
+    "answer": "ruk",
+    "choices": [
+      "run",
+      "rum",
+      "ruk"
+    ],
+    "image": "🍊"
+  },
+  {
+    "id": "lautan",
+    "display": "lau-__",
+    "answer": "tan",
+    "choices": [
+      "tam",
+      "tat",
+      "tan"
+    ],
+    "image": "🌊"
+  },
+  {
+    "id": "wortel",
+    "display": "wor-__",
+    "answer": "tel",
+    "choices": [
+      "tem",
+      "ten",
+      "tel"
+    ],
+    "image": "🥕"
+  },
+  {
+    "id": "wajan",
+    "display": "wa-__",
+    "answer": "jan",
+    "choices": [
+      "jam",
+      "jat",
+      "jan"
+    ],
+    "image": "🍳"
+  },
+  {
+    "id": "menari",
+    "display": "me-na-__",
+    "answer": "ri",
+    "choices": [
+      "ri",
+      "ro",
+      "ru"
+    ],
+    "image": "💃"
+  },
+  {
+    "id": "menggambar",
+    "display": "meng-gam-__",
+    "answer": "bar",
+    "choices": [
+      "ban",
+      "bam",
+      "bar"
+    ],
+    "image": "🎨"
+  },
+  {
+    "id": "kapal",
+    "display": "ka-__",
+    "answer": "pal",
+    "choices": [
+      "pan",
+      "pam",
+      "pal"
+    ],
+    "image": "🚢"
+  },
+  {
+    "id": "babi",
+    "display": "ba-__",
+    "answer": "bi",
+    "choices": [
+      "bo",
+      "bu",
+      "bi"
+    ],
+    "image": "✨"
+  },
+  {
+    "id": "badminton",
+    "display": "bad-min-__",
+    "answer": "ton",
+    "choices": [
+      "tot",
+      "ton",
+      "tom"
+    ],
+    "image": "🏸"
+  },
+  {
+    "id": "dada",
+    "display": "da-__",
+    "answer": "da",
+    "choices": [
+      "di",
+      "de",
+      "da"
+    ],
+    "image": "✨"
+  },
+  {
+    "id": "kunci",
+    "display": "kun-__",
+    "answer": "ci",
+    "choices": [
+      "ci",
+      "co",
+      "cu"
+    ],
+    "image": "🔑"
+  },
+  {
+    "id": "pantai",
+    "display": "pan-__",
+    "answer": "tai",
+    "choices": [
+      "tai",
+      "tau",
+      "tao"
+    ],
+    "image": "🏖️"
+  },
+  {
+    "id": "anggur",
+    "display": "ang-__",
+    "answer": "gur",
+    "choices": [
+      "gun",
+      "gum",
+      "gur"
+    ],
+    "image": "🍇"
+  },
+  {
+    "id": "sapi",
+    "display": "sa-__",
+    "answer": "pi",
+    "choices": [
+      "po",
+      "pi",
+      "pu"
+    ],
+    "image": "🐄"
+  }
 ];
 
 
