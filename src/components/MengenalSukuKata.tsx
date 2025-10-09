@@ -1,15 +1,18 @@
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft, Volume2, Settings } from "lucide-react";
+import { Settings as SettingsType } from "@/types/quiz";
+import { speak } from "@/utils/tts";
 
 interface MengenalSukuKataProps {
   onBack: () => void;
+  settings?: SettingsType;
 }
 
 const consonants = ['b', 'c', 'd', 'f', 'g', 'h', 'j', 'k', 'l', 'm', 'n', 'p', 'q', 'r', 's', 't', 'v', 'w', 'x', 'y', 'z'];
 const vowels = ['a', 'i', 'u', 'e', 'o'];
 
-const MengenalSukuKata = ({ onBack }: MengenalSukuKataProps) => {
+const MengenalSukuKata = ({ onBack, settings }: MengenalSukuKataProps) => {
   const [selectedConsonant, setSelectedConsonant] = useState<string>('');
   const [selectedVowel, setSelectedVowel] = useState<string>('');
   const [ttsEnabled, setTtsEnabled] = useState<boolean>(true);
@@ -61,13 +64,7 @@ const MengenalSukuKata = ({ onBack }: MengenalSukuKataProps) => {
   };
 
   const speakText = (text: string) => {
-    if ('speechSynthesis' in window) {
-      const utterance = new SpeechSynthesisUtterance(text);
-      utterance.lang = 'id-ID';
-      utterance.rate = 0.8;
-      utterance.pitch = 1.2;
-      speechSynthesis.speak(utterance);
-    }
+    speak(text, settings?.selectedVoice);
   };
 
   const resetGame = () => {

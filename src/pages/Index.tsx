@@ -254,7 +254,7 @@ const Index = () => {
       )}
 
       {screen === 'MENGENAL_SUKU_KATA' && (
-        <MengenalSukuKata onBack={handleNavigateQuizSelection} />
+        <MengenalSukuKata onBack={handleNavigateQuizSelection} settings={settings} />
       )}
       
       {screen === 'RESULTS' && (

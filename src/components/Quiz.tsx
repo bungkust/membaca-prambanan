@@ -214,7 +214,7 @@ const Quiz = ({ quizType, settings, appState, setAppState, onComplete, onBack }:
 
   const handlePlayAudio = () => {
     if (currentQuestion) {
-      speak(currentQuestion.ttsText);
+      speak(currentQuestion.ttsText, settings.selectedVoice);
     }
   };
 
