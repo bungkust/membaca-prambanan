@@ -7,7 +7,7 @@ import { generateQuizQuestions } from "@/utils/quizData";
 import { speak } from "@/utils/tts";
 
 interface QuizProps {
-  quizType: 'suku_kata' | 'awal_kata' | 'akhir_kata' | 'tengah_kata' | 'lengkapi_suku_kata' | 'lengkapi_suku_kata_belakang' | 'mengenal_suku_kata';
+  quizType: 'suku_kata' | 'awal_kata' | 'akhir_kata' | 'tengah_suku_kata' | 'lengkapi_suku_kata' | 'lengkapi_suku_kata_belakang' | 'mengenal_suku_kata';
   settings: Settings;
   appState: AppState;
   setAppState: React.Dispatch<React.SetStateAction<AppState>>;

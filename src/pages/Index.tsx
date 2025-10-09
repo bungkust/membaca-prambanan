@@ -15,7 +15,7 @@ const Index = () => {
   const [screen, setScreen] = useState<'AUDIO_PERMISSION' | 'ONBOARDING' | 'HOME' | 'QUIZ_SELECTION' | 'QUIZ' | 'MENGENAL_SUKU_KATA' | 'RESULTS' | 'SETTINGS' | 'HISTORY' | 'INSTALL'>('AUDIO_PERMISSION');
   const [audioPermissionGranted, setAudioPermissionGranted] = useState(false);
   const [onboardingSeen, setOnboardingSeen] = useState(false);
-  const [selectedQuizType, setSelectedQuizType] = useState<'suku_kata' | 'awal_kata' | 'akhir_kata' | 'tengah_kata' | 'lengkapi_suku_kata' | 'lengkapi_suku_kata_belakang' | 'mengenal_suku_kata'>('suku_kata');
+  const [selectedQuizType, setSelectedQuizType] = useState<'suku_kata' | 'awal_kata' | 'akhir_kata' | 'tengah_suku_kata' | 'lengkapi_suku_kata' | 'lengkapi_suku_kata_belakang' | 'mengenal_suku_kata'>('suku_kata');
   
   const [settings, setSettings] = useState<SettingsType>({
     questionsPerSession: 10,

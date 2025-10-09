@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import { ArrowLeft, Settings, History, Star, Trophy, Zap } from "lucide-react";
 
 interface QuizSelectionProps {
-  onSelectQuiz: (type: 'suku_kata' | 'awal_kata' | 'akhir_kata' | 'tengah_kata' | 'lengkapi_suku_kata' | 'lengkapi_suku_kata_belakang' | 'mengenal_suku_kata') => void;
+  onSelectQuiz: (type: 'suku_kata' | 'awal_kata' | 'akhir_kata' | 'tengah_suku_kata' | 'lengkapi_suku_kata' | 'lengkapi_suku_kata_belakang' | 'mengenal_suku_kata') => void;
   onBack: () => void;
   onOpenSettings?: () => void;
   onOpenHistory?: () => void;
@@ -40,10 +40,10 @@ const QuizSelection = ({ onSelectQuiz, onBack, onOpenSettings, onOpenHistory, se
       gradient: 'from-orange-500 to-red-600'
     },
     {
-      id: 'tengah_kata' as const,
-      emoji: '🔍',
-      title: 'Kuis Tengah Kata',
-      description: 'Tebak huruf tengah dari kata yang didengar',
+      id: 'tengah_suku_kata' as const,
+      emoji: '🎯',
+      title: 'Kuis Tengah Suku Kata Kata',
+      description: 'Lengkapi suku kata yang hilang di tengah kata',
       count: '150 Soal',
       badge: 'Kata Menarik',
       gradient: 'from-success to-primary'

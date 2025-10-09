@@ -33,7 +33,7 @@ const History = ({ sessionHistory, onBack, onClearHistory, onQuizSelection }: Hi
       'suku_kata': '📚 Suku Kata',
       'awal_kata': '🔤 Awal Kata',
       'akhir_kata': '🎯 Akhir Kata',
-      'tengah_kata': '🔍 Tengah Kata',
+      'tengah_suku_kata': '🎯 Tengah Suku Kata Kata',
       'lengkapi_suku_kata': '✏️ Lengkapi Suku Kata'
     };
     return labels[type] || type;
