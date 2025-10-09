@@ -1,15 +1,16 @@
-const CACHE_NAME = 'kuis-belajar-v1.5.6';
-const STATIC_CACHE = 'kuis-belajar-static-v1.5.6';
-const DYNAMIC_CACHE = 'kuis-belajar-dynamic-v1.5.6';
+const CACHE_NAME = 'kuis-belajar-v1.5.7';
+const STATIC_CACHE = 'kuis-belajar-static-v1.5.7';
+const DYNAMIC_CACHE = 'kuis-belajar-dynamic-v1.5.7';
 
 // Assets to cache immediately (critical for app functionality)
 const STATIC_ASSETS = [
   '/',
   '/index.html',
   '/manifest.json',
-  '/icon-192x192.png',
-  '/icon-512x512.png',
-  '/apple-touch-icon.png'
+  '/apple-touch-icon.png',
+  '/apple-touch-icon-152x152.png',
+  '/apple-touch-icon-167x167.png',
+  '/favicon.ico'
 ];
 
 // Network-first strategy for HTML and dynamic content
