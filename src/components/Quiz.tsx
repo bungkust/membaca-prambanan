@@ -3,8 +3,9 @@ import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { ArrowLeft, Volume2 } from "lucide-react";
 import { Question, Settings, AppState, WrongAnswer } from "@/types/quiz";
-import { generateQuizQuestions } from "@/utils/quizData";
+import { generateQuizQuestions } from "@/features/quiz";
 import { speak } from "@/utils/tts";
+import { safeSet } from "@/utils/storage";
 
 interface QuizProps {
   quizType: 'suku_kata' | 'awal_kata' | 'akhir_kata' | 'tengah_suku_kata' | 'lengkapi_suku_kata' | 'lengkapi_suku_kata_belakang' | 'mengenal_suku_kata';
@@ -101,15 +102,7 @@ const Quiz = ({ quizType, settings, appState, setAppState, onComplete, onBack }:
         const newScore = prev.score + 1;
         const newStars = (prev.currentStars || 0) + 1;
 
-        console.log('🎯 CORRECT ANSWER - Final calculation:', {
-          previousScore: prev.score,
-          newScore: newScore,
-          previousStars: prev.currentStars || 0,
-          newStars: newStars,
-          questionIndex: prev.currentQuestionIndex,
-          totalQuestions: prev.currentSession.length,
-          isLastQuestion: prev.currentQuestionIndex >= prev.currentSession.length - 1
-        });
+        // debug logs removed in production
 
         const updatedState = {
           ...prev,
@@ -173,7 +166,7 @@ const Quiz = ({ quizType, settings, appState, setAppState, onComplete, onBack }:
       // Save seen IDs
       if (settings.rememberAcrossSessions && currentQuestion) {
         const seenArray = Array.from(new Set([...appState.seenIds, currentQuestion.id]));
-        localStorage.setItem('seenIds', JSON.stringify(seenArray));
+        safeSet('seenIds', seenArray);
       }
 
       // Note: TTS only triggered manually via button click
@@ -187,19 +180,12 @@ const Quiz = ({ quizType, settings, appState, setAppState, onComplete, onBack }:
             : prev.seenIds
         };
 
-        console.log('🎯 QUIZ COMPLETING - Latest state from callback:', {
-          currentSessionStart: latestState.currentSessionStart,
-          currentStars: latestState.currentStars,
-          score: latestState.score,
-          totalQuestions: latestState.currentSession.length,
-          finalQuestionIndex: latestState.currentQuestionIndex,
-          questionAnswered: currentQuestion?.id
-        });
+        // debug logs removed in production
 
         // Save seen IDs for the final question
         if (settings.rememberAcrossSessions && currentQuestion) {
           const seenArray = Array.from(latestState.seenIds);
-          localStorage.setItem('seenIds', JSON.stringify(seenArray));
+          safeSet('seenIds', seenArray);
         }
 
         // Schedule onComplete with the latest state

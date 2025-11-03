@@ -3516,6 +3516,10 @@ export const generateQuizQuestions = (
       break;
   }
   
+  // Basic validation to drop malformed entries
+  const isValid = (q: any) => q && typeof q.id === 'string' && typeof q.answer === 'string' && Array.isArray(q.choices) && q.choices.length > 0 && typeof q.display !== 'undefined';
+  allQuestions = allQuestions.filter(isValid);
+
   // Filter out seen questions if remember setting is enabled
   const availableQuestions = allQuestions.filter(q => !seenIds.has(q.id));
   

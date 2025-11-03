@@ -10,6 +10,7 @@ import InstallInstructions from "@/components/InstallInstructions";
 import History from "@/components/History";
 import MengenalSukuKata from "@/components/MengenalSukuKata";
 import { Settings as SettingsType, AppState, SessionHistory } from "@/types/quiz";
+import { safeParse, safeSet } from "@/utils/storage";
 
 const Index = () => {
   const [screen, setScreen] = useState<'AUDIO_PERMISSION' | 'ONBOARDING' | 'HOME' | 'QUIZ_SELECTION' | 'QUIZ' | 'MENGENAL_SUKU_KATA' | 'RESULTS' | 'SETTINGS' | 'HISTORY' | 'INSTALL'>('AUDIO_PERMISSION');
@@ -39,15 +40,9 @@ const Index = () => {
   useEffect(() => {
     const savedOnboarding = localStorage.getItem('onboardingSeen');
     const savedAudio = localStorage.getItem('audioPermissionGranted');
-    const savedSettings = localStorage.getItem('settings');
-    const savedSeenIds = localStorage.getItem('seenIds');
-    const savedHistory = localStorage.getItem('sessionHistory');
-
-    console.log('💾 LOADING SAVED DATA:', {
-      hasHistory: !!savedHistory,
-      historyLength: savedHistory ? JSON.parse(savedHistory).length : 0,
-      historyData: savedHistory ? JSON.parse(savedHistory) : null
-    });
+    const savedSettings = safeParse<SettingsType | null>(localStorage.getItem('settings'), null);
+    const savedSeenIds = safeParse<string[] | null>(localStorage.getItem('seenIds'), null);
+    const savedHistory = safeParse<SessionHistory[] | null>(localStorage.getItem('sessionHistory'), null);
 
     if (savedOnboarding === 'true') {
       setOnboardingSeen(true);
@@ -56,27 +51,18 @@ const Index = () => {
       setAudioPermissionGranted(true);
     }
     if (savedSettings) {
-      setSettings(JSON.parse(savedSettings));
+      setSettings(savedSettings);
     }
     if (savedSeenIds) {
       setAppState(prev => ({
         ...prev,
-        seenIds: new Set(JSON.parse(savedSeenIds))
+        seenIds: new Set(savedSeenIds)
       }));
     }
     if (savedHistory) {
-      const history = JSON.parse(savedHistory);
-      console.log('📚 LOADED HISTORY SESSIONS:', history.map((session: any) => ({
-        id: session.id,
-        score: session.score,
-        totalQuestions: session.totalQuestions,
-        stars: session.stars,
-        quizType: session.quizType
-      })));
-
       setAppState(prev => ({
         ...prev,
-        sessionHistory: history
+        sessionHistory: savedHistory
       }));
     }
   }, []);
@@ -180,7 +166,7 @@ const Index = () => {
       ...prev,
       sessionHistory: newHistory
     }));
-    localStorage.setItem('sessionHistory', JSON.stringify(newHistory));
+    safeSet('sessionHistory', newHistory);
 
     setScreen('RESULTS');
   };
@@ -191,7 +177,7 @@ const Index = () => {
 
   const handleSettingsUpdate = (newSettings: SettingsType) => {
     setSettings(newSettings);
-    localStorage.setItem('settings', JSON.stringify(newSettings));
+    safeSet('settings', newSettings);
   };
 
   const handleResetProgress = () => {

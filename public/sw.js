@@ -1,6 +1,6 @@
-const CACHE_NAME = 'kuis-belajar-v1.5.10';
-const STATIC_CACHE = 'kuis-belajar-static-v1.5.10';
-const DYNAMIC_CACHE = 'kuis-belajar-dynamic-v1.5.10';
+const VERSION = '1.5.9';
+const STATIC_CACHE = `kuis-belajar-static-v${VERSION}`;
+const DYNAMIC_CACHE = `kuis-belajar-dynamic-v${VERSION}`;
 const IS_DEV = self.location.hostname === 'localhost' || self.location.hostname === '127.0.0.1';
 
 // Assets to cache immediately (critical for app functionality)
