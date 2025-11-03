@@ -49,12 +49,64 @@ An engaging and interactive quiz application designed for Indonesian children to
 - Emoji-based visual learning
 - Responsive design for all devices
 
+### Design System (Quiz)
+
+Untuk konsistensi antar kuis, gunakan komponen desain berikut:
+
+- `QuizLayout`, `QuizHeader`, `QuizStats`, `QuizProgress`, `QuizCard`, `QuizOption`
+- `PermissionGate` untuk standard izin audio
+
+Detail spesifikasi token (font, warna HSL, gradient, radius, shadow, motion, layout) dan pola implementasi tersedia di `DESIGN_SYSTEM.md`.
+
 ## 🚀 Getting Started
 
 1. Grant audio permission for text-to-speech functionality
 2. Complete the onboarding tutorial
 3. Select your preferred quiz type
 4. Start learning!
+
+### Developer Setup
+
+1. Install dependencies
+
+```
+npm install
+```
+
+2. Run dev server
+
+```
+npm run dev
+```
+
+3. Build
+
+```
+npm run build
+```
+
+### Menambah Jenis Kuis Baru (Acuan "Awal Kata")
+
+1. Buat generator soal di `src/features/quiz/<jenis>.ts` dan ekspor via `src/features/quiz/index.ts`.
+2. Gunakan komponen desain di halaman kuis:
+
+```
+<QuizLayout topBar={<QuizHeader onBack={onBack} right={<QuizStats showTimer={true} timeRemaining={10} stars={currentStars} />} />}>
+  <QuizProgress current={index+1} total={total} level={level} />
+  <QuizCard>
+    {/* Konten soal + tombol audio */}
+    <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+      {choices.map(c => (
+        <QuizOption key={c} label={c} isSelected={c===selected} isAnswer={c===answer} showFeedback={show} isCorrect={isCorrect} onSelect={() => select(c)} />
+      ))}
+    </div>
+  </QuizCard>
+</QuizLayout>
+```
+
+3. Jika perlu izin audio sebelum mulai, bungkus halaman dengan `PermissionGate`.
+
+Lihat `DESIGN_SYSTEM.md` untuk aturan styling dan state interaksi yang wajib diikuti.
 
 ## 🛠️ Technology Stack
 
