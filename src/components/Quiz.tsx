@@ -1,11 +1,16 @@
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
-import { Progress } from "@/components/ui/progress";
-import { ArrowLeft, Volume2 } from "lucide-react";
+import { Volume2 } from "lucide-react";
 import { Question, Settings, AppState, WrongAnswer } from "@/types/quiz";
 import { generateQuizQuestions } from "@/features/quiz";
 import { speak } from "@/utils/tts";
 import { safeSet } from "@/utils/storage";
+import QuizLayout from "@/components/design/QuizLayout";
+import QuizHeader from "@/components/design/QuizHeader";
+import QuizStats from "@/components/design/QuizStats";
+import QuizProgress from "@/components/design/QuizProgress";
+import QuizCard from "@/components/design/QuizCard";
+import QuizOption from "@/components/design/QuizOption";
 
 interface QuizProps {
   quizType: 'suku_kata' | 'awal_kata' | 'akhir_kata' | 'tengah_suku_kata' | 'lengkapi_suku_kata' | 'lengkapi_suku_kata_belakang' | 'mengenal_suku_kata';
@@ -213,46 +218,26 @@ const Quiz = ({ quizType, settings, appState, setAppState, onComplete, onBack }:
   const progress = ((appState.currentQuestionIndex + 1) / appState.currentSession.length) * 100;
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-primary/10 via-accent/10 to-secondary/10 p-4 py-8">
-      <div className="max-w-3xl mx-auto">
-        <div className="flex items-center justify-between mb-6">
-          <Button variant="ghost" size="lg" onClick={onBack}>
-            <ArrowLeft className="w-5 h-5 mr-2" />
-            Kembali
-          </Button>
-          
-          <div className="flex items-center gap-4">
-            {settings.timerSeconds > 0 && (
-              <div className="flex items-center gap-2 bg-card px-4 py-2 rounded-full shadow-button">
-                <span className="text-2xl">⏰</span>
-                <span className="text-xl font-bold">{timeRemaining}</span>
-              </div>
-            )}
-            
-            <div className="flex items-center gap-2 bg-card px-4 py-2 rounded-full shadow-button">
-              <span className="text-2xl">⭐</span>
-              <span className="text-xl font-bold">
-                {appState.currentStars || 0}
-              </span>
-            </div>
-          </div>
-        </div>
-        
-        <div className="mb-6">
-          <div className="flex items-center justify-between mb-2">
-            <span className="text-sm font-semibold text-muted-foreground">
-              Soal {appState.currentQuestionIndex + 1} dari {appState.currentSession.length}
-            </span>
-            {currentQuestion.level && (
-              <span className="text-sm font-semibold text-muted-foreground">
-                Level: {currentQuestion.level}
-              </span>
-            )}
-          </div>
-          <Progress value={progress} className="h-3" />
-        </div>
-        
-        <div className="bg-card rounded-3xl shadow-playful p-8 mb-6">
+    <QuizLayout
+      topBar={
+        <QuizHeader
+          onBack={onBack}
+          right={
+            <QuizStats
+              showTimer={settings.timerSeconds > 0}
+              timeRemaining={timeRemaining}
+              stars={appState.currentStars || 0}
+            />
+          }
+        />
+      }
+    >
+      <QuizProgress
+        current={appState.currentQuestionIndex + 1}
+        total={appState.currentSession.length}
+        level={currentQuestion.level}
+      />
+      <QuizCard>
           {currentQuestion.image && (
             <div className="text-8xl text-center mb-6">
               {currentQuestion.image}
@@ -300,45 +285,27 @@ const Quiz = ({ quizType, settings, appState, setAppState, onComplete, onBack }:
             {currentQuestion.choices.map((choice, index) => {
               const isSelected = selectedAnswer === choice;
               const isAnswer = choice === currentQuestion.answer;
-              
-              let buttonClass = 'h-24 text-3xl font-bold shadow-button btn-bounce';
-              
-              if (showFeedback) {
-                if (isAnswer) {
-                  buttonClass += ' bg-success text-white';
-                } else if (isSelected && !isCorrect) {
-                  buttonClass += ' bg-destructive text-white';
-                } else {
-                  buttonClass += ' opacity-50';
-                }
-              } else if (isSelected) {
-                buttonClass += ' bg-primary text-white';
-              } else {
-                buttonClass += ' bg-gradient-to-br from-primary/20 to-accent/20 hover:from-primary/30 hover:to-accent/30';
-              }
-              
               return (
-                <Button
+                <QuizOption
                   key={index}
-                  size="lg"
-                  className={buttonClass}
-                  onClick={() => handleAnswerSelect(choice)}
+                  label={choice}
+                  isSelected={isSelected}
+                  isAnswer={isAnswer}
+                  showFeedback={showFeedback}
+                  isCorrect={isCorrect}
                   disabled={hasAnswered}
-                >
-                  {choice}
-                </Button>
+                  onSelect={() => handleAnswerSelect(choice)}
+                />
               );
             })}
           </div>
+      </QuizCard>
+      {!hasAnswered && (
+        <div className="text-center text-muted-foreground">
+          💡 Pilih jawaban untuk melanjutkan ke soal berikutnya
         </div>
-        
-        {!hasAnswered && (
-          <div className="text-center text-muted-foreground">
-            💡 Pilih jawaban untuk melanjutkan ke soal berikutnya
-          </div>
-        )}
-      </div>
-    </div>
+      )}
+    </QuizLayout>
   );
 };
 
