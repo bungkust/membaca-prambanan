@@ -29,7 +29,7 @@ export type QuizId = keyof typeof QUIZ_REGISTRY;
  */
 export function getQuizDefinition(id: string): QuizDefinition | undefined {
   if (!isValidQuizId(id)) {
-    console.warn(`Quiz type "${id}" not found in registry`);
+    logger.warn(`Quiz type "${id}" not found in registry`);
     return undefined;
   }
   return QUIZ_REGISTRY[id];

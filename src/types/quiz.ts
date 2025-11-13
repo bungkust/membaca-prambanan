@@ -1,6 +1,14 @@
+import { QuizId } from '@/features/quiz';
+
+/**
+ * Question type includes QuizId from registry plus 'read_syllable' for backward compatibility
+ * 'read_syllable' is used by suku_kata quiz
+ */
+export type QuestionType = QuizId | 'read_syllable';
+
 export interface Question {
   id: string;
-  type: 'read_syllable' | 'awal_kata' | 'akhir_kata' | 'lengkapi_suku_kata' | 'lengkapi_suku_kata_belakang';
+  type: QuestionType;
   prompt?: string;
   display: string;
   ttsText: string;

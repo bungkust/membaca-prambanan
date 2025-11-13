@@ -1,5 +1,6 @@
 import { Question } from "@/types/quiz";
 import { QUIZ_REGISTRY, getQuizDefinition, getAllQuizMetadata, QuizId } from './registry';
+import { logger } from '@/utils/logger';
 
 /**
  * Backward compatible function - generates questions for a quiz type
@@ -12,7 +13,7 @@ export function generateQuizQuestions(
 ): Question[] {
   const quiz = getQuizDefinition(quizType);
   if (!quiz || !quiz.generateQuestions) {
-    console.warn(`Quiz type "${quizType}" not found or does not generate questions`);
+    logger.warn(`Quiz type "${quizType}" not found or does not generate questions`);
     return [];
   }
   return quiz.generateQuestions(count, seenIds);

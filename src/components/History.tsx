@@ -75,14 +75,7 @@ const History = ({ sessionHistory, onBack, onClearHistory, onQuizSelection }: Hi
 
   const filteredSessions = filterSessions();
 
-  // Debug: Log what we're displaying
-  console.log('📋 HISTORY DEBUG - Displaying sessions:', filteredSessions.map(session => ({
-    id: session.id,
-    score: session.score,
-    totalQuestions: session.totalQuestions,
-    stars: session.stars,
-    displayText: `${session.score}/${session.totalQuestions}`
-  })));
+  // Debug logging removed - use logger.debug() if needed in development
 
   const handleClear = () => {
     onClearHistory();
@@ -143,7 +136,7 @@ const History = ({ sessionHistory, onBack, onClearHistory, onQuizSelection }: Hi
                     size="sm"
                     variant={filter === f.value ? 'default' : 'outline'}
                     className={filter === f.value ? 'bg-primary' : ''}
-                    onClick={() => setFilter(f.value as any)}
+                    onClick={() => setFilter(f.value as 'all' | 'today' | 'week' | 'month')}
                   >
                     {f.label}
                   </Button>
@@ -165,7 +158,7 @@ const History = ({ sessionHistory, onBack, onClearHistory, onQuizSelection }: Hi
                     size="sm"
                     variant={sortBy === s.value ? 'default' : 'outline'}
                     className={sortBy === s.value ? 'bg-accent' : ''}
-                    onClick={() => setSortBy(s.value as any)}
+                    onClick={() => setSortBy(s.value as 'newest' | 'oldest' | 'highest' | 'lowest')}
                   >
                     {s.label}
                   </Button>
@@ -251,15 +244,6 @@ const History = ({ sessionHistory, onBack, onClearHistory, onQuizSelection }: Hi
                             const duration = session.duration || 0;
                             const minutes = Math.floor(duration / 60000);
                             const seconds = Math.floor((duration % 60000) / 1000);
-                            
-                            // Debug logging
-                            console.log('⏱️ SESSION DURATION DEBUG:', {
-                              sessionId: session.id,
-                              rawDuration: duration,
-                              minutes,
-                              seconds,
-                              isValid: duration > 0
-                            });
                             
                             return minutes > 0 ? `${minutes}m ${seconds}s` : `${seconds}s`;
                           })()}

@@ -1,6 +1,13 @@
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Target, Download } from "lucide-react";
+import { logger } from "@/utils/logger";
+
+// Type definition for PWA install prompt
+interface BeforeInstallPromptEvent extends Event {
+  prompt: () => Promise<void>;
+  userChoice: Promise<{ outcome: 'accepted' | 'dismissed' }>;
+}
 
 interface HomeProps {
   onStartQuiz: () => void;
@@ -9,29 +16,29 @@ interface HomeProps {
 
 const Home = ({ onStartQuiz, onOpenInstall }: HomeProps) => {
   const [canInstall, setCanInstall] = useState(false);
-  const [deferredPrompt, setDeferredPrompt] = useState<any>(null);
+  const [deferredPrompt, setDeferredPrompt] = useState<BeforeInstallPromptEvent | null>(null);
 
   useEffect(() => {
     const handleBeforeInstallPrompt = (e: Event) => {
-      console.log('🎉 PWA Install prompt available!', e);
+      logger.log('🎉 PWA Install prompt available!', e);
       e.preventDefault();
-      setDeferredPrompt(e);
+      setDeferredPrompt(e as BeforeInstallPromptEvent);
       setCanInstall(true);
     };
 
     const handleAppInstalled = () => {
-      console.log('✅ App installed successfully!');
+      logger.log('✅ App installed successfully!');
       setCanInstall(false);
       setDeferredPrompt(null);
     };
 
     // Check if already installed or if browser supports PWA
     if (window.matchMedia && window.matchMedia('(display-mode: standalone)').matches) {
-      console.log('📱 App is already installed');
+      logger.log('📱 App is already installed');
       setCanInstall(false);
     } else {
       // Show install button for production HTTPS sites
-      console.log('🔍 Production site detected, showing install button');
+      logger.log('🔍 Production site detected, showing install button');
       setCanInstall(true);
     }
 
@@ -46,19 +53,19 @@ const Home = ({ onStartQuiz, onOpenInstall }: HomeProps) => {
 
   const handleInstallClick = async () => {
     if (deferredPrompt) {
-      console.log('🚀 Triggering PWA install prompt...');
+      logger.log('🚀 Triggering PWA install prompt...');
       deferredPrompt.prompt();
       const { outcome } = await deferredPrompt.userChoice;
-      console.log('📱 Install outcome:', outcome);
+      logger.log('📱 Install outcome:', outcome);
       if (outcome === 'accepted') {
-        console.log('✅ User accepted install');
+        logger.log('✅ User accepted install');
         setDeferredPrompt(null);
         setCanInstall(false);
       } else {
-        console.log('❌ User declined install');
+        logger.log('❌ User declined install');
       }
     } else {
-      console.log('⚠️ No deferred prompt available');
+      logger.log('⚠️ No deferred prompt available');
       // Provide alternative installation methods
       const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
       const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);

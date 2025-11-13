@@ -1,10 +1,11 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback, useMemo, useRef } from "react";
 import { Button } from "@/components/ui/button";
 import { Volume2 } from "lucide-react";
 import { Question, Settings, AppState, WrongAnswer } from "@/types/quiz";
 import { generateQuizQuestions, QuizId } from "@/features/quiz";
 import { speak } from "@/utils/tts";
 import { safeSet } from "@/utils/storage";
+import { logger } from "@/utils/logger";
 import QuizLayout from "@/components/design/QuizLayout";
 import QuizHeader from "@/components/design/QuizHeader";
 import QuizStats from "@/components/design/QuizStats";
@@ -28,14 +29,114 @@ const Quiz = ({ quizType, settings, appState, setAppState, onComplete, onBack }:
   const [isCorrect, setIsCorrect] = useState(false);
   const [timeRemaining, setTimeRemaining] = useState(settings.timerSeconds);
   const [hasAnswered, setHasAnswered] = useState(false);
+  
+  // Use ref to track if quiz has been initialized to prevent infinite loops
+  const isInitialized = useRef(false);
 
-  // Initialize quiz session
+  // Define handleNext first since it's used by handleTimeout
+  const handleNext = useCallback(() => {
+    const nextIndex = appState.currentQuestionIndex + 1;
+
+    if (nextIndex < appState.currentSession.length) {
+      const nextQuestion = appState.currentSession[nextIndex];
+
+      setAppState(prev => ({
+        ...prev,
+        currentQuestionIndex: nextIndex,
+        seenIds: settings.rememberAcrossSessions
+          ? new Set([...prev.seenIds, currentQuestion?.id || ''])
+          : prev.seenIds
+      }));
+
+      setCurrentQuestion(nextQuestion);
+      setSelectedAnswer(null);
+      setShowFeedback(false);
+      setIsCorrect(false);
+      setHasAnswered(false);
+
+      // Save seen IDs
+      if (settings.rememberAcrossSessions && currentQuestion) {
+        const seenArray = Array.from(new Set([...appState.seenIds, currentQuestion.id]));
+        safeSet('seenIds', seenArray);
+      }
+
+      // Note: TTS only triggered manually via button click
+    } else {
+      // Quiz complete - use a callback to get the latest state
+      setAppState(prev => {
+        const latestState = {
+          ...prev,
+          seenIds: settings.rememberAcrossSessions && currentQuestion
+            ? new Set([...prev.seenIds, currentQuestion.id])
+            : prev.seenIds
+        };
+
+        // Save seen IDs for the final question
+        if (settings.rememberAcrossSessions && currentQuestion) {
+          const seenArray = Array.from(latestState.seenIds);
+          safeSet('seenIds', seenArray);
+        }
+
+        // Schedule onComplete with the latest state
+        setTimeout(() => {
+          onComplete(latestState.score, latestState.wrongAnswers, latestState.currentSessionStart, latestState.currentStars);
+        }, 50);
+
+        return latestState;
+      });
+    }
+  }, [appState.currentQuestionIndex, appState.currentSession, appState.seenIds, currentQuestion, settings.rememberAcrossSessions, setAppState, onComplete]);
+
+  // Define handleTimeout after handleNext
+  const handleTimeout = useCallback(() => {
+    if (!hasAnswered && currentQuestion) {
+      setHasAnswered(true);
+      setIsCorrect(false);
+      setShowFeedback(true);
+      
+      const wrongAnswer: WrongAnswer = {
+        question: currentQuestion,
+        userAnswer: '(Waktu Habis)'
+      };
+      
+      setAppState(prev => ({
+        ...prev,
+        wrongAnswers: [...prev.wrongAnswers, wrongAnswer]
+      }));
+      
+      setTimeout(handleNext, 2000);
+    }
+  }, [hasAnswered, currentQuestion, setAppState, handleNext]);
+
+  // Track previous quizType to detect changes
+  const prevQuizTypeRef = useRef<QuizId | null>(null);
+  const initializedQuizTypeRef = useRef<QuizId | null>(null);
+
+  // Initialize quiz session - only run once when component mounts or quizType changes
   useEffect(() => {
+    // Reset initialization flag if quizType changed
+    if (prevQuizTypeRef.current !== quizType) {
+      isInitialized.current = false;
+      prevQuizTypeRef.current = quizType;
+    }
+    
+    // Prevent re-initialization if already initialized for this quizType
+    if (isInitialized.current && initializedQuizTypeRef.current === quizType) {
+      return;
+    }
+    
     const questions = generateQuizQuestions(
       quizType,
       settings.questionsPerSession,
       settings.rememberAcrossSessions ? appState.seenIds : new Set()
     );
+    
+    // Validate questions array
+    if (!questions || questions.length === 0) {
+      logger.error('No questions generated for quiz type:', quizType);
+      onBack();
+      return;
+    }
     
     setAppState(prev => ({
       ...prev,
@@ -48,9 +149,12 @@ const Quiz = ({ quizType, settings, appState, setAppState, onComplete, onBack }:
     }));
     
     setCurrentQuestion(questions[0]);
+    isInitialized.current = true;
+    initializedQuizTypeRef.current = quizType;
     
     // Note: TTS only triggered manually via button click
-  }, []);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [quizType]); // Only depend on quizType to prevent infinite loops
 
   // Timer effect
   useEffect(() => {
@@ -70,27 +174,7 @@ const Quiz = ({ quizType, settings, appState, setAppState, onComplete, onBack }:
 
       return () => clearInterval(interval);
     }
-  }, [appState.currentQuestionIndex, hasAnswered, settings.timerSeconds, currentQuestion]);
-
-  const handleTimeout = () => {
-    if (!hasAnswered && currentQuestion) {
-      setHasAnswered(true);
-      setIsCorrect(false);
-      setShowFeedback(true);
-      
-      const wrongAnswer: WrongAnswer = {
-        question: currentQuestion,
-        userAnswer: '(Waktu Habis)'
-      };
-      
-      setAppState(prev => ({
-        ...prev,
-        wrongAnswers: [...prev.wrongAnswers, wrongAnswer]
-      }));
-      
-      setTimeout(handleNext, 2000);
-    }
-  };
+  }, [appState.currentQuestionIndex, hasAnswered, settings.timerSeconds, currentQuestion, handleTimeout]);
 
   const handleAnswerSelect = (answer: string) => {
     if (hasAnswered) return;
@@ -148,71 +232,36 @@ const Quiz = ({ quizType, settings, appState, setAppState, onComplete, onBack }:
     setTimeout(handleNext, 2500);
   };
 
-  const handleNext = () => {
-    const nextIndex = appState.currentQuestionIndex + 1;
-
-    if (nextIndex < appState.currentSession.length) {
-      const nextQuestion = appState.currentSession[nextIndex];
-
-      setAppState(prev => ({
-        ...prev,
-        currentQuestionIndex: nextIndex,
-        seenIds: settings.rememberAcrossSessions
-          ? new Set([...prev.seenIds, currentQuestion?.id || ''])
-          : prev.seenIds
-      }));
-
-      setCurrentQuestion(nextQuestion);
-      setSelectedAnswer(null);
-      setShowFeedback(false);
-      setIsCorrect(false);
-      setHasAnswered(false);
-
-      // Save seen IDs
-      if (settings.rememberAcrossSessions && currentQuestion) {
-        const seenArray = Array.from(new Set([...appState.seenIds, currentQuestion.id]));
-        safeSet('seenIds', seenArray);
-      }
-
-      // Note: TTS only triggered manually via button click
-    } else {
-      // Quiz complete - use a callback to get the latest state
-      setAppState(prev => {
-        const latestState = {
-          ...prev,
-          seenIds: settings.rememberAcrossSessions && currentQuestion
-            ? new Set([...prev.seenIds, currentQuestion.id])
-            : prev.seenIds
-        };
-
-        // debug logs removed in production
-
-        // Save seen IDs for the final question
-        if (settings.rememberAcrossSessions && currentQuestion) {
-          const seenArray = Array.from(latestState.seenIds);
-          safeSet('seenIds', seenArray);
-        }
-
-        // Schedule onComplete with the latest state
-        setTimeout(() => {
-          onComplete(latestState.score, latestState.wrongAnswers, latestState.currentSessionStart, latestState.currentStars);
-        }, 50);
-
-        return latestState;
-      });
-    }
-  };
-
-  const handlePlayAudio = () => {
+  const handlePlayAudio = useCallback(() => {
     if (currentQuestion) {
       speak(currentQuestion.ttsText, settings.selectedVoice);
     }
-  };
+  }, [currentQuestion, settings.selectedVoice]);
 
-  if (!currentQuestion) {
-    return <div className="min-h-screen flex items-center justify-center">
-      <div className="text-2xl font-bold">Memuat...</div>
-    </div>;
+  // Cleanup speech synthesis on unmount
+  useEffect(() => {
+    return () => {
+      // Cancel any ongoing speech synthesis
+      if ('speechSynthesis' in window) {
+        window.speechSynthesis.cancel();
+      }
+    };
+  }, []);
+
+  // Validate questions array
+  const hasQuestions = useMemo(() => {
+    return appState.currentSession && appState.currentSession.length > 0;
+  }, [appState.currentSession]);
+
+  if (!currentQuestion || !hasQuestions) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="text-center">
+          <div className="text-2xl font-bold mb-4">Tidak ada soal tersedia</div>
+          <Button onClick={onBack}>Kembali</Button>
+        </div>
+      </div>
+    );
   }
 
   const progress = ((appState.currentQuestionIndex + 1) / appState.currentSession.length) * 100;

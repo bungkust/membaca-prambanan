@@ -1,5 +1,7 @@
-import { Question } from "@/types/quiz";
+import { Question, QuestionType } from "@/types/quiz";
 import { shuffleArray } from './shuffleArray';
+import { isValidQuestion } from '../utils';
+import { logger } from '@/utils/logger';
 
 /**
  * Generic quiz data item interface
@@ -53,7 +55,7 @@ export function createQuizGenerator<T extends BaseQuizItem>(
   config: QuizGeneratorConfig
 ): () => Question[] {
   return (): Question[] => {
-    return data.map((item, index) => {
+    const questions = data.map((item, index) => {
       const display = config.getDisplay 
         ? config.getDisplay(item) 
         : item.display || item.id;
@@ -76,7 +78,7 @@ export function createQuizGenerator<T extends BaseQuizItem>(
       
       const baseQuestion: Question = {
         id: item.id.toLowerCase().replace(/\s+/g, '_'),
-        type: config.quizType as any,
+        type: config.quizType as Question['type'],
         prompt: item.prompt || config.defaultPrompt,
         display,
         ttsText,
@@ -95,6 +97,17 @@ export function createQuizGenerator<T extends BaseQuizItem>(
 
       return baseQuestion;
     });
+    
+    // Validate all questions and filter out invalid ones
+    const validQuestions = questions.filter(q => {
+      if (!isValidQuestion(q)) {
+        logger.warn(`Invalid question generated: ${q.id}`, q);
+        return false;
+      }
+      return true;
+    });
+    
+    return validQuestions;
   };
 }
 

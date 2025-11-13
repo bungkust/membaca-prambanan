@@ -14,15 +14,28 @@ export * from './utils/generators';
 /**
  * Validates if a question object is properly formed
  */
-export function isValidQuestion(q: any): q is Question {
-  return (
-    q &&
-    typeof q.id === 'string' &&
-    typeof q.answer === 'string' &&
-    Array.isArray(q.choices) &&
-    q.choices.length > 0 &&
-    typeof q.display !== 'undefined'
-  );
+export function isValidQuestion(q: unknown): q is Question {
+  if (!q || typeof q !== 'object') return false;
+  
+  const question = q as Partial<Question>;
+  
+  // Check required fields
+  if (!question.id || typeof question.id !== 'string') return false;
+  if (!question.answer || typeof question.answer !== 'string') return false;
+  if (!Array.isArray(question.choices) || question.choices.length === 0) return false;
+  if (typeof question.display === 'undefined') return false;
+  if (typeof question.ttsText === 'undefined') return false;
+  
+  // Validate that answer is in choices
+  if (!question.choices.includes(question.answer)) {
+    // Use console.warn here since logger might not be available in all contexts
+    if (typeof console !== 'undefined' && console.warn) {
+      console.warn(`Question ${question.id} has answer "${question.answer}" not in choices:`, question.choices);
+    }
+    return false;
+  }
+  
+  return true;
 }
 
 /**

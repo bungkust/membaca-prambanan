@@ -8,6 +8,14 @@ export interface LengkapiSukuKataDataItem {
 
 export const lengkapiSukaKataData: LengkapiSukuKataDataItem[] = [
   {
+    "id": "roti",
+    "display": "ro-__",
+    "answer": "ti",
+    "choices": [
+      "ti",
+      "ta",
+      "tu"
+    ],
     "image": "🍞"
   },
   {
@@ -165,6 +173,14 @@ export const lengkapiSukaKataData: LengkapiSukuKataDataItem[] = [
     "image": "📏"
   },
   {
+    "id": "lari",
+    "display": "la-__",
+    "answer": "ri",
+    "choices": [
+      "ri",
+      "ra",
+      "ru"
+    ],
     "image": "🏃"
   },
   {
@@ -190,6 +206,14 @@ export const lengkapiSukaKataData: LengkapiSukuKataDataItem[] = [
     "image": "🧺"
   },
   {
+    "id": "ular",
+    "display": "u-__",
+    "answer": "lar",
+    "choices": [
+      "lar",
+      "lam",
+      "lan"
+    ],
     "image": "🐍"
   },
   {
@@ -501,9 +525,25 @@ export const lengkapiSukaKataData: LengkapiSukuKataDataItem[] = [
     "image": "🐟"
   },
   {
+    "id": "nenek",
+    "display": "ne-__",
+    "answer": "nek",
+    "choices": [
+      "nek",
+      "nik",
+      "nak"
+    ],
     "image": "👵"
   },
   {
+    "id": "cumi",
+    "display": "cu-__",
+    "answer": "mi",
+    "choices": [
+      "mi",
+      "ma",
+      "me"
+    ],
     "image": "🦑"
   },
   {
@@ -617,9 +657,25 @@ export const lengkapiSukaKataData: LengkapiSukuKataDataItem[] = [
     "image": "🖍️"
   },
   {
+    "id": "kupu",
+    "display": "ku-__",
+    "answer": "pu",
+    "choices": [
+      "pu",
+      "pa",
+      "pi"
+    ],
     "image": "🦋"
   },
   {
+    "id": "pesawat",
+    "display": "pe-sa-__",
+    "answer": "wat",
+    "choices": [
+      "wat",
+      "wan",
+      "wam"
+    ],
     "image": "✈️"
   },
   {
@@ -634,6 +690,14 @@ export const lengkapiSukaKataData: LengkapiSukuKataDataItem[] = [
     "image": "🦏"
   },
   {
+    "id": "bola",
+    "display": "bo-__",
+    "answer": "la",
+    "choices": [
+      "la",
+      "li",
+      "le"
+    ],
     "image": "🏀"
   },
   {
@@ -648,27 +712,91 @@ export const lengkapiSukaKataData: LengkapiSukuKataDataItem[] = [
     "image": "👩‍🏫"
   },
   {
+    "id": "gunung",
+    "display": "gu-__",
+    "answer": "nung",
+    "choices": [
+      "nung",
+      "nang",
+      "neng"
+    ],
     "image": "🏞️"
   },
   {
+    "id": "ayam",
+    "display": "a-__",
+    "answer": "yam",
+    "choices": [
+      "yam",
+      "yem",
+      "yim"
+    ],
     "image": "🐔"
   },
   {
+    "id": "bintang",
+    "display": "bin-__",
+    "answer": "tang",
+    "choices": [
+      "tang",
+      "teng",
+      "ting"
+    ],
     "image": "⭐"
   },
   {
+    "id": "pantai",
+    "display": "pan-__",
+    "answer": "tai",
+    "choices": [
+      "tai",
+      "tau",
+      "tao"
+    ],
     "image": "🏞️"
   },
   {
+    "id": "kereta",
+    "display": "ke-re-__",
+    "answer": "ta",
+    "choices": [
+      "ta",
+      "ti",
+      "tu"
+    ],
     "image": "🚆"
   },
   {
+    "id": "pagi",
+    "display": "pa-__",
+    "answer": "gi",
+    "choices": [
+      "gi",
+      "ga",
+      "ge"
+    ],
     "image": "🌅"
   },
   {
+    "id": "soto",
+    "display": "so-__",
+    "answer": "to",
+    "choices": [
+      "to",
+      "ta",
+      "ti"
+    ],
     "image": "🍲"
   },
   {
+    "id": "zaitun",
+    "display": "zai-__",
+    "answer": "tun",
+    "choices": [
+      "tun",
+      "tan",
+      "ten"
+    ],
     "image": "🫒"
   },
   {
@@ -683,7 +811,15 @@ export const lengkapiSukaKataData: LengkapiSukuKataDataItem[] = [
     "image": "🏸"
   },
   {
-    "image": "��"
+    "id": "matahari",
+    "display": "ma-ta-ha-__",
+    "answer": "ri",
+    "choices": [
+      "ri",
+      "ra",
+      "ru"
+    ],
+    "image": "☀️"
   },
   {
     "id": "kunci",

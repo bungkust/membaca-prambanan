@@ -1,20 +1,17 @@
 import { createRoot } from "react-dom/client";
 import App from "./App.tsx";
 import "./index.css";
+import { logger } from "./utils/logger";
 
 // Register service worker for PWA functionality
 if ('serviceWorker' in navigator) {
   window.addEventListener('load', () => {
     navigator.serviceWorker.register('/sw.js')
       .then((registration) => {
-        if (import.meta.env.DEV) {
-          console.log('SW registered: ', registration);
-        }
+        logger.log('SW registered: ', registration);
       })
       .catch((registrationError) => {
-        if (import.meta.env.DEV) {
-          console.log('SW registration failed: ', registrationError);
-        }
+        logger.error('SW registration failed: ', registrationError);
       });
   });
 }

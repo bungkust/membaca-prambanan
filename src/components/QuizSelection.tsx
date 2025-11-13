@@ -3,12 +3,14 @@ import { Button } from "@/components/ui/button";
 import { ArrowLeft, Settings, History, Star, Trophy, Zap } from "lucide-react";
 import { getAllQuizMetadata, QuizId } from "@/features/quiz";
 
+import { SessionHistory } from "@/types/quiz";
+
 interface QuizSelectionProps {
   onSelectQuiz: (type: QuizId) => void;
   onBack: () => void;
   onOpenSettings?: () => void;
   onOpenHistory?: () => void;
-  sessionHistory?: any[];
+  sessionHistory?: SessionHistory[];
 }
 
 const QuizSelection = ({ onSelectQuiz, onBack, onOpenSettings, onOpenHistory, sessionHistory = [] }: QuizSelectionProps) => {

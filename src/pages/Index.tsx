@@ -9,12 +9,13 @@ import Settings from "@/components/Settings";
 import InstallInstructions from "@/components/InstallInstructions";
 import History from "@/components/History";
 import MengenalSukuKata from "@/components/MengenalSukuKata";
-import { Settings as SettingsType, AppState, SessionHistory } from "@/types/quiz";
-import { safeParse, safeSet } from "@/utils/storage";
+import { Settings as SettingsType, AppState, SessionHistory, WrongAnswer } from "@/types/quiz";
+import { safeParse, safeSet, safeParseSettings, safeParseSessionHistory, safeParseAppState } from "@/utils/storage";
 import { QuizId, getQuizDefinition } from "@/features/quiz";
+import { ScreenType, isValidScreenType } from "@/types/app";
 
 const Index = () => {
-  const [screen, setScreen] = useState<'AUDIO_PERMISSION' | 'ONBOARDING' | 'HOME' | 'QUIZ_SELECTION' | 'QUIZ' | 'MENGENAL_SUKU_KATA' | 'RESULTS' | 'SETTINGS' | 'HISTORY' | 'INSTALL'>('AUDIO_PERMISSION');
+  const [screen, setScreen] = useState<ScreenType>('AUDIO_PERMISSION');
   const [audioPermissionGranted, setAudioPermissionGranted] = useState(false);
   const [onboardingSeen, setOnboardingSeen] = useState(false);
   const [selectedQuizType, setSelectedQuizType] = useState<QuizId>('suku_kata');
@@ -37,13 +38,14 @@ const Index = () => {
     currentStars: 0
   });
 
-  // Load saved data on mount
+  // Load saved data on mount with validation
   useEffect(() => {
     const savedOnboarding = localStorage.getItem('onboardingSeen');
     const savedAudio = localStorage.getItem('audioPermissionGranted');
-    const savedSettings = safeParse<SettingsType | null>(localStorage.getItem('settings'), null);
+    const savedSettings = safeParseSettings(localStorage.getItem('settings'), settings);
     const savedSeenIds = safeParse<string[] | null>(localStorage.getItem('seenIds'), null);
-    const savedHistory = safeParse<SessionHistory[] | null>(localStorage.getItem('sessionHistory'), null);
+    const savedHistory = safeParseSessionHistory(localStorage.getItem('sessionHistory'), []);
+    const savedAppState = safeParseAppState(localStorage.getItem('appState'), appState);
 
     if (savedOnboarding === 'true') {
       setOnboardingSeen(true);
@@ -60,11 +62,15 @@ const Index = () => {
         seenIds: new Set(savedSeenIds)
       }));
     }
-    if (savedHistory) {
+    if (savedHistory.length > 0) {
       setAppState(prev => ({
         ...prev,
         sessionHistory: savedHistory
       }));
+    }
+    // Load full app state if available
+    if (savedAppState && savedAppState !== appState) {
+      setAppState(savedAppState);
     }
   }, []);
 
@@ -95,7 +101,12 @@ const Index = () => {
     setSelectedQuizType(type);
     const quiz = getQuizDefinition(type);
     if (quiz?.metadata.isSpecial && quiz.metadata.routeTo) {
-      setScreen(quiz.metadata.routeTo as any);
+      const routeTo = quiz.metadata.routeTo;
+      if (isValidScreenType(routeTo)) {
+        setScreen(routeTo);
+      } else {
+        setScreen('QUIZ');
+      }
     } else {
       setScreen('QUIZ');
     }
@@ -121,7 +132,7 @@ const Index = () => {
     setScreen('INSTALL');
   };
 
-  const handleQuizComplete = (finalScore: number, wrongAnswers: any[], sessionStartTime?: number, finalStars?: number) => {
+  const handleQuizComplete = (finalScore: number, wrongAnswers: WrongAnswer[], sessionStartTime?: number, finalStars?: number) => {
     // Use the stars earned during the quiz session (from Quiz component if provided, fallback to appState)
     const starsEarned = finalStars !== undefined ? finalStars : (appState.currentStars || 0);
 
@@ -130,19 +141,7 @@ const Index = () => {
     const startTime = sessionStartTime || appState.currentSessionStart || endTime;
     const duration = Math.max(0, endTime - startTime);
 
-    console.log('🔍 QUIZ COMPLETION DEBUG:', {
-      finalScore,
-      starsEarned,
-      providedFinalStars: finalStars,
-      appStateScore: appState.score,
-      appStateCurrentStars: appState.currentStars,
-      totalQuestions: appState.currentSession.length,
-      startTime,
-      endTime,
-      duration,
-      currentSessionStart: appState.currentSessionStart,
-      providedSessionStart: sessionStartTime
-    });
+    // Debug logging removed - use logger.debug() if needed in development
 
     // Save session to history with stars earned during session
     const session: SessionHistory = {
@@ -156,12 +155,7 @@ const Index = () => {
       stars: starsEarned
     };
 
-    console.log('💾 SESSION SAVED:', {
-      sessionId: session.id,
-      sessionScore: session.score,
-      sessionStars: session.stars,
-      sessionTotalQuestions: session.totalQuestions
-    });
+    // Debug logging removed - use logger.debug() if needed in development
 
     const newHistory = [session, ...appState.sessionHistory];
     setAppState(prev => ({
