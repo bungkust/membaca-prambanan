@@ -20,7 +20,7 @@ export function generateSukaKataQuestions(): Question[] {
       questions.push({
         id: `${consonant.toLowerCase()}-${syllable.toLowerCase()}`,
         type: "read_syllable",
-        prompt: "Dengarkan suku kata ini",
+        prompt: "Tebak suku kata yang didengar",
         display: syllable,
         ttsText: syllable,
         answer: syllable,

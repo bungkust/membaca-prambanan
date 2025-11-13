@@ -3,7 +3,7 @@ import { QuizMetadata } from '../types';
 export const metadata: QuizMetadata = {
   id: 'suku_kata',
   emoji: '📚',
-  title: 'Suku Kata',
+  title: 'Tebak Suku Kata',
   description: 'Pelajari suku kata dasar',
   count: '150 Soal',
   badge: 'Dasar',

@@ -1,19 +1,15 @@
 import { Question } from "@/types/quiz";
+import { shuffleArray as _shuffleArray } from './utils/shuffleArray';
 
 /**
  * Shuffles an array using Fisher-Yates algorithm
  */
 export function shuffleArray<T>(array: T[]): T[] {
-  if (!array || !Array.isArray(array)) {
-    return [];
-  }
-  const shuffled = [...array];
-  for (let i = shuffled.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
-  }
-  return shuffled;
+  return _shuffleArray(array);
 }
+
+// Re-export generator utilities for convenience
+export * from './utils/generators';
 
 /**
  * Validates if a question object is properly formed

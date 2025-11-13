@@ -1,0 +1,25 @@
+/**
+ * CONTOH: Template index.ts untuk quiz baru
+ * 
+ * Copy file ini dan sesuaikan nama quiz
+ */
+
+import { QuizDefinition } from '../types';
+import { metadata } from './metadata';
+import { generateMatematikaPenjumlahanQuestions } from './generator';
+import { filterAndSelectQuestions } from '../utils';
+
+const matematikaPenjumlahanQuiz: QuizDefinition = {
+  metadata,
+  generateQuestions: (count: number, seenIds: Set<string>) => {
+    const allQuestions = generateMatematikaPenjumlahanQuestions();
+    return filterAndSelectQuestions(allQuestions, count, seenIds);
+  },
+};
+
+export function getQuizDefinition(): QuizDefinition {
+  return matematikaPenjumlahanQuiz;
+}
+
+export default matematikaPenjumlahanQuiz;
+

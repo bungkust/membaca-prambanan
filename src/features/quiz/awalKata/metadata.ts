@@ -3,7 +3,7 @@ import { QuizMetadata } from '../types';
 export const metadata: QuizMetadata = {
   id: 'awal_kata',
   emoji: '🔤',
-  title: 'Awal Kata',
+  title: 'Tebak Huruf Awal',
   description: 'Tebak huruf awal dari kata',
   count: '150 Soal',
   badge: 'Huruf Awal',

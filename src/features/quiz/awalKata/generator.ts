@@ -6,7 +6,7 @@ export function generateAwalKataQuestions(): Question[] {
   return awalKataData.map(item => ({
     id: item.id.toLowerCase(),
     type: 'awal_kata' as const,
-    prompt: 'Tebak huruf pertama dari kata yang didengar',
+    prompt: 'Tebak huruf awal dari kata yang didengar',
     display: '_' + item.id.slice(1).toLowerCase(),
     ttsText: item.id,
     answer: item.answer,

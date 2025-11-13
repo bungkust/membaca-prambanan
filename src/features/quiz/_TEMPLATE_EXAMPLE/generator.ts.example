@@ -1,0 +1,49 @@
+/**
+ * CONTOH: Template generator.ts untuk quiz baru
+ * 
+ * HANYA 3 BARIS KODE!
+ * 
+ * Pilih salah satu template di bawah sesuai jenis quiz:
+ */
+
+// ============================================
+// TEMPLATE 1: Untuk Quiz Matematika
+// ============================================
+import { createMathQuizGenerator } from '../utils/generators';
+import { matematikaPenjumlahanData } from './data';
+
+export const generateMatematikaPenjumlahanQuestions = createMathQuizGenerator(
+  matematikaPenjumlahanData,
+  'matematika_penjumlahan',
+  'Berapa hasil penjumlahan?'
+);
+
+// ============================================
+// TEMPLATE 2: Untuk Quiz Bahasa
+// ============================================
+// import { createLanguageQuizGenerator } from '../utils/generators';
+// import { sinonimData } from './data';
+//
+// export const generateSinonimQuestions = createLanguageQuizGenerator(
+//   sinonimData,
+//   'bahasa_sinonim',
+//   'Pilih kata yang memiliki arti sama'
+// );
+
+// ============================================
+// TEMPLATE 3: Untuk Quiz Custom (Fleksibel)
+// ============================================
+// import { createQuizGenerator } from '../utils/generators';
+// import { customData } from './data';
+//
+// export const generateCustomQuestions = createQuizGenerator(
+//   customData,
+//   {
+//     quizType: 'custom_quiz',
+//     defaultPrompt: 'Pilih jawaban yang benar',
+//     getDisplay: (item) => item.display || item.id,
+//     getTtsText: (item) => item.ttsText || item.display || item.id,
+//     getImage: (item) => item.image,
+//   }
+// );
+

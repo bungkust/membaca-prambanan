@@ -1,0 +1,30 @@
+/**
+ * CONTOH: Template metadata.ts untuk quiz baru
+ * 
+ * Copy file ini dan sesuaikan dengan quiz Anda
+ */
+
+import { QuizMetadata } from '../types';
+
+export const metadata: QuizMetadata = {
+  id: 'matematika_penjumlahan',  // ID harus unik, snake_case, sesuai folder name
+  emoji: '🔢',                     // Emoji untuk icon di UI
+  title: 'Penjumlahan',           // Judul quiz yang ditampilkan
+  description: 'Belajar penjumlahan dasar',  // Deskripsi singkat
+  count: '50 Soal',                // Jumlah soal (bisa dinamis atau statis)
+  badge: 'Matematika',             // Badge/kategori quiz
+  gradient: 'from-blue-500 to-cyan-600',  // Gradient warna untuk card
+  defaultQuestions: 10,            // Default jumlah soal per session
+  minQuestions: 5,                 // Minimum soal yang bisa dipilih
+  maxQuestions: 20,                // Maximum soal yang bisa dipilih
+};
+
+/**
+ * Tips untuk gradient:
+ * - from-blue-500 to-cyan-600 (biru)
+ * - from-green-500 to-teal-600 (hijau)
+ * - from-orange-500 to-red-600 (orange)
+ * - from-purple-500 to-pink-600 (ungu)
+ * - from-yellow-500 to-orange-600 (kuning)
+ */
+

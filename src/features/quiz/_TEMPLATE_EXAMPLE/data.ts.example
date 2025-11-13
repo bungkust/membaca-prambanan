@@ -1,0 +1,49 @@
+/**
+ * CONTOH: Template data.ts untuk quiz baru
+ * 
+ * Copy file ini dan sesuaikan dengan kebutuhan quiz Anda
+ * 
+ * Untuk quiz Matematika, Bahasa, IPA, IPS, dll - format sama!
+ */
+
+export interface MatematikaPenjumlahanItem {
+  id: string;              // Unique ID, e.g., "2+3"
+  answer: string;          // Jawaban benar, e.g., "5"
+  choices: string[];       // Array pilihan jawaban, minimal 3
+  display?: string;        // Tampilan soal (optional)
+  ttsText?: string;        // Teks untuk TTS (optional)
+  image?: string;          // Emoji atau image (optional)
+  level?: 'mudah' | 'sedang' | 'sulit';
+}
+
+export const matematikaPenjumlahanData: MatematikaPenjumlahanItem[] = [
+  {
+    id: "2+3",
+    answer: "5",
+    choices: ["4", "5", "6"],
+    display: "2 + 3 = ?",
+    ttsText: "dua ditambah tiga",
+    image: "🔢",
+    level: "mudah"
+  },
+  {
+    id: "5+4",
+    answer: "9",
+    choices: ["8", "9", "10"],
+    display: "5 + 4 = ?",
+    ttsText: "lima ditambah empat",
+    image: "🔢",
+    level: "mudah"
+  },
+  {
+    id: "10+5",
+    answer: "15",
+    choices: ["14", "15", "16"],
+    display: "10 + 5 = ?",
+    ttsText: "sepuluh ditambah lima",
+    image: "🔢",
+    level: "sedang"
+  },
+  // Tambahkan soal-soal lainnya di sini...
+];
+
