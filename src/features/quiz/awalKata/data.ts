@@ -6,7 +6,7 @@ export interface AwalKataDataItem {
 }
 
 export const awalKataData: AwalKataDataItem[] = [
-  { "id": "Mata", "image": "👁️", "answer": "M", "choices": ["M", "N", "B"] }, 
+  { "id": "Mata ", "image": "👁️", "answer": "M", "choices": ["M", "N", "B"] }, 
   { "id": "Hidung", "image": "👃", "answer": "H", "choices": ["H", "N", "M"] },
   { "id": "Mulut", "image": "👄", "answer": "M", "choices": ["M", "B", "P"] },
   { "id": "Telinga", "image": "👂", "answer": "T", "choices": ["T", "D", "P"] },
