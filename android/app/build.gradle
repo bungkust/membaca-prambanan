@@ -42,7 +42,7 @@ android {
     defaultConfig {
         applicationId "com.bungkust.membacaprambanan"
         minSdkVersion 23
-        targetSdkVersion 34
+        targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode versionCodeValue
         versionName packageVersion
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"

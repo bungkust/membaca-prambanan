@@ -56,7 +56,7 @@ Untuk konsistensi antar kuis, gunakan komponen desain berikut:
 - `QuizLayout`, `QuizHeader`, `QuizStats`, `QuizProgress`, `QuizCard`, `QuizOption`
 - `PermissionGate` untuk standard izin audio
 
-Detail spesifikasi token (font, warna HSL, gradient, radius, shadow, motion, layout) dan pola implementasi tersedia di `DESIGN_SYSTEM.md`.
+Detail spesifikasi token (font, warna HSL, gradient, radius, shadow, motion, layout) dan pola implementasi tersedia di `docs/DESIGN_SYSTEM.md`.
 
 ## 🚀 Getting Started
 
@@ -106,7 +106,7 @@ npm run build
 
 3. Jika perlu izin audio sebelum mulai, bungkus halaman dengan `PermissionGate`.
 
-Lihat `DESIGN_SYSTEM.md` untuk aturan styling dan state interaksi yang wajib diikuti.
+Lihat `docs/DESIGN_SYSTEM.md` untuk aturan styling dan state interaksi yang wajib diikuti.
 
 ## 🛠️ Technology Stack
 

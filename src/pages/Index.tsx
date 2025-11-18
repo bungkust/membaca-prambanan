@@ -1,4 +1,6 @@
 import { useState, useEffect } from "react";
+import { Button } from "@/components/ui/button";
+import { ArrowLeft } from "lucide-react";
 import AudioPermission from "@/components/AudioPermission";
 import Onboarding from "@/components/Onboarding";
 import Home from "@/components/Home";
@@ -9,6 +11,7 @@ import Settings from "@/components/Settings";
 import InstallInstructions from "@/components/InstallInstructions";
 import History from "@/components/History";
 import MengenalSukuKata from "@/components/MengenalSukuKata";
+import PrivacyPolicy from "@/components/PrivacyPolicy";
 import { Settings as SettingsType, AppState, SessionHistory, WrongAnswer } from "@/types/quiz";
 import { safeParse, safeSet, safeParseSettings, safeParseSessionHistory, safeParseAppState } from "@/utils/storage";
 import { QuizId, getQuizDefinition } from "@/features/quiz";
@@ -130,6 +133,10 @@ const Index = () => {
 
   const handleNavigateInstall = () => {
     setScreen('INSTALL');
+  };
+
+  const handleNavigatePrivacyPolicy = () => {
+    setScreen('PRIVACY_POLICY');
   };
 
   const handleQuizComplete = (finalScore: number, wrongAnswers: WrongAnswer[], sessionStartTime?: number, finalStars?: number) => {
@@ -258,7 +265,33 @@ const Index = () => {
           onUpdateSettings={handleSettingsUpdate}
           onResetProgress={handleResetProgress}
           onBack={handleNavigateQuizSelection}
+          onOpenPrivacyPolicy={handleNavigatePrivacyPolicy}
         />
+      )}
+
+      {screen === 'PRIVACY_POLICY' && (
+        <PrivacyPolicy onBack={handleNavigateSettings} />
+      )}
+      
+      {screen === 'ABOUT' && (
+        <div className="min-h-screen bg-gradient-to-br from-primary/10 via-accent/10 to-secondary/10 p-4 py-8">
+          <div className="max-w-2xl mx-auto">
+            <Button variant="ghost" size="lg" className="mb-6" onClick={handleNavigateSettings}>
+              <ArrowLeft className="w-5 h-5 mr-2" />
+              Kembali
+            </Button>
+            <div className="bg-card rounded-3xl shadow-playful p-6 sm:p-8">
+              <h1 className="text-3xl sm:text-4xl font-bold text-center mb-8">
+                <span className="bg-gradient-to-r from-primary via-accent to-secondary bg-clip-text text-transparent">
+                  Tentang Aplikasi
+                </span>
+              </h1>
+              <p className="text-center text-muted-foreground mb-6">
+                Informasi lengkap tentang Kuis Belajar Membaca
+              </p>
+            </div>
+          </div>
+        </div>
       )}
       
       {screen === 'HISTORY' && (

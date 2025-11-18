@@ -12,7 +12,9 @@ export type ScreenType =
   | 'RESULTS'
   | 'SETTINGS'
   | 'HISTORY'
-  | 'INSTALL';
+  | 'INSTALL'
+  | 'PRIVACY_POLICY'
+  | 'ABOUT';
 
 /**
  * Helper to check if a string is a valid screen type
@@ -28,7 +30,9 @@ export function isValidScreenType(value: string): value is ScreenType {
     'RESULTS',
     'SETTINGS',
     'HISTORY',
-    'INSTALL'
+    'INSTALL',
+    'PRIVACY_POLICY',
+    'ABOUT'
   ];
   return validScreens.includes(value as ScreenType);
 }

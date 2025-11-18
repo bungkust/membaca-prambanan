@@ -13,9 +13,10 @@ interface SettingsProps {
   onUpdateSettings: (settings: SettingsType) => void;
   onResetProgress: () => void;
   onBack: () => void;
+  onOpenPrivacyPolicy?: () => void;
 }
 
-const Settings = ({ settings, onUpdateSettings, onResetProgress, onBack }: SettingsProps) => {
+const Settings = ({ settings, onUpdateSettings, onResetProgress, onBack, onOpenPrivacyPolicy }: SettingsProps) => {
   const [localSettings, setLocalSettings] = useState(settings);
   const [showResetConfirm, setShowResetConfirm] = useState(false);
   const [showSaveSuccess, setShowSaveSuccess] = useState(false);
@@ -284,6 +285,46 @@ const Settings = ({ settings, onUpdateSettings, onResetProgress, onBack }: Setti
               </div>
             </div>
           )}
+        </div>
+
+        {/* Tentang Aplikasi / Legal Section */}
+        <div className="bg-card rounded-3xl shadow-playful p-4 sm:p-6 mb-6">
+          <h2 className="text-xl sm:text-2xl font-bold mb-4">📋 Tentang Aplikasi</h2>
+          <div className="space-y-3">
+            {onOpenPrivacyPolicy && (
+              <Button
+                size="lg"
+                variant="outline"
+                className="w-full justify-start shadow-button"
+                onClick={onOpenPrivacyPolicy}
+              >
+                <span className="mr-2">🔒</span>
+                Kebijakan Privasi
+              </Button>
+            )}
+            <Button
+              size="lg"
+              variant="outline"
+              className="w-full justify-start shadow-button"
+              onClick={() => {
+                // Placeholder for Terms of Service - can be implemented later
+                alert('Ketentuan Layanan akan tersedia segera.');
+              }}
+            >
+              <span className="mr-2">📄</span>
+              Ketentuan Layanan
+            </Button>
+            <div className="bg-muted rounded-xl p-4 mt-4">
+              <p className="text-sm text-muted-foreground mb-2">
+                <strong>Aplikasi Edukasi untuk Anak</strong>
+              </p>
+              <p className="text-xs text-muted-foreground">
+                Kuis Belajar Membaca dirancang khusus untuk membantu anak-anak belajar membaca 
+                dengan cara yang menyenangkan dan interaktif. Aplikasi ini aman untuk anak-anak 
+                dan mematuhi standar privasi internasional (COPPA).
+              </p>
+            </div>
+          </div>
         </div>
         
         <Button
