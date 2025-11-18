@@ -1,5 +1,6 @@
 import { Question } from "@/types/quiz";
 import { shuffleArray as _shuffleArray } from './utils/shuffleArray';
+import { logger } from "@/utils/logger";
 
 /**
  * Shuffles an array using Fisher-Yates algorithm
@@ -28,10 +29,7 @@ export function isValidQuestion(q: unknown): q is Question {
   
   // Validate that answer is in choices
   if (!question.choices.includes(question.answer)) {
-    // Use console.warn here since logger might not be available in all contexts
-    if (typeof console !== 'undefined' && console.warn) {
-      console.warn(`Question ${question.id} has answer "${question.answer}" not in choices:`, question.choices);
-    }
+    logger.warn(`Question ${question.id} has answer "${question.answer}" not in choices:`, question.choices);
     return false;
   }
   

@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Volume2 } from "lucide-react";
 import { Question, Settings, AppState, WrongAnswer } from "@/types/quiz";
 import { generateQuizQuestions, QuizId } from "@/features/quiz";
-import { speak } from "@/utils/tts";
+import { speak, stopSpeech } from "@/utils/tts";
 import { safeSet } from "@/utils/storage";
 import { logger } from "@/utils/logger";
 import QuizLayout from "@/components/design/QuizLayout";
@@ -32,6 +32,8 @@ const Quiz = ({ quizType, settings, appState, setAppState, onComplete, onBack }:
   
   // Use ref to track if quiz has been initialized to prevent infinite loops
   const isInitialized = useRef(false);
+  // Use ref to track timer interval for proper cleanup
+  const timerIntervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
   // Define handleNext first since it's used by handleTimeout
   const handleNext = useCallback(() => {
@@ -158,13 +160,23 @@ const Quiz = ({ quizType, settings, appState, setAppState, onComplete, onBack }:
 
   // Timer effect
   useEffect(() => {
+    // Clear any existing timer first
+    if (timerIntervalRef.current !== null) {
+      clearInterval(timerIntervalRef.current);
+      timerIntervalRef.current = null;
+    }
+
     if (settings.timerSeconds > 0 && !hasAnswered && currentQuestion) {
       setTimeRemaining(settings.timerSeconds);
 
-      const interval = setInterval(() => {
+      timerIntervalRef.current = setInterval(() => {
         setTimeRemaining(prev => {
           if (prev <= 1) {
-            clearInterval(interval);
+            // Clear interval and call timeout handler
+            if (timerIntervalRef.current !== null) {
+              clearInterval(timerIntervalRef.current);
+              timerIntervalRef.current = null;
+            }
             handleTimeout();
             return 0;
           }
@@ -172,7 +184,13 @@ const Quiz = ({ quizType, settings, appState, setAppState, onComplete, onBack }:
         });
       }, 1000);
 
-      return () => clearInterval(interval);
+      // Cleanup function
+      return () => {
+        if (timerIntervalRef.current !== null) {
+          clearInterval(timerIntervalRef.current);
+          timerIntervalRef.current = null;
+        }
+      };
     }
   }, [appState.currentQuestionIndex, hasAnswered, settings.timerSeconds, currentQuestion, handleTimeout]);
 
@@ -232,21 +250,31 @@ const Quiz = ({ quizType, settings, appState, setAppState, onComplete, onBack }:
     setTimeout(handleNext, 2500);
   };
 
-  const handlePlayAudio = useCallback(() => {
+  const handlePlayAudio = useCallback(async () => {
     if (currentQuestion) {
-      speak(currentQuestion.ttsText, settings.selectedVoice);
+      await speak(currentQuestion.ttsText, settings.selectedVoice);
     }
   }, [currentQuestion, settings.selectedVoice]);
 
-  // Cleanup speech synthesis on unmount
+  // Cleanup speech synthesis on unmount and navigation
   useEffect(() => {
     return () => {
-      // Cancel any ongoing speech synthesis
-      if ('speechSynthesis' in window) {
-        window.speechSynthesis.cancel();
-      }
+      // Cancel any ongoing speech synthesis (platform-aware)
+      stopSpeech().catch(() => {
+        // Ignore errors during cleanup
+      });
     };
   }, []);
+
+  // Also cleanup TTS when question changes or component unmounts
+  useEffect(() => {
+    return () => {
+      // Stop any ongoing speech when question changes or component unmounts
+      stopSpeech().catch(() => {
+        // Ignore errors during cleanup
+      });
+    };
+  }, [currentQuestion]);
 
   // Validate questions array
   const hasQuestions = useMemo(() => {

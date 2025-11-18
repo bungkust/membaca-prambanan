@@ -8,7 +8,13 @@
     "build": "ROLLUP_SKIP_NODEJS_NATIVE=1 vite build",
     "build:dev": "vite build --mode development",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "cap:sync": "npm run build && npx cap sync android",
+    "cap:open": "npx cap open android",
+    "cap:build": "npm run cap:sync && npx cap open android",
+    "android:build": "cd android && ./gradlew assembleDebug",
+    "android:release": "cd android && ./gradlew bundleRelease",
+    "android:clean": "cd android && ./gradlew clean"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.10.0",
@@ -59,7 +65,13 @@
     "tailwind-merge": "^2.6.0",
     "tailwindcss-animate": "^1.0.7",
     "vaul": "^0.9.9",
-    "zod": "^3.25.76"
+    "zod": "^3.25.76",
+    "@capacitor/core": "^7.0.0",
+    "@capacitor/cli": "^7.0.0",
+    "@capacitor/android": "^7.0.0",
+    "@capacitor-community/text-to-speech": "^6.1.0",
+    "@capacitor/app": "^7.0.0",
+    "@capacitor/splash-screen": "^7.0.0"
   },
   "devDependencies": {
     "@swc/core": "^1.7.42",

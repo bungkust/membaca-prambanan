@@ -4,6 +4,7 @@ import path from "path";
 
 // https://vitejs.dev/config/
 export default defineConfig(({ mode }) => ({
+  base: './', // Required for Capacitor - relative paths for assets
   server: {
     host: "::",
     port: 8080,

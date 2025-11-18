@@ -1,6 +1,9 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Volume2 } from "lucide-react";
+import { isNative } from "@/utils/platform";
+import { speak } from "@/utils/tts";
+import { logger } from "@/utils/logger";
 
 interface AudioPermissionProps {
   onGrantPermission: () => void;
@@ -12,24 +15,49 @@ const AudioPermission = ({ onGrantPermission }: AudioPermissionProps) => {
   const handleActivate = async () => {
     setIsLoading(true);
     
-    // Test TTS availability
-    if ('speechSynthesis' in window) {
-      const utterance = new SpeechSynthesisUtterance('Halo');
-      utterance.lang = 'id-ID';
-      utterance.rate = 0.8;
-      
-      utterance.onend = () => {
+    try {
+      // Test TTS availability - platform-aware
+      if (isNative()) {
+        // Native platform: test Capacitor TTS
+        await speak('Halo');
+        // Wait a bit for speech to start and ensure it's working
+        await new Promise(resolve => setTimeout(resolve, 500));
         setIsLoading(false);
         onGrantPermission();
-      };
-      
-      utterance.onerror = () => {
+      } else if (typeof window !== 'undefined' && 'speechSynthesis' in window) {
+        // Web platform: test Web Speech API
+        const utterance = new SpeechSynthesisUtterance('Halo');
+        utterance.lang = 'id-ID';
+        utterance.rate = 0.8;
+        
+        // Set timeout to prevent hanging
+        const timeout = setTimeout(() => {
+          setIsLoading(false);
+          onGrantPermission(); // Continue anyway after timeout
+        }, 3000);
+        
+        utterance.onend = () => {
+          clearTimeout(timeout);
+          setIsLoading(false);
+          onGrantPermission();
+        };
+        
+        utterance.onerror = (error) => {
+          clearTimeout(timeout);
+          logger.warn('TTS test error:', error);
+          setIsLoading(false);
+          onGrantPermission(); // Continue anyway
+        };
+        
+        window.speechSynthesis.speak(utterance);
+      } else {
+        // TTS not available, but continue anyway
         setIsLoading(false);
-        onGrantPermission(); // Continue anyway
-      };
-      
-      window.speechSynthesis.speak(utterance);
-    } else {
+        onGrantPermission();
+      }
+    } catch (error) {
+      // Error testing TTS, but continue anyway
+      logger.warn('TTS activation error:', error);
       setIsLoading(false);
       onGrantPermission();
     }

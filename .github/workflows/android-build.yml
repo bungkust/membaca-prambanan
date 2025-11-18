@@ -1,0 +1,107 @@
+name: Build Android App
+
+on:
+  push:
+    branches:
+      - main
+    tags:
+      - 'v*'
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'npm'
+          
+      - name: Install dependencies
+        run: npm ci
+        
+      - name: Build web app
+        run: npm run build
+        env:
+          ROLLUP_SKIP_NODEJS_NATIVE: 1
+          
+      - name: Setup Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+          cache: 'gradle'
+          
+      - name: Setup Android SDK
+        uses: android-actions/setup-android@v3
+        
+      - name: Cache Android SDK
+        uses: actions/cache@v3
+        with:
+          path: |
+            ~/.android
+          key: android-sdk-${{ runner.os }}-${{ hashFiles('android/**/*.gradle*') }}
+          restore-keys: |
+            android-sdk-${{ runner.os }}-
+            
+      - name: Accept Android licenses
+        run: |
+          yes | sdkmanager --licenses || true
+          
+      - name: Decode keystore
+        if: env.ANDROID_KEYSTORE_BASE64 != ''
+        env:
+          ANDROID_KEYSTORE_BASE64: ${{ secrets.ANDROID_KEYSTORE_BASE64 }}
+        run: |
+          echo "$ANDROID_KEYSTORE_BASE64" | base64 -d > android/keystore.jks
+          
+      - name: Setup key.properties
+        if: env.ANDROID_KEYSTORE_BASE64 != ''
+        env:
+          ANDROID_KEYSTORE_PASSWORD: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
+          ANDROID_KEY_ALIAS: ${{ secrets.ANDROID_KEY_ALIAS }}
+          ANDROID_KEY_PASSWORD: ${{ secrets.ANDROID_KEY_PASSWORD }}
+        run: |
+          cat > android/key.properties << EOF
+          storePassword=$ANDROID_KEYSTORE_PASSWORD
+          keyPassword=$ANDROID_KEY_PASSWORD
+          keyAlias=$ANDROID_KEY_ALIAS
+          storeFile=keystore.jks
+          EOF
+          
+      - name: Sync Capacitor
+        run: npx cap sync android
+        
+      - name: Build release AAB
+        if: env.ANDROID_KEYSTORE_BASE64 != ''
+        working-directory: android
+        run: ./gradlew bundleRelease
+        env:
+          VERSION_CODE: ${{ github.run_number }}
+          
+      - name: Build debug APK
+        working-directory: android
+        run: ./gradlew assembleDebug
+        continue-on-error: true
+        
+      - name: Upload AAB artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: app-release
+          path: android/app/build/outputs/bundle/release/app-release.aab
+          retention-days: 30
+          
+      - name: Upload APK artifact
+        uses: actions/upload-artifact@v4
+        if: success() || failure()
+        with:
+          name: app-debug
+          path: android/app/build/outputs/apk/debug/app-debug.apk
+          retention-days: 7
+          continue-on-error: true
+

@@ -1,0 +1,113 @@
+apply plugin: 'com.android.application'
+
+android {
+    namespace "com.bungkust.membacaprambanan"
+    compileSdk rootProject.ext.compileSdkVersion
+    
+    // Read version from package.json or environment variable
+    def packageJson = file('../../package.json')
+    def packageVersion = '1.5.9'
+    def versionCodeValue = 1
+    
+    // Robust version code calculation with multiple fallbacks
+    try {
+        def envVersionCode = System.getenv('VERSION_CODE')
+        def githubRunNumber = System.getenv('GITHUB_RUN_NUMBER')
+        
+        if (envVersionCode) {
+            versionCodeValue = envVersionCode.toInteger()
+        } else if (githubRunNumber) {
+            versionCodeValue = githubRunNumber.toInteger()
+        } else {
+            // Fallback: use timestamp-based version code (seconds since epoch / 100)
+            versionCodeValue = (new Date().time / 100).toInteger()
+        }
+    } catch (Exception e) {
+        println("WARNING: Failed to parse version code, using default: ${e.message}")
+        versionCodeValue = 1
+    }
+    
+    if (packageJson.exists()) {
+        try {
+            def packageJsonText = packageJson.text
+            def matcher = packageJsonText =~ /"version"\s*:\s*"([^"]+)"/
+            if (matcher.find()) {
+                packageVersion = matcher.group(1)
+            }
+        } catch (Exception e) {
+            println("WARNING: Failed to read version from package.json: ${e.message}")
+        }
+    }
+    
+    defaultConfig {
+        applicationId "com.bungkust.membacaprambanan"
+        minSdkVersion 22
+        targetSdkVersion 34
+        versionCode versionCodeValue
+        versionName packageVersion
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        aaptOptions {
+             // Files and dirs to omit from the packaged assets dir, modified to accommodate modern web apps.
+             // Default: https://android.googlesource.com/platform/frameworks/base/+/282e181b58cf72b6ca770dc7ca5f91f135444502/tools/aapt/AaptAssets.cpp#61
+            ignoreAssetsPattern '!.svn:!.git:!.ds_store:!*.scc:.*:!CVS:!thumbs.db:!picasa.ini:!*~'
+        }
+    }
+    
+    signingConfigs {
+        release {
+            def keystorePropertiesFile = rootProject.file("key.properties")
+            if (keystorePropertiesFile.exists()) {
+                def keystoreProperties = new Properties()
+                keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
+                
+                storeFile file(keystoreProperties['storeFile'])
+                storePassword keystoreProperties['storePassword']
+                keyAlias keystoreProperties['keyAlias']
+                keyPassword keystoreProperties['keyPassword']
+            }
+        }
+    }
+    
+    buildTypes {
+        release {
+            minifyEnabled true
+            shrinkResources true
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            if (signingConfigs.release.storeFile != null) {
+                signingConfig signingConfigs.release
+            }
+        }
+        debug {
+            minifyEnabled false
+        }
+    }
+}
+
+repositories {
+    flatDir{
+        dirs '../capacitor-cordova-android-plugins/src/main/libs', 'libs'
+    }
+}
+
+dependencies {
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
+    implementation "androidx.appcompat:appcompat:$androidxAppCompatVersion"
+    implementation "androidx.coordinatorlayout:coordinatorlayout:$androidxCoordinatorLayoutVersion"
+    implementation "androidx.core:core-splashscreen:$coreSplashScreenVersion"
+    implementation project(':capacitor-android')
+    testImplementation "junit:junit:$junitVersion"
+    androidTestImplementation "androidx.test.ext:junit:$androidxJunitVersion"
+    androidTestImplementation "androidx.test.espresso:espresso-core:$androidxEspressoCoreVersion"
+    implementation project(':capacitor-cordova-android-plugins')
+}
+
+apply from: 'capacitor.build.gradle'
+
+try {
+    def servicesJSON = file('google-services.json')
+    if (servicesJSON.text) {
+        apply plugin: 'com.google.gms.google-services'
+    }
+} catch(Exception e) {
+    logger.info("google-services.json not found, google-services plugin not applied. Push Notifications won't work")
+}

@@ -2,7 +2,8 @@ import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft, Volume2, Settings } from "lucide-react";
 import { Settings as SettingsType } from "@/types/quiz";
-import { speak } from "@/utils/tts";
+import { speak, stopSpeech } from "@/utils/tts";
+import { logger } from "@/utils/logger";
 
 interface MengenalSukuKataProps {
   onBack: () => void;
@@ -63,14 +64,29 @@ const MengenalSukuKata = ({ onBack, settings }: MengenalSukuKataProps) => {
     }
   };
 
-  const speakText = (text: string) => {
-    speak(text, settings?.selectedVoice);
+  const speakText = async (text: string) => {
+    try {
+      await speak(text, settings?.selectedVoice);
+    } catch (error) {
+      // Silently handle TTS errors - user can try again
+      logger.error('TTS error in MengenalSukuKata:', error);
+    }
   };
 
   const resetGame = () => {
     setSelectedConsonant('');
     setSelectedVowel('');
   };
+
+  // Cleanup TTS on unmount
+  useEffect(() => {
+    return () => {
+      // Stop any ongoing speech when component unmounts
+      stopSpeech().catch(() => {
+        // Ignore errors during cleanup
+      });
+    };
+  }, []);
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-pink-100 via-purple-50 to-indigo-100 p-4">

@@ -3,7 +3,10 @@ import { Button } from "@/components/ui/button";
 import { Settings as SettingsType } from "@/types/quiz";
 import { ArrowLeft, Volume2 } from "lucide-react";
 import { speak, getIndonesianVoices } from "@/utils/tts";
+import { isNative } from "@/utils/platform";
 import { APP_VERSION, APP_NAME, VERSION_DATE } from "@/version";
+import { toast } from "@/hooks/use-toast";
+import { logger } from "@/utils/logger";
 
 interface SettingsProps {
   settings: SettingsType;
@@ -19,16 +22,18 @@ const Settings = ({ settings, onUpdateSettings, onResetProgress, onBack }: Setti
   const [availableVoices, setAvailableVoices] = useState<SpeechSynthesisVoice[]>([]);
   const [selectedVoice, setSelectedVoice] = useState<string>('auto');
 
-  // Load available Indonesian voices
+  // Load available Indonesian voices (web only)
   useEffect(() => {
-    const voices = getIndonesianVoices();
-    setAvailableVoices(voices);
-    if (voices.length === 0) {
-      // Fallback: try to load voices after a delay
-      setTimeout(() => {
-        const delayedVoices = getIndonesianVoices();
-        setAvailableVoices(delayedVoices);
-      }, 1000);
+    if (!isNative()) {
+      const voices = getIndonesianVoices();
+      setAvailableVoices(voices);
+      if (voices.length === 0) {
+        // Fallback: try to load voices after a delay
+        setTimeout(() => {
+          const delayedVoices = getIndonesianVoices();
+          setAvailableVoices(delayedVoices);
+        }, 1000);
+      }
     }
   }, []);
 
@@ -39,8 +44,17 @@ const Settings = ({ settings, onUpdateSettings, onResetProgress, onBack }: Setti
     }
   }, [settings.selectedVoice]);
 
-  const handleTestVoice = (voiceName: string) => {
-    speak('Halo, ini adalah tes suara untuk anak-anak belajar membaca', voiceName);
+  const handleTestVoice = async (voiceName: string) => {
+    try {
+      await speak('Halo, ini adalah tes suara untuk anak-anak belajar membaca', voiceName);
+    } catch (error) {
+      logger.error('Voice test failed:', error);
+      toast({
+        variant: 'destructive',
+        title: 'Gagal Memutar Suara',
+        description: 'Tidak dapat memutar suara tes. Pastikan audio diaktifkan dan coba lagi.',
+      });
+    }
   };
 
   const handleVoiceChange = (voiceName: string) => {
@@ -60,8 +74,17 @@ const Settings = ({ settings, onUpdateSettings, onResetProgress, onBack }: Setti
     }, 2000);
   };
 
-  const handleTestAudio = () => {
-    speak('Halo, ini adalah tes audio');
+  const handleTestAudio = async () => {
+    try {
+      await speak('Halo, ini adalah tes audio');
+    } catch (error) {
+      logger.error('Audio test failed:', error);
+      toast({
+        variant: 'destructive',
+        title: 'Gagal Memutar Audio',
+        description: 'Tidak dapat memutar audio tes. Pastikan audio diaktifkan dan coba lagi.',
+      });
+    }
   };
 
   const handleReset = () => {
@@ -158,25 +181,36 @@ const Settings = ({ settings, onUpdateSettings, onResetProgress, onBack }: Setti
         <div className="bg-card rounded-3xl shadow-playful p-6 mb-6">
           <h2 className="text-2xl font-bold mb-4">🔊 Pengaturan Audio</h2>
 
-          {/* Voice Selection */}
-          <div className="mb-6">
-            <label className="text-lg font-bold mb-3 block">Suara TTS:</label>
-            <select
-              value={selectedVoice}
-              onChange={(e) => handleVoiceChange(e.target.value)}
-              className="w-full p-3 rounded-xl border-2 border-primary/20 bg-card text-lg font-semibold focus:border-primary focus:outline-none"
-            >
-              <option value="auto">Otomatis (Direkomendasikan)</option>
-              {availableVoices.map((voice, index) => (
-                <option key={index} value={voice.name}>
-                  {voice.name} ({voice.lang})
-                </option>
-              ))}
-            </select>
-            <p className="text-sm text-muted-foreground mt-2">
-              Pilih suara yang paling jelas untuk anak-anak
-            </p>
-          </div>
+          {/* Voice Selection - Web only */}
+          {!isNative() && (
+            <div className="mb-6">
+              <label className="text-lg font-bold mb-3 block">Suara TTS:</label>
+              <select
+                value={selectedVoice}
+                onChange={(e) => handleVoiceChange(e.target.value)}
+                className="w-full p-3 rounded-xl border-2 border-primary/20 bg-card text-lg font-semibold focus:border-primary focus:outline-none"
+              >
+                <option value="auto">Otomatis (Direkomendasikan)</option>
+                {availableVoices.map((voice, index) => (
+                  <option key={index} value={voice.name}>
+                    {voice.name} ({voice.lang})
+                  </option>
+                ))}
+              </select>
+              <p className="text-sm text-muted-foreground mt-2">
+                Pilih suara yang paling jelas untuk anak-anak
+              </p>
+            </div>
+          )}
+          
+          {/* Native platform message */}
+          {isNative() && (
+            <div className="mb-6 p-4 bg-muted rounded-xl">
+              <p className="text-sm text-muted-foreground">
+                Aplikasi menggunakan suara sistem untuk Text-to-Speech. Suara akan otomatis menggunakan bahasa Indonesia.
+              </p>
+            </div>
+          )}
 
           <Button
             size="lg"
