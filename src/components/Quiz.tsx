@@ -316,7 +316,7 @@ const Quiz = ({ quizType, settings, appState, setAppState, onComplete, onBack }:
       />
       <QuizCard>
           {currentQuestion.image && (
-            <div className="text-8xl text-center mb-6">
+            <div className="text-5xl sm:text-6xl md:text-8xl text-center mb-6">
               {currentQuestion.image}
             </div>
           )}
@@ -324,12 +324,12 @@ const Quiz = ({ quizType, settings, appState, setAppState, onComplete, onBack }:
           <div className="text-center mb-6">
             {/* Hide the syllable display for suku kata quizzes */}
             {quizType !== 'suku_kata' && (
-              <h2 className="text-6xl font-bold mb-4">
+              <h2 className="text-4xl sm:text-5xl md:text-6xl font-bold mb-4">
                 {currentQuestion.display}
               </h2>
             )}
 
-            <p className="text-xl text-muted-foreground mb-4">
+            <p className="text-base sm:text-lg md:text-xl text-muted-foreground mb-4">
               {currentQuestion.prompt || 'Dengarkan audio dan pilih jawaban yang benar'}
             </p>
             
@@ -345,20 +345,20 @@ const Quiz = ({ quizType, settings, appState, setAppState, onComplete, onBack }:
           </div>
           
           {showFeedback && (
-            <div className={`text-center mb-6 p-6 rounded-2xl ${isCorrect ? 'bg-success/10' : 'bg-destructive/10'} popup-bounce`}>
-              <div className="text-6xl mb-2">{isCorrect ? '🎉' : '❌'}</div>
-              <h3 className="text-3xl font-bold mb-2">
+            <div className={`text-center mb-6 p-4 sm:p-6 rounded-2xl ${isCorrect ? 'bg-success/10' : 'bg-destructive/10'} popup-bounce`}>
+              <div className="text-4xl sm:text-5xl md:text-6xl mb-2">{isCorrect ? '🎉' : '❌'}</div>
+              <h3 className="text-xl sm:text-2xl md:text-3xl font-bold mb-2">
                 {isCorrect ? 'Benar!' : 'Salah'}
               </h3>
               {!isCorrect && (
-                <p className="text-xl">
+                <p className="text-base sm:text-lg md:text-xl">
                   Jawaban yang benar: <span className="font-bold">{currentQuestion.answer}</span>
                 </p>
               )}
             </div>
           )}
           
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3 sm:gap-4 md:gap-6">
             {currentQuestion.choices.map((choice, index) => {
               const isSelected = selectedAnswer === choice;
               const isAnswer = choice === currentQuestion.answer;

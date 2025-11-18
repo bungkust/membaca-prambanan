@@ -90,15 +90,15 @@ const History = ({ sessionHistory, onBack, onClearHistory, onQuizSelection }: Hi
           Kembali
         </Button>
         
-        <div className="bg-card rounded-3xl shadow-playful p-8 mb-6">
-          <h1 className="text-4xl font-bold text-center mb-8">
+        <div className="bg-card rounded-3xl shadow-playful p-4 sm:p-6 md:p-8 mb-6">
+          <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold text-center mb-6 sm:mb-8">
             <span className="bg-gradient-to-r from-primary via-accent to-secondary bg-clip-text text-transparent">
               📊 Riwayat Sesi
             </span>
           </h1>
           
           {/* Statistics */}
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-8">
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 sm:gap-3 md:gap-4 mb-6 sm:mb-8">
             <div className="bg-gradient-to-br from-primary/10 to-accent/10 rounded-2xl p-4 text-center">
               <div className="text-4xl font-bold">{totalSessions}</div>
               <div className="text-sm text-muted-foreground mt-1">Total Sesi</div>
@@ -124,7 +124,7 @@ const History = ({ sessionHistory, onBack, onClearHistory, onQuizSelection }: Hi
           <div className="space-y-4 mb-6">
             <div>
               <label className="text-sm font-bold mb-2 block">Filter berdasarkan:</label>
-              <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
+              <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-4 gap-2 sm:gap-3">
                 {[
                   { value: 'all', label: 'Semua Sesi' },
                   { value: 'today', label: 'Hari Ini' },
@@ -146,7 +146,7 @@ const History = ({ sessionHistory, onBack, onClearHistory, onQuizSelection }: Hi
             
             <div>
               <label className="text-sm font-bold mb-2 block">Urutkan berdasarkan:</label>
-              <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
+              <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-4 gap-2 sm:gap-3">
                 {[
                   { value: 'newest', label: 'Terbaru' },
                   { value: 'oldest', label: 'Terlama' },
@@ -192,9 +192,9 @@ const History = ({ sessionHistory, onBack, onClearHistory, onQuizSelection }: Hi
                 const date = new Date(session.timestamp);
                 
                 return (
-                  <div key={session.id} className="bg-card rounded-2xl shadow-button p-6 slide-up">
+                  <div key={session.id} className="bg-card rounded-2xl shadow-button p-4 sm:p-6 slide-up">
                     <div className="flex items-center justify-between mb-3">
-                      <div className="font-bold text-xl">
+                      <div className="font-bold text-lg sm:text-xl">
                         {getQuizTypeLabel(session.quizType)}
                       </div>
                       <div className="flex items-center gap-2">
@@ -217,29 +217,29 @@ const History = ({ sessionHistory, onBack, onClearHistory, onQuizSelection }: Hi
                       </div>
                     </div>
                     
-                    <div className="flex items-center gap-6">
+                    <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2 sm:gap-4 md:gap-6">
                       <div className="flex-1 bg-muted rounded-xl p-4">
-                        <div className="text-3xl font-bold">
+                        <div className="text-2xl sm:text-3xl font-bold">
                           {session.score}/{session.totalQuestions}
                         </div>
                         <div className="text-sm text-muted-foreground">Skor</div>
                       </div>
 
                       <div className="flex-1 bg-muted rounded-xl p-4">
-                        <div className="text-3xl font-bold">{percentage}%</div>
+                        <div className="text-2xl sm:text-3xl font-bold">{percentage}%</div>
                         <div className="text-sm text-muted-foreground">Persentase</div>
                       </div>
 
                       <div className="flex-1 bg-muted rounded-xl p-4">
-                        <div className="flex items-center justify-center gap-1 text-3xl font-bold">
-                          <Star className="w-6 h-6 text-yellow-400 fill-yellow-400" />
+                        <div className="flex items-center justify-center gap-1 text-2xl sm:text-3xl font-bold">
+                          <Star className="w-5 h-5 sm:w-6 sm:h-6 text-yellow-400 fill-yellow-400" />
                           {session.stars || 0}
                         </div>
                         <div className="text-sm text-muted-foreground">Bintang</div>
                       </div>
 
                       <div className="flex-1 bg-muted rounded-xl p-4">
-                        <div className="text-3xl font-bold">
+                        <div className="text-2xl sm:text-3xl font-bold">
                           {(() => {
                             const duration = session.duration || 0;
                             const minutes = Math.floor(duration / 60000);
@@ -257,11 +257,11 @@ const History = ({ sessionHistory, onBack, onClearHistory, onQuizSelection }: Hi
                       <div className="mt-4 pt-4 border-t border-border">
                         {session.wrongAnswers.length > 0 ? (
                           <>
-                            <h4 className="font-bold text-lg mb-3 flex items-center gap-2">
+                            <h4 className="font-bold text-base sm:text-lg mb-3 flex items-center gap-2">
                               <XCircle className="w-5 h-5 text-destructive" />
                               Soal yang Salah ({session.wrongAnswers.length})
                             </h4>
-                            <div className="space-y-3 max-h-64 overflow-y-auto">
+                            <div className="space-y-3 max-h-48 sm:max-h-64 md:max-h-80 overflow-y-auto">
                               {session.wrongAnswers.map((wrongAnswer, index) => (
                                 <div key={index} className="bg-card rounded-xl p-4">
                                   <div className="flex items-center gap-3 mb-2">

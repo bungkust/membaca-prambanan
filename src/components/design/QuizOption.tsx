@@ -11,7 +11,7 @@ interface QuizOptionProps {
 }
 
 const QuizOption = ({ label, isSelected, isAnswer, showFeedback, isCorrect, disabled, onSelect }: QuizOptionProps) => {
-	let buttonClass = 'h-24 text-3xl font-bold shadow-button btn-bounce';
+	let buttonClass = 'h-24 text-2xl sm:text-3xl font-bold shadow-button btn-bounce';
 	if (showFeedback) {
 		if (isAnswer) {
 			buttonClass += ' bg-success text-white';

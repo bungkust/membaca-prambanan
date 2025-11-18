@@ -42,19 +42,19 @@ const QuizSelection = ({ onSelectQuiz, onBack, onOpenSettings, onOpenHistory, se
           Kembali
         </Button>
 
-        <div className="bg-card rounded-3xl shadow-playful p-8 mb-8 text-center">
-          <h1 className="text-4xl font-bold mb-4">
+        <div className="bg-card rounded-3xl shadow-playful p-4 sm:p-6 md:p-8 mb-6 sm:mb-8 text-center">
+          <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-4">
             <span className="bg-gradient-to-r from-primary via-accent to-secondary bg-clip-text text-transparent">
               Pilih Jenis Kuis
             </span>
           </h1>
-          <p className="text-lg text-muted-foreground">
+          <p className="text-base sm:text-lg text-muted-foreground">
             Pilih jenis kuis yang ingin dimainkan!
           </p>
         </div>
 
         {/* Star Summary Section */}
-        <div className="relative bg-gradient-to-br from-yellow-50 via-orange-50 to-amber-50 rounded-3xl p-8 mb-8 border-3 border-yellow-200 shadow-2xl overflow-hidden">
+        <div className="relative bg-gradient-to-br from-yellow-50 via-orange-50 to-amber-50 rounded-3xl p-4 sm:p-6 md:p-8 mb-6 sm:mb-8 border-3 border-yellow-200 shadow-2xl overflow-hidden">
           {/* Background decorative elements */}
           <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-yellow-200/30 to-orange-200/30 rounded-full -translate-y-16 translate-x-16"></div>
           <div className="absolute bottom-0 left-0 w-24 h-24 bg-gradient-to-tr from-amber-200/30 to-yellow-200/30 rounded-full translate-y-12 -translate-x-12"></div>
@@ -77,10 +77,10 @@ const QuizSelection = ({ onSelectQuiz, onBack, onOpenSettings, onOpenHistory, se
 
             {/* Main star count */}
             <div className="mb-3">
-              <span className="text-4xl font-bold bg-gradient-to-r from-yellow-600 to-orange-600 bg-clip-text text-transparent">
+              <span className="text-3xl sm:text-4xl font-bold bg-gradient-to-r from-yellow-600 to-orange-600 bg-clip-text text-transparent">
                 {getTotalStars()}
               </span>
-              <span className="text-2xl font-semibold text-yellow-700 ml-2">
+              <span className="text-xl sm:text-2xl font-semibold text-yellow-700 ml-2">
                 Bintang
               </span>
             </div>
@@ -99,12 +99,12 @@ const QuizSelection = ({ onSelectQuiz, onBack, onOpenSettings, onOpenHistory, se
 
         {/* Settings and History buttons */}
         {(onOpenSettings || onOpenHistory) && (
-          <div className="grid grid-cols-2 gap-4 mb-8">
+          <div className="grid grid-cols-2 gap-4 mb-6 sm:mb-8">
             {onOpenSettings && (
               <Button
                 variant="outline"
                 size="lg"
-                className="h-20 text-base bg-card hover:bg-muted border-2 shadow-button btn-bounce"
+                className="h-16 sm:h-20 text-base bg-card hover:bg-muted border-2 shadow-button btn-bounce"
                 onClick={onOpenSettings}
               >
                 <Settings className="w-5 h-5 mr-2" />
@@ -116,7 +116,7 @@ const QuizSelection = ({ onSelectQuiz, onBack, onOpenSettings, onOpenHistory, se
               <Button
                 variant="outline"
                 size="lg"
-                className="h-20 text-base bg-card hover:bg-muted border-2 shadow-button btn-bounce"
+                className="h-16 sm:h-20 text-base bg-card hover:bg-muted border-2 shadow-button btn-bounce"
                 onClick={onOpenHistory}
               >
                 <History className="w-5 h-5 mr-2" />
@@ -126,13 +126,13 @@ const QuizSelection = ({ onSelectQuiz, onBack, onOpenSettings, onOpenHistory, se
           </div>
         )}
 
-        <div className="grid md:grid-cols-2 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
           {quizTypes.map((quiz) => {
             const stars = calculateQuizStars(quiz.id);
             return (
               <div
                 key={quiz.id}
-                className="bg-card rounded-3xl shadow-playful p-6 hover:scale-105 transition-transform slide-up"
+                className="bg-card rounded-3xl shadow-playful p-4 sm:p-6 hover:scale-105 transition-transform slide-up"
               >
                 <div className={`w-20 h-20 bg-gradient-to-br ${quiz.gradient} rounded-2xl flex items-center justify-center mb-4`}>
                   <span className="text-4xl">{quiz.emoji}</span>

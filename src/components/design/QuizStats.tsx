@@ -12,16 +12,16 @@ const StatPill = ({ children }: { children: React.ReactNode }) => (
 
 const QuizStats = ({ timeRemaining, showTimer, stars }: QuizStatsProps) => {
 	return (
-		<div className="flex items-center gap-4">
+		<div className="flex items-center gap-2 sm:gap-4">
 			{showTimer && (
 				<StatPill>
-					<span className="text-2xl">⏰</span>
-					<span className="text-xl font-bold">{timeRemaining}</span>
+					<span className="text-xl sm:text-2xl">⏰</span>
+					<span className="text-lg sm:text-xl font-bold">{timeRemaining}</span>
 				</StatPill>
 			)}
 			<StatPill>
-				<span className="text-2xl">⭐</span>
-				<span className="text-xl font-bold">{stars}</span>
+				<span className="text-xl sm:text-2xl">⭐</span>
+				<span className="text-lg sm:text-xl font-bold">{stars}</span>
 			</StatPill>
 		</div>
 	);

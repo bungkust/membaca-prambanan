@@ -97,24 +97,24 @@ const MengenalSukuKata = ({ onBack, settings }: MengenalSukuKataProps) => {
             <ArrowLeft className="w-5 h-5 mr-2" />
             Kembali
           </Button>
-          <h1 className="text-2xl font-bold text-gray-800">🎡 Mengenal Suku Kata</h1>
+          <h1 className="text-xl sm:text-2xl font-bold text-gray-800">🎡 Mengenal Suku Kata</h1>
           <div className="w-20"></div> {/* Spacer for centering */}
         </div>
 
         {/* Game Area */}
-        <div className="bg-white rounded-3xl shadow-lg p-8 mb-8">
-          <div className="flex flex-col lg:flex-row items-center justify-center gap-8">
+        <div className="bg-white rounded-3xl shadow-lg p-4 sm:p-6 md:p-8 mb-6 sm:mb-8">
+          <div className="flex flex-col md:flex-row items-center justify-center gap-4 md:gap-8">
             {/* Consonant Section */}
             <div className="flex flex-col items-center gap-4">
               <div className="text-center">
-                <h3 className="text-lg font-semibold mb-2 text-gray-700">Pilih Huruf Konsonan</h3>
-                <div className="w-24 h-24 bg-white border-4 border-blue-500 rounded-2xl flex items-center justify-center text-3xl font-bold text-gray-800 shadow-lg">
+                <h3 className="text-base sm:text-lg font-semibold mb-2 text-gray-700">Pilih Huruf Konsonan</h3>
+                <div className="w-20 h-20 sm:w-24 sm:h-24 bg-white border-4 border-blue-500 rounded-2xl flex items-center justify-center text-2xl sm:text-3xl font-bold text-gray-800 shadow-lg">
                   {selectedConsonant ? selectedConsonant.toUpperCase() : '?'}
                 </div>
               </div>
 
-              <div className="bg-white rounded-2xl p-4 shadow-inner max-w-sm">
-                <div className="grid grid-cols-5 gap-2">
+              <div className="bg-white rounded-2xl p-4 shadow-inner max-w-full sm:max-w-sm">
+                <div className="grid grid-cols-4 sm:grid-cols-5 md:grid-cols-6 gap-1.5 sm:gap-2">
                   {consonants.map((consonant, index) => (
                     <button
                       key={consonant}
@@ -135,12 +135,12 @@ const MengenalSukuKata = ({ onBack, settings }: MengenalSukuKataProps) => {
 
             {/* Vowel Section */}
             <div className="flex flex-col items-center gap-4">
-              <h3 className="text-lg font-semibold text-gray-700">Pilih Huruf Vokal</h3>
+              <h3 className="text-base sm:text-lg font-semibold text-gray-700">Pilih Huruf Vokal</h3>
               <div className="flex gap-3">
                 {vowels.map((vowel) => (
                   <button
                     key={vowel}
-                    className={`w-16 h-16 rounded-full font-bold text-white text-xl transition-all duration-200 hover:scale-110 ${
+                    className={`w-14 h-14 sm:w-16 sm:h-16 rounded-full font-bold text-white text-lg sm:text-xl transition-all duration-200 hover:scale-110 ${
                       selectedVowel === vowel ? 'ring-4 ring-green-300 scale-110' : ''
                     }`}
                     style={{
@@ -160,8 +160,8 @@ const MengenalSukuKata = ({ onBack, settings }: MengenalSukuKataProps) => {
           </div>
 
           {/* Result Display */}
-          <div className="text-center mt-8">
-            <div className="text-4xl font-bold text-gray-800 mb-4 min-h-[3rem] flex items-center justify-center">
+          <div className="text-center mt-6 sm:mt-8">
+            <div className="text-3xl sm:text-4xl font-bold text-gray-800 mb-4 min-h-[3rem] flex items-center justify-center">
               {selectedConsonant && selectedVowel ? (
                 <span className="bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">
                   {(selectedConsonant + selectedVowel).toUpperCase()}
@@ -182,8 +182,8 @@ const MengenalSukuKata = ({ onBack, settings }: MengenalSukuKataProps) => {
         </div>
 
         {/* Settings */}
-        <div className="bg-white rounded-2xl p-6 mt-6">
-          <h3 className="text-lg font-semibold mb-4 flex items-center text-gray-700">
+        <div className="bg-white rounded-2xl p-4 sm:p-6 mt-4 sm:mt-6">
+          <h3 className="text-base sm:text-lg font-semibold mb-4 flex items-center text-gray-700">
             <Settings className="w-5 h-5 mr-2" />
             Pengaturan
           </h3>

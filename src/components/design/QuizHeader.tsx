@@ -14,7 +14,7 @@ const QuizHeader = ({ onBack, right }: QuizHeaderProps) => {
 				<ArrowLeft className="w-5 h-5 mr-2" />
 				Kembali
 			</Button>
-			{right ? <div className="flex items-center gap-4">{right}</div> : null}
+			{right ? <div className="flex items-center gap-2 sm:gap-4">{right}</div> : null}
 		</div>
 	);
 };

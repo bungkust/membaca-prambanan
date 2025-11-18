@@ -101,8 +101,8 @@ const Settings = ({ settings, onUpdateSettings, onResetProgress, onBack }: Setti
           Kembali
         </Button>
         
-        <div className="bg-card rounded-3xl shadow-playful p-8 mb-6">
-          <h1 className="text-4xl font-bold text-center mb-8">
+        <div className="bg-card rounded-3xl shadow-playful p-4 sm:p-6 md:p-8 mb-6">
+          <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold text-center mb-6 sm:mb-8">
             <span className="bg-gradient-to-r from-primary via-accent to-secondary bg-clip-text text-transparent">
               Pengaturan
             </span>
@@ -111,8 +111,8 @@ const Settings = ({ settings, onUpdateSettings, onResetProgress, onBack }: Setti
           <div className="space-y-6">
             {/* Questions per session */}
             <div>
-              <label className="text-lg font-bold mb-3 block">Jumlah soal per sesi:</label>
-              <div className="grid grid-cols-4 gap-4">
+              <label className="text-base sm:text-lg font-bold mb-3 block">Jumlah soal per sesi:</label>
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 sm:gap-3 md:gap-4">
                 {[10, 20, 30, 50].map(num => (
                   <Button
                     key={num}
@@ -131,8 +131,8 @@ const Settings = ({ settings, onUpdateSettings, onResetProgress, onBack }: Setti
             
             {/* Timer */}
             <div>
-              <label className="text-lg font-bold mb-3 block">Waktu per soal:</label>
-              <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
+              <label className="text-base sm:text-lg font-bold mb-3 block">Waktu per soal:</label>
+              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2 sm:gap-3">
                 {[0, 20, 15, 10, 5].map(seconds => (
                   <Button
                     key={seconds}
@@ -155,10 +155,10 @@ const Settings = ({ settings, onUpdateSettings, onResetProgress, onBack }: Setti
             </div>
             
             {/* Remember questions */}
-            <div className="bg-muted rounded-2xl p-6">
+            <div className="bg-muted rounded-2xl p-4 sm:p-6">
               <label className="flex items-center justify-between cursor-pointer">
                 <div>
-                  <div className="font-bold text-lg mb-1">Ingat soal antar sesi</div>
+                  <div className="font-bold text-base sm:text-lg mb-1">Ingat soal antar sesi</div>
                   <div className="text-sm text-muted-foreground">
                     Soal yang sudah dijawab tidak akan muncul lagi
                   </div>
@@ -178,17 +178,17 @@ const Settings = ({ settings, onUpdateSettings, onResetProgress, onBack }: Setti
         </div>
         
         {/* Audio Test */}
-        <div className="bg-card rounded-3xl shadow-playful p-6 mb-6">
-          <h2 className="text-2xl font-bold mb-4">🔊 Pengaturan Audio</h2>
+        <div className="bg-card rounded-3xl shadow-playful p-4 sm:p-6 mb-6">
+          <h2 className="text-xl sm:text-2xl font-bold mb-4">🔊 Pengaturan Audio</h2>
 
           {/* Voice Selection - Web only */}
           {!isNative() && (
             <div className="mb-6">
-              <label className="text-lg font-bold mb-3 block">Suara TTS:</label>
+              <label className="text-base sm:text-lg font-bold mb-3 block">Suara TTS:</label>
               <select
                 value={selectedVoice}
                 onChange={(e) => handleVoiceChange(e.target.value)}
-                className="w-full p-3 rounded-xl border-2 border-primary/20 bg-card text-lg font-semibold focus:border-primary focus:outline-none"
+                className="w-full p-3 rounded-xl border-2 border-primary/20 bg-card text-base sm:text-lg font-semibold focus:border-primary focus:outline-none"
               >
                 <option value="auto">Otomatis (Direkomendasikan)</option>
                 {availableVoices.map((voice, index) => (
@@ -224,8 +224,8 @@ const Settings = ({ settings, onUpdateSettings, onResetProgress, onBack }: Setti
         </div>
 
         {/* App Version Info */}
-        <div className="bg-card rounded-3xl shadow-playful p-6 mb-6">
-          <h2 className="text-2xl font-bold mb-4">📱 Informasi Aplikasi</h2>
+        <div className="bg-card rounded-3xl shadow-playful p-4 sm:p-6 mb-6">
+          <h2 className="text-xl sm:text-2xl font-bold mb-4">📱 Informasi Aplikasi</h2>
           <div className="space-y-4">
             <div className="bg-gradient-to-r from-primary/10 to-accent/10 rounded-2xl p-4">
               <div className="flex items-center justify-between mb-2">
@@ -248,8 +248,8 @@ const Settings = ({ settings, onUpdateSettings, onResetProgress, onBack }: Setti
         </div>
 
         {/* Reset Progress */}
-        <div className="bg-card rounded-3xl shadow-playful p-6 mb-6">
-          <h2 className="text-2xl font-bold mb-2">Reset Progress</h2>
+        <div className="bg-card rounded-3xl shadow-playful p-4 sm:p-6 mb-6">
+          <h2 className="text-xl sm:text-2xl font-bold mb-2">Reset Progress</h2>
           <p className="text-muted-foreground mb-4">
             Hapus semua progress dan mulai dari awal
           </p>
@@ -288,7 +288,7 @@ const Settings = ({ settings, onUpdateSettings, onResetProgress, onBack }: Setti
         
         <Button
           size="lg"
-          className="w-full text-xl py-6 bg-gradient-to-r from-primary to-accent hover:opacity-90 transition-all shadow-button btn-bounce"
+          className="w-full text-lg sm:text-xl md:text-2xl py-4 sm:py-6 bg-gradient-to-r from-primary to-accent hover:opacity-90 transition-all shadow-button btn-bounce"
           onClick={handleSave}
         >
           💾 Simpan Pengaturan
