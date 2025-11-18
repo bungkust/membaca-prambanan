@@ -63,7 +63,7 @@ Indonesia adalah salah satu pasar mobile terbesar di dunia dengan:
 - ✅ No adult content (required)
 
 ### 4. Payment Methods
-
+ 
 **Jika Menggunakan In-App Purchases:**
 
 **Supported Payment Methods:**
