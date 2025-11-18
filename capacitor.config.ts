@@ -8,7 +8,7 @@ const config: CapacitorConfig = {
     androidScheme: 'https'
   },
   android: {
-    minVersion: 22,
+    minVersion: 23,
     buildOptions: {
       keystorePath: undefined,
       keystoreAlias: undefined

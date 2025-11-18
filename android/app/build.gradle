@@ -41,7 +41,7 @@ android {
     
     defaultConfig {
         applicationId "com.bungkust.membacaprambanan"
-        minSdkVersion 22
+        minSdkVersion 23
         targetSdkVersion 34
         versionCode versionCodeValue
         versionName packageVersion
@@ -110,4 +110,62 @@ try {
     }
 } catch(Exception e) {
     logger.info("google-services.json not found, google-services plugin not applied. Push Notifications won't work")
+}
+
+// Copy build outputs to custom directory with unique names
+def customOutputDir = "/Users/ruangguru/Documents/Bungkuss/android-membaca build"
+
+android.applicationVariants.all { variant ->
+    variant.assembleProvider.get().doLast {
+        def outputDir = new File(customOutputDir)
+        outputDir.mkdirs()
+        
+        // Generate unique filename: version_timestamp
+        def timestamp = new Date().format('yyyyMMdd_HHmmss')
+        def version = variant.versionName.replaceAll('\\.', '_') // Replace dots with underscores
+        
+        // Copy APK files (for newer Gradle versions)
+        variant.outputs.all { output ->
+            def apkFile = output.outputFile
+            if (apkFile != null && apkFile.exists() && apkFile.name.endsWith('.apk')) {
+                def buildType = variant.buildType.name // debug or release
+                def uniqueName = "app-${buildType}-${version}_${timestamp}.apk"
+                def destFile = new File(outputDir, uniqueName)
+                
+                copy {
+                    from apkFile
+                    into outputDir
+                    rename { uniqueName }
+                }
+                println "✓ Copied APK to: ${destFile.absolutePath}"
+            }
+        }
+    }
+}
+
+// For AAB (bundle) files - hook into bundleRelease task
+afterEvaluate {
+    tasks.matching { it.name.startsWith("bundle") && it.name.endsWith("Release") }.all { task ->
+        task.doLast {
+            def outputDir = new File(customOutputDir)
+            outputDir.mkdirs()
+            
+            def bundleFile = file("${project.buildDir}/outputs/bundle/release/app-release.aab")
+            if (bundleFile.exists()) {
+                // Get version from defaultConfig
+                def version = android.defaultConfig.versionName.replaceAll('\\.', '_')
+                // Generate unique filename: version_timestamp
+                def timestamp = new Date().format('yyyyMMdd_HHmmss')
+                def uniqueName = "app-release-${version}_${timestamp}.aab"
+                def destFile = new File(outputDir, uniqueName)
+                
+                copy {
+                    from bundleFile
+                    into outputDir
+                    rename { uniqueName }
+                }
+                println "✓ Copied AAB to: ${destFile.absolutePath}"
+            }
+        }
+    }
 }
