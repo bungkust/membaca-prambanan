@@ -1,19 +1,19 @@
 import { QuizDefinition } from '../types';
 import { metadata } from './metadata';
-import { generateLengkapiSukaKataQuestions } from './generator';
+import { generateLengkapiSukuKataDepanQuestions } from './generator';
 import { filterAndSelectQuestions } from '../utils';
 
-const lengkapiSukuKataQuiz: QuizDefinition = {
+const lengkapiSukuKataBelakangQuiz: QuizDefinition = {
   metadata,
   generateQuestions: (count: number, seenIds: Set<string>) => {
-    const allQuestions = generateLengkapiSukaKataQuestions();
+    const allQuestions = generateLengkapiSukuKataDepanQuestions();
     return filterAndSelectQuestions(allQuestions, count, seenIds);
   },
 };
 
 export function getQuizDefinition(): QuizDefinition {
-  return lengkapiSukuKataQuiz;
+  return lengkapiSukuKataBelakangQuiz;
 }
 
-export default lengkapiSukuKataQuiz;
+export default lengkapiSukuKataBelakangQuiz;
 

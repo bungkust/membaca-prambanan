@@ -3,7 +3,7 @@ import { metadata } from './metadata';
 import { generateLengkapiSukuKataBelakangQuestions } from './generator';
 import { filterAndSelectQuestions } from '../utils';
 
-const lengkapiSukuKataBelakangQuiz: QuizDefinition = {
+const lengkapiSukuKataQuiz: QuizDefinition = {
   metadata,
   generateQuestions: (count: number, seenIds: Set<string>) => {
     const allQuestions = generateLengkapiSukuKataBelakangQuestions();
@@ -12,8 +12,8 @@ const lengkapiSukuKataBelakangQuiz: QuizDefinition = {
 };
 
 export function getQuizDefinition(): QuizDefinition {
-  return lengkapiSukuKataBelakangQuiz;
+  return lengkapiSukuKataQuiz;
 }
 
-export default lengkapiSukuKataBelakangQuiz;
+export default lengkapiSukuKataQuiz;
 

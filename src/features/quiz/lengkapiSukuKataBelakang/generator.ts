@@ -1,20 +1,26 @@
 import { Question } from "@/types/quiz";
 import { shuffleArray } from '../utils';
-import { lengkapiSukuKataBelakangData } from './data';
+import { lengkapiSukuKataBelakangData } from "./data";
 
 export function generateLengkapiSukuKataBelakangQuestions(): Question[] {
-  return lengkapiSukuKataBelakangData.map(item => ({
-    id: item.id + '_belakang',
-    type: 'lengkapi_suku_kata_belakang' as const,
-    prompt: 'Lengkapi bagian depan kata dengan suku kata yang tepat',
-    display: item.display,
-    ttsText: item.id,
-    answer: item.answer,
-    choices: shuffleArray(item.choices),
-    image: item.image,
-    word: item.id,
-    level: 'mudah',
-    tags: ['lengkapi_suku_kata_belakang']
-  }));
+  return lengkapiSukuKataBelakangData
+    .filter(item => item.id && item.display && item.answer && item.choices && Array.isArray(item.choices))
+    .map(item => {
+      // Double-check choices is an array before using it
+      const choices = Array.isArray(item.choices) ? item.choices : [];
+      return {
+        id: item.id!,
+        type: 'lengkapi_suku_kata_belakang' as const,
+        prompt: 'Lengkapi kata belakang dengan suku kata yang tepat',
+        display: item.display!,
+        ttsText: item.id!,
+        answer: item.answer!,
+        choices: shuffleArray(choices),
+        image: item.image,
+        word: item.id!,
+        level: 'mudah' as const,
+        tags: ['lengkapi_suku_kata_belakang'] as const
+      };
+    });
 }
 

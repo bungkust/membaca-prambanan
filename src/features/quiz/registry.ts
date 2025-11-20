@@ -1,9 +1,10 @@
 import { QuizDefinition, QuizMetadata } from './types';
+import { logger } from '../../utils/logger';
 import { getQuizDefinition as getSukuKata } from './sukuKata';
 import { getQuizDefinition as getAwalKata } from './awalKata';
 import { getQuizDefinition as getAkhirKata } from './akhirKata';
-import { getQuizDefinition as getLengkapiSukuKata } from './lengkapiSukuKata';
 import { getQuizDefinition as getLengkapiSukuKataBelakang } from './lengkapiSukuKataBelakang';
+import { getQuizDefinition as getLengkapiSukuKataDepan } from './lengkapiSukuKataDepan';
 import { getQuizDefinition as getMengenalSukuKata } from './mengenalSukuKata';
 
 /**
@@ -14,8 +15,8 @@ export const QUIZ_REGISTRY = {
   suku_kata: getSukuKata(),
   awal_kata: getAwalKata(),
   akhir_kata: getAkhirKata(),
-  lengkapi_suku_kata: getLengkapiSukuKata(),
   lengkapi_suku_kata_belakang: getLengkapiSukuKataBelakang(),
+  lengkapi_suku_kata_depan: getLengkapiSukuKataDepan(),
   mengenal_suku_kata: getMengenalSukuKata(),
 } as const;
 
