@@ -14,6 +14,7 @@ export type ScreenType =
   | 'HISTORY'
   | 'INSTALL'
   | 'PRIVACY_POLICY'
+  | 'TERMS_OF_SERVICE'
   | 'ABOUT';
 
 /**
@@ -32,6 +33,7 @@ export function isValidScreenType(value: string): value is ScreenType {
     'HISTORY',
     'INSTALL',
     'PRIVACY_POLICY',
+    'TERMS_OF_SERVICE',
     'ABOUT'
   ];
   return validScreens.includes(value as ScreenType);

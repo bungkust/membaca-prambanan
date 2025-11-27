@@ -169,15 +169,15 @@ dikirim ke server. Tidak ada database server yang menyimpan data audio.
 
 Sebelum submit, pastikan:
 
-- [ ] Audio data declared dengan benar
-- [ ] Purpose jelas (App functionality)
-- [ ] Collection type: Ephemeral
-- [ ] Sharing: No
-- [ ] Encryption: Yes
-- [ ] Data deletion: Yes, explained
-- [ ] COPPA declared: Yes
-- [ ] All permissions justified
-- [ ] No misleading information
+- [x] ✅ Audio data declared dengan benar
+- [x] ✅ Purpose jelas (App functionality)
+- [x] ✅ Collection type: Ephemeral (Sudah dijelaskan di Privacy Policy)
+- [x] ✅ Sharing: No
+- [x] ✅ Encryption: Yes (HTTPS)
+- [x] ✅ Data deletion: Yes, explained (Reset Progress + Uninstall)
+- [x] ✅ COPPA declared: Yes
+- [x] ✅ All permissions justified
+- [x] ✅ No misleading information
 
 ## Common Issues
 

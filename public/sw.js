@@ -1,4 +1,4 @@
-const VERSION = '1.5.9';
+const VERSION = '1.0.0';
 const STATIC_CACHE = `kuis-belajar-static-v${VERSION}`;
 const DYNAMIC_CACHE = `kuis-belajar-dynamic-v${VERSION}`;
 const IS_DEV = self.location.hostname === 'localhost' || self.location.hostname === '127.0.0.1';

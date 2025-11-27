@@ -14,9 +14,10 @@ interface SettingsProps {
   onResetProgress: () => void;
   onBack: () => void;
   onOpenPrivacyPolicy?: () => void;
+  onOpenTermsOfService?: () => void;
 }
 
-const Settings = ({ settings, onUpdateSettings, onResetProgress, onBack, onOpenPrivacyPolicy }: SettingsProps) => {
+const Settings = ({ settings, onUpdateSettings, onResetProgress, onBack, onOpenPrivacyPolicy, onOpenTermsOfService }: SettingsProps) => {
   const [localSettings, setLocalSettings] = useState(settings);
   const [showResetConfirm, setShowResetConfirm] = useState(false);
   const [showSaveSuccess, setShowSaveSuccess] = useState(false);
@@ -291,38 +292,80 @@ const Settings = ({ settings, onUpdateSettings, onResetProgress, onBack, onOpenP
         <div className="bg-card rounded-3xl shadow-playful p-4 sm:p-6 mb-6">
           <h2 className="text-xl sm:text-2xl font-bold mb-4">📋 Tentang Aplikasi</h2>
           <div className="space-y-3">
+            {/* Kebijakan Privasi */}
             {onOpenPrivacyPolicy && (
               <Button
                 size="lg"
                 variant="outline"
-                className="w-full justify-start shadow-button"
+                className="w-full justify-start shadow-button hover:bg-muted transition-colors"
                 onClick={onOpenPrivacyPolicy}
               >
-                <span className="mr-2">🔒</span>
-                Kebijakan Privasi
+                <span className="mr-3 text-xl">🔒</span>
+                <span className="font-semibold">Kebijakan Privasi</span>
               </Button>
             )}
-            <Button
-              size="lg"
-              variant="outline"
-              className="w-full justify-start shadow-button"
-              onClick={() => {
-                // Placeholder for Terms of Service - can be implemented later
-                alert('Ketentuan Layanan akan tersedia segera.');
-              }}
-            >
-              <span className="mr-2">📄</span>
-              Ketentuan Layanan
-            </Button>
-            <div className="bg-muted rounded-xl p-4 mt-4">
-              <p className="text-sm text-muted-foreground mb-2">
-                <strong>Aplikasi Edukasi untuk Anak</strong>
-              </p>
-              <p className="text-xs text-muted-foreground">
-                Kuis Belajar Membaca dirancang khusus untuk membantu anak-anak belajar membaca 
-                dengan cara yang menyenangkan dan interaktif. Aplikasi ini aman untuk anak-anak 
-                dan mematuhi standar privasi internasional (COPPA).
-              </p>
+            
+            {/* Ketentuan Layanan */}
+            {onOpenTermsOfService ? (
+              <Button
+                size="lg"
+                variant="outline"
+                className="w-full justify-start shadow-button hover:bg-muted transition-colors"
+                onClick={onOpenTermsOfService}
+              >
+                <span className="mr-3 text-xl">📄</span>
+                <span className="font-semibold">Ketentuan Layanan</span>
+              </Button>
+            ) : (
+              <Button
+                size="lg"
+                variant="outline"
+                className="w-full justify-start shadow-button hover:bg-muted transition-colors"
+                onClick={() => {
+                  toast({
+                    title: "Ketentuan Layanan",
+                    description: "Ketentuan Layanan akan tersedia segera.",
+                  });
+                }}
+              >
+                <span className="mr-3 text-xl">📄</span>
+                <span className="font-semibold">Ketentuan Layanan</span>
+              </Button>
+            )}
+            
+            {/* Info Aplikasi Edukasi */}
+            <div className="bg-gradient-to-br from-primary/5 via-accent/5 to-secondary/5 rounded-xl p-4 sm:p-5 mt-4 border border-primary/10">
+              <div className="flex items-start gap-3 mb-3">
+                <span className="text-2xl">🎓</span>
+                <div className="flex-1">
+                  <p className="font-bold text-base sm:text-lg text-foreground mb-2">
+                    Aplikasi Edukasi untuk Anak
+                  </p>
+                  <p className="text-sm text-muted-foreground leading-relaxed mb-3">
+                    <strong>Kuis Belajar Membaca</strong> dirancang khusus untuk membantu anak-anak 
+                    belajar membaca dengan cara yang menyenangkan dan interaktif.
+                  </p>
+                </div>
+              </div>
+              
+              <div className="space-y-2 pl-8">
+                <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                  <span>✓</span>
+                  <span>Aman untuk anak-anak (usia 3+)</span>
+                </div>
+                <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                  <span>✓</span>
+                  <span>Mematuhi standar privasi internasional (COPPA)</span>
+                </div>
+                <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                  <span>✓</span>
+                  <span>Tidak ada iklan yang mengganggu</span>
+                </div>
+                <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                  <span>✓</span>
+                  <span>Bisa digunakan offline setelah di-download</span>
+                </div>
+              </div>
             </div>
           </div>
         </div>

@@ -12,6 +12,7 @@ import InstallInstructions from "@/components/InstallInstructions";
 import History from "@/components/History";
 import MengenalSukuKata from "@/components/MengenalSukuKata";
 import PrivacyPolicy from "@/components/PrivacyPolicy";
+import TermsOfService from "@/components/TermsOfService";
 import { Settings as SettingsType, AppState, SessionHistory, WrongAnswer } from "@/types/quiz";
 import { safeParse, safeSet, safeParseSettings, safeParseSessionHistory, safeParseAppState } from "@/utils/storage";
 import { QuizId, getQuizDefinition } from "@/features/quiz";
@@ -137,6 +138,10 @@ const Index = () => {
 
   const handleNavigatePrivacyPolicy = () => {
     setScreen('PRIVACY_POLICY');
+  };
+
+  const handleNavigateTermsOfService = () => {
+    setScreen('TERMS_OF_SERVICE');
   };
 
   const handleQuizComplete = (finalScore: number, wrongAnswers: WrongAnswer[], sessionStartTime?: number, finalStars?: number) => {
@@ -266,11 +271,16 @@ const Index = () => {
           onResetProgress={handleResetProgress}
           onBack={handleNavigateQuizSelection}
           onOpenPrivacyPolicy={handleNavigatePrivacyPolicy}
+          onOpenTermsOfService={handleNavigateTermsOfService}
         />
       )}
 
       {screen === 'PRIVACY_POLICY' && (
         <PrivacyPolicy onBack={handleNavigateSettings} />
+      )}
+
+      {screen === 'TERMS_OF_SERVICE' && (
+        <TermsOfService onBack={handleNavigateSettings} />
       )}
       
       {screen === 'ABOUT' && (

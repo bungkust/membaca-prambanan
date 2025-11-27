@@ -6,21 +6,29 @@ android {
     
     // Read version from package.json or environment variable
     def packageJson = file('../../package.json')
-    def packageVersion = '1.5.9'
+    def packageVersion = '1.0.0'
+    // IMPORTANT: versionCode MUST always increment for Play Store updates
+    // Start with 1 for initial release, then increment manually for each update
     def versionCodeValue = 1
     
-    // Robust version code calculation with multiple fallbacks
+    // Version code calculation for Play Store
+    // Play Store requires versionCode to ALWAYS increase for each update
+    // Priority: VERSION_CODE env var > GITHUB_RUN_NUMBER > default (1)
     try {
         def envVersionCode = System.getenv('VERSION_CODE')
         def githubRunNumber = System.getenv('GITHUB_RUN_NUMBER')
         
         if (envVersionCode) {
             versionCodeValue = envVersionCode.toInteger()
+            println("Using VERSION_CODE from environment: ${versionCodeValue}")
         } else if (githubRunNumber) {
             versionCodeValue = githubRunNumber.toInteger()
+            println("Using GITHUB_RUN_NUMBER: ${versionCodeValue}")
         } else {
-            // Fallback: use timestamp-based version code (seconds since epoch / 100)
-            versionCodeValue = (new Date().time / 100).toInteger()
+            // Default: use fixed version code (must be incremented manually for updates)
+            // DO NOT use timestamp - Play Store will reject if versionCode is not higher than previous
+            versionCodeValue = 1
+            println("Using default versionCode: ${versionCodeValue} (update manually for releases)")
         }
     } catch (Exception e) {
         println("WARNING: Failed to parse version code, using default: ${e.message}")

@@ -54,46 +54,39 @@ const QuizSelection = ({ onSelectQuiz, onBack, onOpenSettings, onOpenHistory, se
         </div>
 
         {/* Star Summary Section */}
-        <div className="relative bg-gradient-to-br from-yellow-50 via-orange-50 to-amber-50 rounded-3xl p-4 sm:p-6 md:p-8 mb-6 sm:mb-8 border-3 border-yellow-200 shadow-2xl overflow-hidden">
-          {/* Background decorative elements */}
-          <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-yellow-200/30 to-orange-200/30 rounded-full -translate-y-16 translate-x-16"></div>
-          <div className="absolute bottom-0 left-0 w-24 h-24 bg-gradient-to-tr from-amber-200/30 to-yellow-200/30 rounded-full translate-y-12 -translate-x-12"></div>
+        <div className="relative bg-gradient-to-br from-yellow-50 via-orange-50 to-amber-50 rounded-2xl p-3 sm:p-4 mb-4 sm:mb-6 border-2 border-yellow-200 shadow-lg overflow-hidden">
+          {/* Background decorative elements - smaller */}
+          <div className="absolute top-0 right-0 w-20 h-20 bg-gradient-to-br from-yellow-200/20 to-orange-200/20 rounded-full -translate-y-10 translate-x-10"></div>
+          <div className="absolute bottom-0 left-0 w-16 h-16 bg-gradient-to-tr from-amber-200/20 to-yellow-200/20 rounded-full translate-y-8 -translate-x-8"></div>
 
-          {/* Sparkle effects */}
-          <div className="absolute top-4 right-8 text-yellow-300/60 animate-pulse">
-            <Zap className="w-6 h-6" />
+          {/* Sparkle effects - smaller */}
+          <div className="absolute top-2 right-4 text-yellow-300/50 animate-pulse">
+            <Zap className="w-4 h-4" />
           </div>
-          <div className="absolute bottom-6 left-6 text-orange-300/60 animate-pulse delay-1000">
-            <Star className="w-4 h-4" />
+          <div className="absolute bottom-3 left-3 text-orange-300/50 animate-pulse delay-1000">
+            <Star className="w-3 h-3" />
           </div>
 
-          <div className="relative z-10 text-center">
-            {/* Trophy icon */}
-            <div className="flex justify-center mb-4">
-              <div className="bg-gradient-to-br from-yellow-400 to-orange-500 p-4 rounded-2xl shadow-lg">
-                <Trophy className="w-8 h-8 text-white" />
+          <div className="relative z-10 flex items-center justify-center gap-3 sm:gap-4">
+            {/* Trophy icon - smaller */}
+            <div className="bg-gradient-to-br from-yellow-400 to-orange-500 p-2 sm:p-2.5 rounded-xl shadow-md flex-shrink-0">
+              <Trophy className="w-5 h-5 sm:w-6 sm:h-6 text-white" />
+            </div>
+
+            {/* Main content - centered */}
+            <div className="flex-1 text-center">
+              <div className="flex items-baseline justify-center gap-2 mb-1">
+                <span className="text-2xl sm:text-3xl font-bold bg-gradient-to-r from-yellow-600 to-orange-600 bg-clip-text text-transparent">
+                  {getTotalStars()}
+                </span>
+                <span className="text-base sm:text-lg font-semibold text-yellow-700">
+                  Bintang
+                </span>
               </div>
+              <p className="text-xs sm:text-sm text-yellow-600/90 font-medium">
+                ✨ Pencapaian Belajar Kamu ✨
+              </p>
             </div>
-
-            {/* Main star count */}
-            <div className="mb-3">
-              <span className="text-3xl sm:text-4xl font-bold bg-gradient-to-r from-yellow-600 to-orange-600 bg-clip-text text-transparent">
-                {getTotalStars()}
-              </span>
-              <span className="text-xl sm:text-2xl font-semibold text-yellow-700 ml-2">
-                Bintang
-              </span>
-            </div>
-
-            {/* Subtitle */}
-            <p className="text-yellow-600 font-medium mb-3">
-              ✨ Pencapaian Belajar Kamu ✨
-            </p>
-
-            {/* Encouraging message */}
-            <p className="text-sm text-yellow-600/80 bg-white/50 rounded-full px-4 py-2 inline-block">
-              🚀 Lanjutkan petualangan belajarmu!
-            </p>
           </div>
         </div>
 

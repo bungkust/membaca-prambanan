@@ -180,12 +180,13 @@ Jika di masa depan ingin menambahkan fitur yang mengumpulkan data:
 
 Sebelum submit, pastikan:
 
-- [ ] ✅ Privacy Policy clearly states COPPA compliance
-- [ ] ✅ Data Safety section declares: Children's app, No personal data
-- [ ] ✅ Content Rating: Children's app, 3+
-- [ ] ✅ No behavioral advertising
-- [ ] ✅ All permissions justified
-- [ ] ✅ Privacy Policy accessible in-app and via URL
+- [x] ✅ Privacy Policy clearly states COPPA compliance
+- [ ] ⚠️ Data Safety section declares: Children's app, No personal data (Perlu di-declare di Play Console)
+- [ ] ⚠️ Content Rating: Children's app, 3+ (Perlu di-declare di Play Console)
+- [x] ✅ No behavioral advertising
+- [x] ✅ All permissions justified
+- [x] ✅ Privacy Policy accessible in-app and via URL (File HTML ada, perlu di-host)
+- [x] ✅ Audio data explained as ephemeral processing
 
 ## Status: ✅ COPPA COMPLIANT
 

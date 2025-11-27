@@ -4,33 +4,36 @@ Panduan lengkap untuk submit aplikasi **Kuis Belajar Membaca** ke Google Play St
 
 ## Checklist Sebelum Submit
 
+> **📋 Untuk checklist lengkap dengan status compliance, lihat**: `docs/PLAY_STORE_COMPLIANCE_CHECKLIST.md`
+
 ### Technical Requirements
-- [x] App signing configured (keystore.jks)
-- [x] AAB format build script ready (`npm run android:release`)
-- [x] Target SDK 35 (fixed in build.gradle)
-- [x] Normal permissions only (INTERNET, ACCESS_NETWORK_STATE)
-- [x] ProGuard rules configured
-- [x] Privacy Policy page (in-app)
-- [x] Privacy Policy HTML (external URL)
+- [x] ✅ App signing configured (keystore.jks)
+- [x] ✅ AAB format build script ready (`npm run android:release`)
+- [x] ✅ Target SDK 35 (fixed in build.gradle)
+- [x] ✅ Normal permissions only (INTERNET, ACCESS_NETWORK_STATE)
+- [x] ✅ ProGuard rules configured
+- [x] ✅ Privacy Policy page (in-app)
+- [x] ✅ Privacy Policy HTML (external file ready)
 
 ### Content Requirements
-- [ ] Privacy Policy URL (hosted and accessible)
-- [ ] Data Safety section completed in Play Console
-- [ ] Content Rating questionnaire completed
-- [ ] Store listing assets prepared (screenshots, icon, feature graphic)
-- [ ] App descriptions (short + full) in Indonesian
-- [ ] Category selected (Education, Family)
+- [x] ✅ Privacy Policy URL (hosted and accessible) - Deployed at `https://membaca.bungkust.web.id/privacy-policy.html`
+- [ ] ⚠️ Data Safety section completed in Play Console - Needs to be filled
+- [ ] ⚠️ Content Rating questionnaire completed - Needs to be completed
+- [ ] ⚠️ Store listing assets prepared (screenshots, icon, feature graphic) - Needs preparation
+- [x] ✅ App descriptions (short + full) in Indonesian - Ready
+- [ ] ⚠️ Category selected (Education, Family) - Needs selection in Play Console
 
 ### Legal Requirements
-- [ ] COPPA compliance declared (children's app)
-- [ ] Permissions justified in Data Safety
-- [ ] No dangerous permissions
-- [ ] Privacy Policy covers all data collection
+- [x] ✅ COPPA compliance (code & documentation) - Fully compliant
+- [ ] ⚠️ COPPA compliance declared (children's app) - Needs declaration in Play Console
+- [ ] ⚠️ Permissions justified in Data Safety - Needs to be filled
+- [x] ✅ No dangerous permissions - Verified in code
+- [x] ✅ Privacy Policy covers all data collection - Complete
 
 ### Indonesia-Specific
-- [ ] Developer account verified (if needed)
-- [ ] Indonesia market selected
-- [ ] Indonesian language content provided
+- [ ] ⚠️ Developer account verified (if needed) - If required in 2026
+- [ ] ⚠️ Indonesia market selected - Needs selection in Play Console
+- [x] ✅ Indonesian language content provided - All content in Bahasa Indonesia
 
 ## Langkah-langkah Submit ke Play Store
 
@@ -49,19 +52,30 @@ Panduan lengkap untuk submit aplikasi **Kuis Belajar Membaca** ke Google Play St
 
 ### 2. Build AAB untuk Release
 
+**PENTING**: Pastikan version sudah benar sebelum build!
+
 ```bash
-# Pastikan version di package.json sudah di-update
-# Build web app
+# 1. Update version di package.json (versionName)
+# Contoh: "version": "1.0.0"
+
+# 2. Update versionCode di android/app/build.gradle
+# Pastikan versionCode selalu increment untuk setiap update
+# Release pertama: versionCode = 1
+# Update berikutnya: versionCode = 2, 3, 4, dst
+
+# 3. Build web app
 npm run build
 
-# Sync ke Android
+# 4. Sync ke Android
 npm run cap:sync
 
-# Build release AAB
+# 5. Build release AAB
 npm run android:release
 ```
 
 AAB file akan ada di: `android/app/build/outputs/bundle/release/app-release.aab`
+
+**Lihat panduan lengkap**: `docs/VERSIONING_GUIDE.md`
 
 ### 3. Upload ke Play Console
 
@@ -76,7 +90,7 @@ AAB file akan ada di: `android/app/build/outputs/bundle/release/app-release.aab`
 2. **Upload AAB**
    - Go to Production → Create new release
    - Upload AAB file
-   - Release name: "1.5.9" (sesuai version di package.json)
+   - Release name: "1.0.0" (sesuai version di package.json)
    - Release notes: "Initial release"
 
 ### 4. App Content
@@ -167,27 +181,13 @@ Aman untuk Anak:
 #### 4.4. Privacy Policy
 
 **Privacy Policy URL:**
-- Harus accessible via HTTPS
-- Bisa di-host di:
-  - GitHub Pages
-  - Netlify
-  - Website sendiri
-  - URL contoh: `https://yourdomain.com/privacy-policy.html`
+- ✅ **Already Deployed**: `https://membaca.bungkust.web.id/privacy-policy.html`
+- Status: Accessible via HTTPS ✅
+- File: `public/privacy-policy.html` ✅
 
-**File yang sudah disiapkan:**
-- `public/privacy-policy.html` - Standalone HTML untuk Play Store
-
-**Cara Host:**
-1. **GitHub Pages:**
-   ```bash
-   # Push privacy-policy.html ke repo
-   # Enable GitHub Pages di repo settings
-   # URL: https://username.github.io/repo/privacy-policy.html
-   ```
-
-2. **Netlify:**
-   - Upload `public/privacy-policy.html` ke Netlify
-   - URL akan tersedia secara otomatis
+**Action:**
+- Verify URL accessible before submit
+- Use this URL in Play Console Privacy Policy field
 
 ### 5. Testing Requirements
 

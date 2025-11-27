@@ -190,12 +190,12 @@ Indonesia adalah salah satu pasar mobile terbesar di dunia dengan:
 ## Indonesia-Specific Checklist
 
 ### Pre-Release:
-- [ ] Developer verification process started (if 2026)
-- [ ] All content in Bahasa Indonesia
-- [ ] Privacy Policy in Bahasa Indonesia
-- [ ] Content rating for Indonesia completed
-- [ ] Payment methods configured (if IAP)
-- [ ] Pricing strategy for Indonesia market
+- [ ] ⚠️ Developer verification process started (if 2026) - Perlu action manual di Play Console
+- [x] ✅ All content in Bahasa Indonesia - Semua UI, konten, dan teks sudah Bahasa Indonesia
+- [x] ✅ Privacy Policy in Bahasa Indonesia - Sudah lengkap di `src/components/PrivacyPolicy.tsx` dan `public/privacy-policy.html`
+- [ ] ⚠️ Content rating for Indonesia completed - Perlu di-declare di Play Console saat submit
+- [x] ✅ Payment methods configured (if IAP) - Tidak ada IAP, aplikasi gratis (tidak perlu configure)
+- [x] ✅ Pricing strategy for Indonesia market - Dokumentasi tersedia di `docs/MONETIZATION_STRATEGY.md` (Free app strategy)
 
 ### Post-Release:
 - [ ] Monitor reviews in Indonesian

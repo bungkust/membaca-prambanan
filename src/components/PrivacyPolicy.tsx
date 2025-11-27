@@ -46,7 +46,9 @@ const PrivacyPolicy = ({ onBack }: PrivacyPolicyProps) => {
               <p>
                 Aplikasi ini menggunakan fitur Text-to-Speech (TTS) untuk membantu anak-anak belajar membaca. 
                 Fitur ini memerlukan akses audio perangkat Anda <strong>hanya untuk output suara</strong>. 
-                Kami <strong>TIDAK merekam, menyimpan, atau mengunggah audio</strong> ke server manapun.
+                Audio data diproses secara <strong>ephemeral (temporary/sementara)</strong> dan tidak disimpan 
+                secara permanen. Data audio hanya digunakan untuk Text-to-Speech output dan langsung dihapus 
+                setelah pemrosesan selesai. Kami <strong>TIDAK merekam, menyimpan secara permanen, atau mengunggah audio</strong> ke server manapun.
               </p>
 
               <h3 className="text-xl font-semibold text-foreground mt-4 mb-3">2.2. Data Penyimpanan Lokal</h3>

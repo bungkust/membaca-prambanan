@@ -2,7 +2,7 @@
   "name": "Kuis Belajar Membaca",
   "short_name": "KuisBelajar",
   "description": "Aplikasi pembelajaran interaktif dengan 900+ soal untuk anak-anak belajar membaca dalam bahasa Indonesia",
-  "version": "1.5.9",
+  "version": "1.0.0",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#ffffff",
