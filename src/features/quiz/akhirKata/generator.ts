@@ -5,9 +5,9 @@ import { awalKataData } from '../awalKata/data';
 // Generate akhirKataData from awalKataData (untuk huruf akhir)
 const generateAkhirKataData = () => {
   return awalKataData.slice(0, 150).map(item => {
-    const lastChar = item.id[item.id.length - 1].toUpperCase();
+    const lastChar = item.id[item.id.length - 1].toLowerCase();
     // Create unique choices by avoiding duplicates
-    const allDistractors = ['A', 'B', 'C', 'D', 'E', 'F', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'];
+    const allDistractors = ['a', 'b', 'c', 'd', 'e', 'f', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'];
     // Filter out the correct answer
     const availableDistractors = allDistractors.filter(opt => opt !== lastChar);
     // Shuffle and select 2 random distractors using utility function
