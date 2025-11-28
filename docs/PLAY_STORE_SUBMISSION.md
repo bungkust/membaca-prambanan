@@ -131,6 +131,8 @@ Aman untuk Anak:
   - Ukuran: min 320px, max 3840px
 - **Screenshots (Tablet)**: Opsional (min 2 jika disediakan)
 
+> **📋 Untuk daftar lengkap semua asset yang diperlukan (icon, splash screen, screenshots, dll) dengan nama file dan ukuran detail, lihat**: `docs/ASSETS_REQUIREMENTS.md`
+
 **Kategori:**
 - **App category**: Education
 - **Tags**: Educational, Kids, Learning, Reading, Indonesian
@@ -284,6 +286,8 @@ Aman untuk Anak:
 
 ## Related Documentation
 
+- `docs/ASSETS_REQUIREMENTS.md` - Daftar lengkap semua asset yang diperlukan (icon, splash, screenshots)
+- `docs/ICON_DESCRIPTION.md` - Deskripsi visual untuk icon design
 - `docs/DATA_SAFETY_GUIDE.md` - Panduan lengkap Data Safety section
 - `docs/COPPA_COMPLIANCE.md` - Checklist COPPA compliance
 - `docs/INDONESIA_MARKET_GUIDE.md` - Persiapan khusus untuk market Indonesia
