@@ -1,21 +1,25 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { SessionHistory } from "@/types/quiz";
-import { ArrowLeft, Star, ChevronDown, ChevronUp, XCircle } from "lucide-react";
+import { ArrowLeft, Star, ChevronDown, ChevronUp, XCircle, Lock, Crown } from "lucide-react";
 import { getQuizDefinition } from "@/features/quiz";
+import { isPremium } from "@/services/premium";
+import { FREE_LIMITS } from "@/types/premium";
 
 interface HistoryProps {
   sessionHistory: SessionHistory[];
   onBack: () => void;
   onClearHistory: () => void;
   onQuizSelection?: () => void;
+  onOpenPremium?: () => void;
 }
 
-const History = ({ sessionHistory, onBack, onClearHistory, onQuizSelection }: HistoryProps) => {
+const History = ({ sessionHistory, onBack, onClearHistory, onQuizSelection, onOpenPremium }: HistoryProps) => {
   const [filter, setFilter] = useState<'all' | 'today' | 'week' | 'month'>('all');
   const [sortBy, setSortBy] = useState<'newest' | 'oldest' | 'highest' | 'lowest'>('newest');
   const [showClearConfirm, setShowClearConfirm] = useState(false);
   const [expandedSessions, setExpandedSessions] = useState<Set<string>>(new Set());
+  const premium = isPremium();
 
   const toggleSessionExpansion = (sessionId: string) => {
     setExpandedSessions(prev => {
@@ -74,6 +78,15 @@ const History = ({ sessionHistory, onBack, onClearHistory, onQuizSelection }: Hi
   const totalMinutes = Math.floor(totalTime / 60000);
 
   const filteredSessions = filterSessions();
+  
+  // Split sessions into visible and hidden for free users
+  const visibleSessions = premium 
+    ? filteredSessions 
+    : filteredSessions.slice(0, FREE_LIMITS.MAX_VISIBLE_HISTORY);
+  
+  const hiddenSessions = premium 
+    ? [] 
+    : filteredSessions.slice(FREE_LIMITS.MAX_VISIBLE_HISTORY);
 
   // Debug logging removed - use logger.debug() if needed in development
 
@@ -187,7 +200,8 @@ const History = ({ sessionHistory, onBack, onClearHistory, onQuizSelection }: Hi
         ) : (
           <>
             <div className="space-y-4 mb-6">
-              {filteredSessions.map((session) => {
+              {/* Visible sessions - full detail */}
+              {visibleSessions.map((session) => {
                 const percentage = Math.round((session.score / session.totalQuestions) * 100);
                 const date = new Date(session.timestamp);
                 
@@ -295,6 +309,74 @@ const History = ({ sessionHistory, onBack, onClearHistory, onQuizSelection }: Hi
                   </div>
                 );
               })}
+              
+              {/* Hidden sessions - blurred/locked for free users */}
+              {hiddenSessions.length > 0 && (
+                <div className="relative">
+                  <div className="blur-sm opacity-50 space-y-4">
+                    {hiddenSessions.map((session) => {
+                      const date = new Date(session.timestamp);
+                      
+                      return (
+                        <div key={session.id} className="bg-card rounded-2xl shadow-button p-4 sm:p-6">
+                          <div className="flex items-center justify-between mb-3">
+                            <div className="font-bold text-lg sm:text-xl">
+                              {getQuizTypeLabel(session.quizType)}
+                            </div>
+                            <div className="text-sm text-muted-foreground">
+                              {date.toLocaleDateString('id-ID')} {date.toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' })}
+                            </div>
+                          </div>
+                          <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2 sm:gap-4 md:gap-6">
+                            <div className="flex-1 bg-muted rounded-xl p-4">
+                              <div className="text-2xl sm:text-3xl font-bold">??/{session.totalQuestions}</div>
+                              <div className="text-sm text-muted-foreground">Skor</div>
+                            </div>
+                            <div className="flex-1 bg-muted rounded-xl p-4">
+                              <div className="text-2xl sm:text-3xl font-bold">??%</div>
+                              <div className="text-sm text-muted-foreground">Persentase</div>
+                            </div>
+                            <div className="flex-1 bg-muted rounded-xl p-4">
+                              <div className="flex items-center justify-center gap-1 text-2xl sm:text-3xl font-bold">
+                                <Star className="w-5 h-5 sm:w-6 sm:h-6 text-yellow-400 fill-yellow-400" />
+                                ??
+                              </div>
+                              <div className="text-sm text-muted-foreground">Bintang</div>
+                            </div>
+                            <div className="flex-1 bg-muted rounded-xl p-4">
+                              <div className="text-2xl sm:text-3xl font-bold">??</div>
+                              <div className="text-sm text-muted-foreground">Waktu</div>
+                            </div>
+                          </div>
+                        </div>
+                      );
+                    })}
+                  </div>
+                  
+                  {/* Lock overlay */}
+                  <div className="absolute inset-0 flex items-center justify-center bg-black/20 rounded-2xl">
+                    <div className="bg-card rounded-2xl p-6 sm:p-8 text-center max-w-md mx-4 border-2 border-yellow-200 shadow-2xl">
+                      <Lock className="w-12 h-12 mx-auto mb-4 text-yellow-600" />
+                      <h3 className="text-xl sm:text-2xl font-bold mb-2 text-yellow-800">
+                        {hiddenSessions.length} Session Tersembunyi
+                      </h3>
+                      <p className="text-sm text-muted-foreground mb-4">
+                        Upgrade ke Premium untuk melihat semua history dan detail lengkap
+                      </p>
+                      {onOpenPremium && (
+                        <Button
+                          size="lg"
+                          className="w-full bg-gradient-to-r from-yellow-500 to-orange-500 hover:opacity-90 text-white shadow-button btn-bounce"
+                          onClick={onOpenPremium}
+                        >
+                          <Crown className="w-5 h-5 mr-2" />
+                          Upgrade ke Premium
+                        </Button>
+                      )}
+                    </div>
+                  </div>
+                </div>
+              )}
             </div>
             
             {!showClearConfirm ? (

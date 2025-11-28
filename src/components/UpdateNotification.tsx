@@ -51,8 +51,8 @@ const UpdateNotification = () => {
             if (sw.state === 'installed') {
               // Only show update if there's an active controller (not first install)
               if (navigator.serviceWorker.controller) {
-                setWaitingSW(sw);
-                setHasUpdate(true);
+              setWaitingSW(sw);
+              setHasUpdate(true);
                 logger.debug('Service worker update installed');
               } else {
                 logger.debug('Service worker installed (first time)');

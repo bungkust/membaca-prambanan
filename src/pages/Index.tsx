@@ -13,16 +13,21 @@ import History from "@/components/History";
 import MengenalSukuKata from "@/components/MengenalSukuKata";
 import PrivacyPolicy from "@/components/PrivacyPolicy";
 import TermsOfService from "@/components/TermsOfService";
+import PremiumUnlock from "@/components/PremiumUnlock";
 import { Settings as SettingsType, AppState, SessionHistory, WrongAnswer } from "@/types/quiz";
 import { safeParse, safeSet, safeParseSettings, safeParseSessionHistory, safeParseAppState } from "@/utils/storage";
 import { QuizId, getQuizDefinition } from "@/features/quiz";
 import { ScreenType, isValidScreenType } from "@/types/app";
+import { initializeBilling } from "@/services/purchase";
+import { isNative } from "@/utils/platform";
+import { logger } from "@/utils/logger";
 
 const Index = () => {
   const [screen, setScreen] = useState<ScreenType>('AUDIO_PERMISSION');
   const [audioPermissionGranted, setAudioPermissionGranted] = useState(false);
   const [onboardingSeen, setOnboardingSeen] = useState(false);
   const [selectedQuizType, setSelectedQuizType] = useState<QuizId>('suku_kata');
+  const [showPremium, setShowPremium] = useState(false);
   
   const [settings, setSettings] = useState<SettingsType>({
     questionsPerSession: 10,
@@ -75,6 +80,24 @@ const Index = () => {
     // Load full app state if available
     if (savedAppState && savedAppState !== appState) {
       setAppState(savedAppState);
+    }
+
+    // Initialize billing for native platforms
+    if (isNative()) {
+      logger.log('Initializing billing for native platform...');
+      initializeBilling()
+        .then(success => {
+          if (success) {
+            logger.log('Billing initialized successfully');
+          } else {
+            logger.warn('Failed to initialize native billing. App will continue but purchases may not work.');
+          }
+        })
+        .catch(error => {
+          logger.error('Error initializing billing:', error);
+        });
+    } else {
+      logger.log('Skipping billing initialization (web platform)');
     }
   }, []);
 
@@ -232,6 +255,7 @@ const Index = () => {
           onBack={handleNavigateHome}
           onOpenSettings={handleNavigateSettings}
           onOpenHistory={handleNavigateHistory}
+          onOpenPremium={() => setShowPremium(true)}
           sessionHistory={appState.sessionHistory}
         />
       )}
@@ -257,6 +281,7 @@ const Index = () => {
           onRetry={handleRetryQuiz}
           onHome={handleNavigateHome}
           onQuizSelection={handleNavigateQuizSelection}
+          onOpenPremium={() => setShowPremium(true)}
         />
       )}
       
@@ -272,6 +297,7 @@ const Index = () => {
           onBack={handleNavigateQuizSelection}
           onOpenPrivacyPolicy={handleNavigatePrivacyPolicy}
           onOpenTermsOfService={handleNavigateTermsOfService}
+          onOpenPremium={() => setShowPremium(true)}
         />
       )}
 
@@ -316,8 +342,19 @@ const Index = () => {
             localStorage.removeItem('sessionHistory');
           }}
           onQuizSelection={handleNavigateQuizSelection}
+          onOpenPremium={() => setShowPremium(true)}
         />
       )}
+      
+      {/* Premium Unlock Dialog - available from any screen */}
+      <PremiumUnlock
+        open={showPremium}
+        onClose={() => setShowPremium(false)}
+        onPurchaseSuccess={() => {
+          // Refresh UI after purchase
+          window.location.reload(); // Simple approach - reload to refresh premium status
+        }}
+      />
     </>
   );
 };

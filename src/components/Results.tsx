@@ -1,17 +1,24 @@
 import { Button } from "@/components/ui/button";
 import { AppState } from "@/types/quiz";
+import { isPremium } from "@/services/premium";
+import { Crown } from "lucide-react";
 
 interface ResultsProps {
   appState: AppState;
   onRetry: () => void;
   onHome: () => void;
   onQuizSelection?: () => void;
+  onOpenPremium?: () => void;
 }
 
-const Results = ({ appState, onRetry, onHome, onQuizSelection }: ResultsProps) => {
+const Results = ({ appState, onRetry, onHome, onQuizSelection, onOpenPremium }: ResultsProps) => {
   const totalQuestions = appState.currentSession.length;
   const score = appState.score;
   const percentage = (score / totalQuestions) * 100;
+  const premium = isPremium();
+  
+  // Show premium prompt for good scores (8/10+) for free users
+  const showPremiumPrompt = !premium && score >= 8 && totalQuestions >= 10;
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-primary/10 via-accent/10 to-secondary/10 flex items-center justify-center p-4">
@@ -52,6 +59,29 @@ const Results = ({ appState, onRetry, onHome, onQuizSelection }: ResultsProps) =
             </p>
           </div>
         </div>
+        
+        {/* Soft Premium Prompt - shown after good scores */}
+        {showPremiumPrompt && onOpenPremium && (
+          <div className="bg-gradient-to-br from-yellow-50 via-orange-50 to-amber-50 rounded-2xl p-4 sm:p-6 mb-6 border-2 border-yellow-200">
+            <div className="flex items-center gap-3 mb-2">
+              <Crown className="w-6 h-6 text-yellow-600" />
+              <h3 className="text-lg sm:text-xl font-bold text-yellow-800">
+                Kerja Bagus! 🎉
+              </h3>
+            </div>
+            <p className="text-sm text-yellow-700 mb-3">
+              Upgrade ke Premium untuk unlimited questions (20, 30, 50+) dan fitur advanced lainnya!
+            </p>
+            <Button
+              size="sm"
+              className="w-full bg-gradient-to-r from-yellow-500 to-orange-500 hover:opacity-90 text-white"
+              onClick={onOpenPremium}
+            >
+              <Crown className="w-4 h-4 mr-2" />
+              Lihat Fitur Premium
+            </Button>
+          </div>
+        )}
         
         {appState.wrongAnswers.length > 0 && (
           <div className="bg-muted rounded-2xl p-4 sm:p-6 mb-6 sm:mb-8 text-left">

@@ -1,7 +1,7 @@
 apply plugin: 'com.android.application'
 
 android {
-    namespace "com.bungkust.membacaprambanan"
+    namespace "com.membaca.prambanan"
     compileSdk rootProject.ext.compileSdkVersion
     
     // Read version from package.json or environment variable
@@ -48,7 +48,7 @@ android {
     }
     
     defaultConfig {
-        applicationId "com.bungkust.membacaprambanan"
+        applicationId "com.membaca.prambanan"
         minSdkVersion 23
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode versionCodeValue
@@ -68,10 +68,20 @@ android {
                 def keystoreProperties = new Properties()
                 keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
                 
-                storeFile file(keystoreProperties['storeFile'])
-                storePassword keystoreProperties['storePassword']
-                keyAlias keystoreProperties['keyAlias']
-                keyPassword keystoreProperties['keyPassword']
+                // Resolve keystore file path relative to android directory
+                def keystorePath = keystoreProperties['storeFile']
+                def keystoreFile = keystorePath.startsWith('/') 
+                    ? file(keystorePath) 
+                    : rootProject.file(keystorePath)
+                
+                if (keystoreFile.exists()) {
+                    storeFile keystoreFile
+                    storePassword keystoreProperties['storePassword']
+                    keyAlias keystoreProperties['keyAlias']
+                    keyPassword keystoreProperties['keyPassword']
+                } else {
+                    println "WARNING: Keystore file not found: ${keystoreFile.absolutePath}"
+                }
             }
         }
     }
@@ -107,6 +117,8 @@ dependencies {
     androidTestImplementation "androidx.test.ext:junit:$androidxJunitVersion"
     androidTestImplementation "androidx.test.espresso:espresso-core:$androidxEspressoCoreVersion"
     implementation project(':capacitor-cordova-android-plugins')
+    // Google Play Billing Library for in-app purchases
+    implementation 'com.android.billingclient:billing:6.0.1'
 }
 
 apply from: 'capacitor.build.gradle'

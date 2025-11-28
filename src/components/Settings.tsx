@@ -1,12 +1,14 @@
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Settings as SettingsType } from "@/types/quiz";
-import { ArrowLeft, Volume2 } from "lucide-react";
+import { ArrowLeft, Volume2, Lock, Crown } from "lucide-react";
 import { speak, getIndonesianVoices } from "@/utils/tts";
 import { isNative } from "@/utils/platform";
 import { APP_VERSION, APP_NAME, VERSION_DATE } from "@/version";
 import { toast } from "@/hooks/use-toast";
 import { logger } from "@/utils/logger";
+import { isPremium } from "@/services/premium";
+import { FREE_LIMITS } from "@/types/premium";
 
 interface SettingsProps {
   settings: SettingsType;
@@ -15,14 +17,16 @@ interface SettingsProps {
   onBack: () => void;
   onOpenPrivacyPolicy?: () => void;
   onOpenTermsOfService?: () => void;
+  onOpenPremium?: () => void;
 }
 
-const Settings = ({ settings, onUpdateSettings, onResetProgress, onBack, onOpenPrivacyPolicy, onOpenTermsOfService }: SettingsProps) => {
+const Settings = ({ settings, onUpdateSettings, onResetProgress, onBack, onOpenPrivacyPolicy, onOpenTermsOfService, onOpenPremium }: SettingsProps) => {
   const [localSettings, setLocalSettings] = useState(settings);
   const [showResetConfirm, setShowResetConfirm] = useState(false);
   const [showSaveSuccess, setShowSaveSuccess] = useState(false);
   const [availableVoices, setAvailableVoices] = useState<SpeechSynthesisVoice[]>([]);
   const [selectedVoice, setSelectedVoice] = useState<string>('auto');
+  const premium = isPremium();
 
   // Load available Indonesian voices (web only)
   useEffect(() => {
@@ -113,47 +117,109 @@ const Settings = ({ settings, onUpdateSettings, onResetProgress, onBack, onOpenP
           <div className="space-y-6">
             {/* Questions per session */}
             <div>
-              <label className="text-base sm:text-lg font-bold mb-3 block">Jumlah soal per sesi:</label>
+              <label className="text-base sm:text-lg font-bold mb-3 block">
+                Jumlah soal per sesi:
+                {!premium && (
+                  <span className="ml-2 text-xs text-muted-foreground">
+                    (Premium: Unlimited)
+                  </span>
+                )}
+              </label>
               <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 sm:gap-3 md:gap-4">
-                {[10, 20, 30, 50].map(num => (
-                  <Button
-                    key={num}
-                    size="lg"
-                    variant={localSettings.questionsPerSession === num ? 'default' : 'outline'}
-                    className={localSettings.questionsPerSession === num 
-                      ? 'bg-gradient-to-r from-primary to-accent text-white shadow-button' 
-                      : 'shadow-button'}
-                    onClick={() => setLocalSettings({ ...localSettings, questionsPerSession: num })}
-                  >
-                    {num}
-                  </Button>
-                ))}
+                {[10, 20, 30, 50].map(num => {
+                  const isLocked = !premium && num > FREE_LIMITS.MAX_QUESTIONS_PER_SESSION;
+                  
+                  return (
+                    <Button
+                      key={num}
+                      size="lg"
+                      variant={localSettings.questionsPerSession === num ? 'default' : 'outline'}
+                      className={localSettings.questionsPerSession === num 
+                        ? 'bg-gradient-to-r from-primary to-accent text-white shadow-button' 
+                        : 'shadow-button'}
+                      onClick={() => {
+                        if (isLocked) {
+                          if (onOpenPremium) {
+                            onOpenPremium();
+                          } else {
+                            toast({
+                              title: 'Fitur Premium',
+                              description: 'Upgrade ke Premium untuk unlimited questions (20, 30, 50+)',
+                            });
+                          }
+                        } else {
+                          setLocalSettings({ ...localSettings, questionsPerSession: num });
+                        }
+                      }}
+                      disabled={isLocked}
+                    >
+                      {num}
+                      {isLocked && <Lock className="w-4 h-4 ml-1" />}
+                    </Button>
+                  );
+                })}
               </div>
+              {!premium && (
+                <p className="text-xs text-muted-foreground mt-2">
+                  💎 Upgrade ke Premium untuk unlimited questions (20, 30, 50+)
+                </p>
+              )}
             </div>
             
             {/* Timer */}
             <div>
-              <label className="text-base sm:text-lg font-bold mb-3 block">Waktu per soal:</label>
+              <label className="text-base sm:text-lg font-bold mb-3 block">
+                Waktu per soal:
+                {!premium && (
+                  <span className="ml-2 text-xs text-muted-foreground">
+                    (Premium: Advanced options)
+                  </span>
+                )}
+              </label>
               <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2 sm:gap-3">
-                {[0, 20, 15, 10, 5].map(seconds => (
-                  <Button
-                    key={seconds}
-                    size="lg"
-                    variant={localSettings.timerSeconds === seconds ? 'default' : 'outline'}
-                    className={localSettings.timerSeconds === seconds 
-                      ? 'bg-gradient-to-r from-primary to-accent text-white shadow-button' 
-                      : 'shadow-button'}
-                    onClick={() => setLocalSettings({ ...localSettings, timerSeconds: seconds })}
-                  >
-                    {seconds === 0 ? 'Tanpa Timer' : `${seconds} detik`}
-                  </Button>
-                ))}
+                {[0, 5, 10, 15, 20].map(seconds => {
+                  const isLocked = !premium && seconds > Math.max(...FREE_LIMITS.MAX_TIMER_OPTIONS);
+                  
+                  return (
+                    <Button
+                      key={seconds}
+                      size="lg"
+                      variant={localSettings.timerSeconds === seconds ? 'default' : 'outline'}
+                      className={localSettings.timerSeconds === seconds 
+                        ? 'bg-gradient-to-r from-primary to-accent text-white shadow-button' 
+                        : 'shadow-button'}
+                      onClick={() => {
+                        if (isLocked) {
+                          if (onOpenPremium) {
+                            onOpenPremium();
+                          } else {
+                            toast({
+                              title: 'Fitur Premium',
+                              description: 'Upgrade ke Premium untuk advanced timer (15s, 20s)',
+                            });
+                          }
+                        } else {
+                          setLocalSettings({ ...localSettings, timerSeconds: seconds });
+                        }
+                      }}
+                      disabled={isLocked}
+                    >
+                      {seconds === 0 ? 'Tanpa Timer' : `${seconds}s`}
+                      {isLocked && <Lock className="w-4 h-4 ml-1" />}
+                    </Button>
+                  );
+                })}
               </div>
               <p className="text-sm text-muted-foreground mt-2">
                 {localSettings.timerSeconds === 0 
                   ? 'Tidak ada batas waktu' 
                   : 'Jika waktu habis, soal dianggap salah'}
               </p>
+              {!premium && (
+                <p className="text-xs text-muted-foreground mt-2">
+                  💎 Premium: Advanced timer (15s, 20s) untuk challenge lebih seru!
+                </p>
+              )}
             </div>
             
             {/* Remember questions */}
@@ -186,22 +252,51 @@ const Settings = ({ settings, onUpdateSettings, onResetProgress, onBack, onOpenP
           {/* Voice Selection - Web only */}
           {!isNative() && (
             <div className="mb-6">
-              <label className="text-base sm:text-lg font-bold mb-3 block">Suara TTS:</label>
-              <select
-                value={selectedVoice}
-                onChange={(e) => handleVoiceChange(e.target.value)}
-                className="w-full p-3 rounded-xl border-2 border-primary/20 bg-card text-base sm:text-lg font-semibold focus:border-primary focus:outline-none"
-              >
-                <option value="auto">Otomatis (Direkomendasikan)</option>
-                {availableVoices.map((voice, index) => (
-                  <option key={index} value={voice.name}>
-                    {voice.name} ({voice.lang})
-                  </option>
-                ))}
-              </select>
-              <p className="text-sm text-muted-foreground mt-2">
-                Pilih suara yang paling jelas untuk anak-anak
-              </p>
+              <label className="text-base sm:text-lg font-bold mb-3 block">
+                Suara TTS:
+                {!premium && (
+                  <span className="ml-2 text-xs text-muted-foreground">
+                    (Premium: Custom selection)
+                  </span>
+                )}
+              </label>
+              {premium ? (
+                <>
+                  <select
+                    value={selectedVoice}
+                    onChange={(e) => handleVoiceChange(e.target.value)}
+                    className="w-full p-3 rounded-xl border-2 border-primary/20 bg-card text-base sm:text-lg font-semibold focus:border-primary focus:outline-none"
+                  >
+                    <option value="auto">Otomatis (Direkomendasikan)</option>
+                    {availableVoices.map((voice, index) => (
+                      <option key={index} value={voice.name}>
+                        {voice.name} ({voice.lang})
+                      </option>
+                    ))}
+                  </select>
+                  <p className="text-sm text-muted-foreground mt-2">
+                    Pilih suara yang paling jelas untuk anak-anak
+                  </p>
+                </>
+              ) : (
+                <div className="text-center py-4">
+                  <div className="bg-muted rounded-xl p-4 mb-3">
+                    <Lock className="w-8 h-8 mx-auto mb-2 text-muted-foreground" />
+                    <p className="text-sm text-muted-foreground mb-2">
+                      Custom voice selection tersedia untuk Premium users
+                    </p>
+                    <p className="text-xs text-muted-foreground mb-3">
+                      Free version menggunakan suara otomatis (Indonesia)
+                    </p>
+                    {onOpenPremium && (
+                      <Button onClick={onOpenPremium} size="sm">
+                        <Crown className="w-4 h-4 mr-2" />
+                        Upgrade ke Premium
+                      </Button>
+                    )}
+                  </div>
+                </div>
+              )}
             </div>
           )}
           
@@ -287,6 +382,61 @@ const Settings = ({ settings, onUpdateSettings, onResetProgress, onBack, onOpenP
             </div>
           )}
         </div>
+
+        {/* Premium Section */}
+        {!premium && onOpenPremium && (
+          <div className="bg-gradient-to-br from-yellow-50 via-orange-50 to-amber-50 rounded-3xl shadow-playful p-4 sm:p-6 mb-6 border-2 border-yellow-200">
+            <div className="flex items-center gap-3 mb-4">
+              <div className="bg-gradient-to-br from-yellow-400 to-orange-500 p-3 rounded-xl shadow-md">
+                <Crown className="w-6 h-6 text-white" />
+              </div>
+              <div>
+                <h2 className="text-xl sm:text-2xl font-bold text-yellow-800">Upgrade ke Premium</h2>
+                <p className="text-sm text-yellow-600">Dapatkan akses penuh ke semua fitur</p>
+              </div>
+            </div>
+            <div className="space-y-2 mb-4">
+              <div className="flex items-center gap-2 text-sm">
+                <span className="text-green-600">✓</span>
+                <span>Unlimited questions per session</span>
+              </div>
+              <div className="flex items-center gap-2 text-sm">
+                <span className="text-green-600">✓</span>
+                <span>Advanced timer options (15s, 20s)</span>
+              </div>
+              <div className="flex items-center gap-2 text-sm">
+                <span className="text-green-600">✓</span>
+                <span>Custom voice selection</span>
+              </div>
+              <div className="flex items-center gap-2 text-sm">
+                <span className="text-green-600">✓</span>
+                <span>Full history access</span>
+              </div>
+              <div className="flex items-center gap-2 text-sm">
+                <span className="text-green-600">✓</span>
+                <span>All premium quiz types</span>
+              </div>
+            </div>
+            <Button
+              size="lg"
+              className="w-full bg-gradient-to-r from-yellow-500 to-orange-500 hover:opacity-90 text-white shadow-button btn-bounce"
+              onClick={() => {
+                if (onOpenPremium) {
+                  onOpenPremium();
+                } else {
+                  toast({
+                    variant: 'destructive',
+                    title: 'Error',
+                    description: 'Premium upgrade tidak tersedia saat ini. Silakan coba lagi nanti.',
+                  });
+                }
+              }}
+            >
+              <Crown className="w-5 h-5 mr-2" />
+              Upgrade Sekarang - IDR 29,999
+            </Button>
+          </div>
+        )}
 
         {/* Tentang Aplikasi / Legal Section */}
         <div className="bg-card rounded-3xl shadow-playful p-4 sm:p-6 mb-6">

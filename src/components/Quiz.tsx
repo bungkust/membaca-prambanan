@@ -6,6 +6,8 @@ import { generateQuizQuestions, QuizId } from "@/features/quiz";
 import { speak, stopSpeech } from "@/utils/tts";
 import { safeSet } from "@/utils/storage";
 import { logger } from "@/utils/logger";
+import { isPremium, canPlayPremiumQuiz, incrementTrialCount } from "@/services/premium";
+import { isPremiumQuizType, FREE_LIMITS } from "@/types/premium";
 import QuizLayout from "@/components/design/QuizLayout";
 import QuizHeader from "@/components/design/QuizHeader";
 import QuizStats from "@/components/design/QuizStats";
@@ -116,6 +118,18 @@ const Quiz = ({ quizType, settings, appState, setAppState, onComplete, onBack }:
 
   // Initialize quiz session - only run once when component mounts or quizType changes
   useEffect(() => {
+    // Check if user can play premium quiz
+    if (isPremiumQuizType(quizType) && !canPlayPremiumQuiz(quizType)) {
+      logger.warn(`Cannot play premium quiz ${quizType}: trial exhausted and not premium`);
+      onBack();
+      return;
+    }
+    
+    // Track trial usage for premium quiz types
+    if (isPremiumQuizType(quizType) && !isPremium()) {
+      incrementTrialCount(quizType);
+    }
+    
     // Reset initialization flag if quizType changed
     if (prevQuizTypeRef.current !== quizType) {
       isInitialized.current = false;
@@ -127,9 +141,15 @@ const Quiz = ({ quizType, settings, appState, setAppState, onComplete, onBack }:
       return;
     }
     
+    // Enforce question limit for free users
+    const premium = isPremium();
+    const maxQuestions = premium 
+      ? settings.questionsPerSession 
+      : Math.min(settings.questionsPerSession, FREE_LIMITS.MAX_QUESTIONS_PER_SESSION);
+    
     const questions = generateQuizQuestions(
       quizType,
-      settings.questionsPerSession,
+      maxQuestions,
       settings.rememberAcrossSessions ? appState.seenIds : new Set()
     );
     

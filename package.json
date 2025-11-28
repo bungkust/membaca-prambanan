@@ -14,7 +14,9 @@
     "cap:build": "npm run cap:sync && npx cap open android",
     "android:build": "cd android && ./gradlew assembleDebug",
     "android:release": "cd android && ./gradlew bundleRelease",
-    "android:clean": "cd android && ./gradlew clean"
+    "android:clean": "cd android && ./gradlew clean",
+    "android:install": "./scripts/install-apk.sh",
+    "android:build-install": "npm run android:build && npm run android:install"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.10.0",

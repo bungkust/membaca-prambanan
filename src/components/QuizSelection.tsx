@@ -1,21 +1,25 @@
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
-import { ArrowLeft, Settings, History, Star, Trophy, Zap } from "lucide-react";
+import { ArrowLeft, Settings, History, Star, Trophy, Zap, Lock, Crown } from "lucide-react";
 import { getAllQuizMetadata, QuizId } from "@/features/quiz";
-
 import { SessionHistory } from "@/types/quiz";
+import { isPremium, canPlayPremiumQuiz, getTrialCount, getRemainingTrialSessions, isTrialExhausted } from "@/services/premium";
+import { isPremiumQuizType, PREMIUM_QUIZ_TYPES } from "@/types/premium";
 
 interface QuizSelectionProps {
   onSelectQuiz: (type: QuizId) => void;
   onBack: () => void;
   onOpenSettings?: () => void;
   onOpenHistory?: () => void;
+  onOpenPremium?: () => void;
   sessionHistory?: SessionHistory[];
 }
 
-const QuizSelection = ({ onSelectQuiz, onBack, onOpenSettings, onOpenHistory, sessionHistory = [] }: QuizSelectionProps) => {
+const QuizSelection = ({ onSelectQuiz, onBack, onOpenSettings, onOpenHistory, onOpenPremium, sessionHistory = [] }: QuizSelectionProps) => {
   // Auto-generated from registry - no need to manually maintain this list
   const quizTypes = getAllQuizMetadata();
+  const premium = isPremium();
+  
   const getTotalStars = () => {
     return sessionHistory.reduce((total, session) => total + (session.stars || 0), 0);
   };
@@ -77,15 +81,15 @@ const QuizSelection = ({ onSelectQuiz, onBack, onOpenSettings, onOpenHistory, se
             <div className="flex-1 text-center">
               <div className="flex items-baseline justify-center gap-2 mb-1">
                 <span className="text-2xl sm:text-3xl font-bold bg-gradient-to-r from-yellow-600 to-orange-600 bg-clip-text text-transparent">
-                  {getTotalStars()}
-                </span>
+                {getTotalStars()}
+              </span>
                 <span className="text-base sm:text-lg font-semibold text-yellow-700">
-                  Bintang
-                </span>
-              </div>
+                Bintang
+              </span>
+            </div>
               <p className="text-xs sm:text-sm text-yellow-600/90 font-medium">
-                ✨ Pencapaian Belajar Kamu ✨
-              </p>
+              ✨ Pencapaian Belajar Kamu ✨
+            </p>
             </div>
           </div>
         </div>
@@ -122,13 +126,26 @@ const QuizSelection = ({ onSelectQuiz, onBack, onOpenSettings, onOpenHistory, se
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
           {quizTypes.map((quiz) => {
             const stars = calculateQuizStars(quiz.id);
+            const isPremiumQuiz = isPremiumQuizType(quiz.id);
+            const canPlay = canPlayPremiumQuiz(quiz.id);
+            const trialExhausted = isTrialExhausted(quiz.id);
+            const trialCount = getTrialCount(quiz.id);
+            const remainingTrial = getRemainingTrialSessions(quiz.id);
+            
             return (
               <div
                 key={quiz.id}
-                className="bg-card rounded-3xl shadow-playful p-4 sm:p-6 hover:scale-105 transition-transform slide-up"
+                className={`bg-card rounded-3xl shadow-playful p-4 sm:p-6 transition-transform slide-up ${
+                  !canPlay ? 'opacity-75' : 'hover:scale-105'
+                }`}
               >
-                <div className={`w-20 h-20 bg-gradient-to-br ${quiz.gradient} rounded-2xl flex items-center justify-center mb-4`}>
+                <div className={`w-20 h-20 bg-gradient-to-br ${quiz.gradient} rounded-2xl flex items-center justify-center mb-4 relative`}>
                   <span className="text-4xl">{quiz.emoji}</span>
+                  {isPremiumQuiz && !premium && (
+                    <div className="absolute -top-2 -right-2 bg-yellow-500 text-white rounded-full p-1">
+                      <Crown className="w-4 h-4" />
+                    </div>
+                  )}
                 </div>
 
                 <div className="flex items-center justify-between mb-2">
@@ -141,7 +158,7 @@ const QuizSelection = ({ onSelectQuiz, onBack, onOpenSettings, onOpenHistory, se
                   {quiz.description}
                 </p>
 
-                <div className="flex gap-2 mb-6">
+                <div className="flex gap-2 mb-6 flex-wrap">
                   <span className="px-3 py-1 bg-muted rounded-full text-sm font-semibold text-foreground">
                     {quiz.count}
                   </span>
@@ -153,15 +170,51 @@ const QuizSelection = ({ onSelectQuiz, onBack, onOpenSettings, onOpenHistory, se
                       ⭐ {stars} Bintang
                     </span>
                   )}
+                  {isPremiumQuiz && !premium && (
+                    <>
+                      {!trialExhausted ? (
+                        <span className="px-3 py-1 bg-green-100 rounded-full text-sm font-semibold text-green-800">
+                          🎁 Trial: {trialCount}/{2}
+                        </span>
+                      ) : (
+                        <span className="px-3 py-1 bg-red-100 rounded-full text-sm font-semibold text-red-800">
+                          🔒 Trial habis
+                        </span>
+                      )}
+                    </>
+                  )}
                 </div>
 
-                <Button
-                  className={`w-full bg-gradient-to-r ${quiz.gradient} hover:opacity-90 transition-all shadow-button btn-bounce`}
-                  size="lg"
-                  onClick={() => onSelectQuiz(quiz.id)}
-                >
-                  🚀 Mulai Kuis
-                </Button>
+                {canPlay ? (
+                  <Button
+                    className={`w-full bg-gradient-to-r ${quiz.gradient} hover:opacity-90 transition-all shadow-button btn-bounce`}
+                    size="lg"
+                    onClick={() => onSelectQuiz(quiz.id)}
+                  >
+                    🚀 Mulai Kuis
+                  </Button>
+                ) : (
+                  <div className="space-y-2">
+                    <Button
+                      className="w-full bg-muted text-muted-foreground cursor-not-allowed"
+                      size="lg"
+                      disabled
+                    >
+                      <Lock className="w-5 h-5 mr-2" />
+                      Trial Habis
+                    </Button>
+                    {onOpenPremium && (
+                      <Button
+                        className="w-full bg-gradient-to-r from-yellow-500 to-orange-500 hover:opacity-90 text-white shadow-button btn-bounce"
+                        size="lg"
+                        onClick={onOpenPremium}
+                      >
+                        <Crown className="w-5 h-5 mr-2" />
+                        Upgrade ke Premium
+                      </Button>
+                    )}
+                  </div>
+                )}
               </div>
             );
           })}

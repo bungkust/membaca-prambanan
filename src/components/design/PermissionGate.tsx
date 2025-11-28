@@ -26,11 +26,11 @@ const PermissionGate = ({ children }: PermissionGateProps) => {
 		if (typeof window !== 'undefined' && 'speechSynthesis' in window) {
 			// Check if voices are already loaded (indicates prior user interaction)
 			const checkVoices = () => {
-				const voices = window.speechSynthesis.getVoices();
-				if (voices && voices.length > 0) {
+			const voices = window.speechSynthesis.getVoices();
+			if (voices && voices.length > 0) {
 					logger.debug('Voices already loaded, granting permission');
 					grantedRef.current = true;
-					setGranted(true);
+				setGranted(true);
 					setIsChecking(false);
 					return true;
 				}
