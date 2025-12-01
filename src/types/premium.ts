@@ -37,11 +37,11 @@ export const PREMIUM_PRICE_IDR = 29999;
  * Free version limits
  */
 export const FREE_LIMITS = {
-  MAX_QUESTIONS_PER_SESSION: 10,
-  MAX_TIMER_OPTIONS: [0, 5, 10], // Free: 0s, 5s, 10s only
-  MAX_VISIBLE_HISTORY: 5, // Only first 5 sessions visible in detail
-  VOICE_SELECTION: false, // Free: auto only
-  EXPORT_PROGRESS: false,
+  MAX_QUESTIONS_PER_SESSION: 50, // Increased from 10
+  MAX_TIMER_OPTIONS: [0, 5, 10, 15, 20], // All options available
+  MAX_VISIBLE_HISTORY: 50, // Increased from 5
+  VOICE_SELECTION: true, // Enable for all
+  EXPORT_PROGRESS: true, // Enable for all
 } as const;
 
 /**
@@ -66,12 +66,16 @@ export const FREE_QUIZ_TYPES: QuizId[] = [
   'suku_kata',
   'awal_kata',
   'akhir_kata',
-];
-
-export const PREMIUM_QUIZ_TYPES: QuizId[] = [
   'lengkapi_suku_kata_belakang',
   'lengkapi_suku_kata_depan',
   'mengenal_suku_kata',
+];
+
+export const PREMIUM_QUIZ_TYPES: QuizId[] = [
+  // Temporarily all quizzes are free
+  // 'lengkapi_suku_kata_belakang',
+  // 'lengkapi_suku_kata_depan',
+  // 'mengenal_suku_kata',
 ];
 
 /**

@@ -6,6 +6,10 @@ import { isNative } from '@/utils/platform';
  * Check if user has premium
  */
 export function isPremium(): boolean {
+  // Temporarily unlock everything for freemium release
+  return true;
+  
+  /* Original implementation
   try {
     const stored = localStorage.getItem(PREMIUM_STORAGE_KEY);
     if (!stored) return false;
@@ -16,6 +20,7 @@ export function isPremium(): boolean {
     logger.error('Error checking premium status:', error);
     return false;
   }
+  */
 }
 
 /**

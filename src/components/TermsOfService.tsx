@@ -249,3 +249,4 @@ const TermsOfService = ({ onBack }: TermsOfServiceProps) => {
 
 export default TermsOfService;
 
+
